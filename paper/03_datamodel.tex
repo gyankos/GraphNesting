@@ -1,0 +1,27 @@
+% !TeX root = 00_nesting_paper.tex
+\section{Data Model}
+The term \textit{property graph}  usually refers to a directed, labelled and attributed multigraph (each vertex and edge is represented as a relational tuple). In a property graph a single \textit{label}  is associated to every vertex and edge (e.g., \texttt{Author} or \texttt{coAuthorsip}). Further on, vertices and edges may have arbitrary named attributes (\textit{properties}) in the form of key-value pairs (e.g., \texttt{fullname:"Alice McKenzie"} or \texttt{institution:"Bengodi Ltd."}). Properties are set as tuples from the relational model. We define the\textit{ nested (property) graphs} as follows:
+
+\begin{definition}[Nested Graph DataBase]
+Given a set $\Sigma^*$ of strings,
+	a \textbf{nested (property) graph database} $G$ is a tuple $G=\Braket{\VS, \ES, \lambda,\ell,\omega,\nestF,\prov}$, where $\VS$ and $\ES$ are disjoint sets, respectively referring to vertex and edge identifiers $(c,i)\in\mathbb{N}^2$. In particular, input data graphs have $c=0$ while data views containing new elements may have new vertices or edges with $c>0$. 
+	
+	Each vertex and edge is assigned to multiple possible labels through the labelling function $\ell:\VS\cup \ES\to \wp(\Sigma^*)$. $\lambda$ is a function $\ES\to \VS^2$ mapping each edge to its source and target vertex. $\omega$ is a function mapping each vertex and edge into a relational tuple.
+	
+	In addition to the previous components defining a property graph, we also introduce functions representing \textit{vertex content} $\nestF\colon (\VS\cup \ES)\to\wp(\VS)$ and \textit{edge content} $\prov\colon(\VS\cup \ES)\to \wp(\ES)$. These functions induce the nesting by associating a set of vertices or edges to each vertex and edge. Each vertex or edge $o\in V\cup E$ induces a \textbf{nested (property) graph} as the following pair:
+	\[G_o=\Braket{\nu(o),\Set{e\in\epsilon(o)|s(e),t(e)\in\nu(o)}}\]
+\end{definition}
+
+
+Since the content functions $\nu$ and $\epsilon$ induce the expansion of each single vertex or edge to a graph, we must avoid recursive nesting to support expanding operations.
+% This condition is fundamental in order to define different levels as different abstractions over the data. 
+Therefore, we additionally introduce the following constraints to be set at a nested property graph database level:
+
+\begin{axiom}[Recursion Constraints]
+	For each correctly nested property graph, each vertex $v\in \VS$ must not contain $v$ at any level of containment of $\epsilon$ and, any of its descendants $c$ on the underneath level must not contain $v$ itself. That is:
+	\[\forall v\in \VS. \forall c\in \nu^+(v).\;\; c\neq v\wedge v\notin \nu^+(c)\]
+	Similarly to vertices, any edge shall not contain itself at any nesting level:
+	\[\forall e\in \ES. \forall c\in \rho^+(e). c\neq e\wedge e\notin \rho^+(c)\]
+\end{axiom}
+
+A vertex $v$ having a non-empty vertex or edge content is called \textbf{nested vertex}, while vertices with empty content are simply referred to \textbf{simple vertices}. For edges, we respectively use the terms \textbf{nested edges} and \textbf{simple edges}. 

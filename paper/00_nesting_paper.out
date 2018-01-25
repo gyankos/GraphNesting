@@ -1,0 +1,11 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Related Works}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Nested Graph Representations}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Databases and Query Languages}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Data Model}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Graph Nesting}{section.3}% 6
+\BOOKMARK [1][-]{section.4}{Class of optimizable graph nesting queries}{}% 7
+\BOOKMARK [2][-]{subsection.4.1}{Two HOp Separated Patterns Algorithm}{section.4}% 8
+\BOOKMARK [1][-]{section.5}{Experimental Evaluations}{}% 9
+\BOOKMARK [1][-]{section.6}{Conclusions}{}% 10
+\BOOKMARK [1][-]{section.7}{References}{}% 11
