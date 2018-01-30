@@ -1,0 +1,158 @@
+\input{preamb.tex}
+
+
+\begin{abstract}
+Despite the existance of valuable graph operations creating new
+vertices and edges from existing graphs, such as graph
+transformations and graph summarization, an operator allowing
+both to summarize a subgraph content into one single vertex or edge
+and to keep the information of the contained vertices and edges is
+missing. This deficiency is not only due to the operators’ definitions,
+but has to be sought on the current graph data model definition not
+supporting nestings for overlapping subgraphs. In this paper we
+propose a novel graph data structure for nested property graphs.
+Based thereon, we also propose a graph nesting operator and a specific algorithm, THoSP, outperforming the solution propoed by graph (Cypher, SPARQL) relational (SQL) and document oriented databases.
+\end{abstract}
+
+\begin{document}
+\title{On Nesting Graphs}
+%\numberofauthors{4} 
+%\renewcommand{\auwidth}{0.23\linewidth}
+%\author{
+%\alignauthor
+%Giacomo Bergami\\
+%       \affaddr{University of Bologna}\\
+%       \affaddr{CSE Department}\\
+%       \affaddr{Bologna, Italy}\\
+%       \email{giacomo.bergami2@\\
+%       	unibo.it}
+%% 2nd. author
+% \alignauthor
+%André Petermann\\
+%       \affaddr{University of Leipzig \& }\\
+%       \affaddr{ScaDS Dresden/Leipzig}\\
+%       \affaddr{Leipzig, Germany}\\
+%       \email{petermann@informatik.\\
+%       	uni-leipzig.de}
+%% 3rd. author
+%\alignauthor Erhard Rahm\\
+%\affaddr{University of Leipzig \& }\\
+%\affaddr{ScaDS Dresden/Leipzig}\\
+%\affaddr{Leipzig, Germany}\\
+%       \email{rahm@informatik.\\
+%       	uni-leipzig.de}
+%%\and  % use '\and' if you need 'another row' of author names
+%%% 4th. author
+%\alignauthor Danilo Montesi\\
+%       \affaddr{University of Bologna}\\
+%       \affaddr{CSE Department}\\
+%       \affaddr{Bologna, Italy}\\
+%       \email{danilo.montesi@\\
+%       	unibo.it}
+%}
+
+
+\renewcommand{\shortauthors}{[Authors]}
+
+\author{\ }
+\affiliation{\institution{\ }}
+\email{.}
+
+\author{\ }
+\affiliation{\institution{\ }}
+\email{.}
+
+\author{\ }
+\affiliation{\institution{\ }}
+\email{.}
+
+\author{\ }
+\affiliation{\institution{\ }}
+\email{.}
+
+
+%
+%\author{G.K.M. Tobin}
+%\authornote{The secretary disavows any knowledge of this author's actions.}
+%\affiliation{%
+%	\institution{Institute for Clarity in Documentation}
+%	\streetaddress{P.O. Box 1212}
+%	\city{Dublin}
+%	\state{Ohio}
+%	\postcode{43017-6221}
+%}
+%\email{webmaster@marysville-ohio.com}
+%
+%\author{Lars Th{\o}rv{\"a}ld}
+%\authornote{This author is the
+%	one who did all the really hard work.}
+%\affiliation{%
+%	\institution{The Th{\o}rv{\"a}ld Group}
+%	\streetaddress{1 Th{\o}rv{\"a}ld Circle}
+%	\city{Hekla}
+%	\country{Iceland}}
+%\email{larst@affiliation.org}
+%
+%\author{Valerie B\'eranger}
+%\affiliation{%
+%	\institution{Inria Paris-Rocquencourt}
+%	\city{Rocquencourt}
+%	\country{France}
+%}
+%\author{Aparna Patel}
+%\affiliation{%
+%	\institution{Rajiv Gandhi University}
+%	\streetaddress{Rono-Hills}
+%	\city{Doimukh}
+%	\state{Arunachal Pradesh}
+%	\country{India}}
+%\author{Huifen Chan}
+%\affiliation{%
+%	\institution{Tsinghua University}
+%	\streetaddress{30 Shuangqing Rd}
+%	\city{Haidian Qu}
+%	\state{Beijing Shi}
+%	\country{China}
+%}
+%
+%\author{Charles Palmer}
+%\affiliation{%
+%	\institution{Palmer Research Laboratories}
+%	\streetaddress{8600 Datapoint Drive}
+%	\city{San Antonio}
+%	\state{Texas}
+%	\postcode{78229}}
+%\email{cpalmer@prl.com}
+%
+%\author{John Smith}
+%\affiliation{\institution{The Th{\o}rv{\"a}ld Group}}
+%\email{jsmith@affiliation.org}
+%
+%\author{Julius P.~Kumquat}
+%\affiliation{\institution{The Kumquat Consortium}}
+%\email{jpkumquat@consortium.net}
+
+\maketitle
+
+
+
+\input{01_introduction.tex}
+\input{02_related_bis.tex}
+\input{03_datamodel.tex}
+%\input{../GraphNesting/paper/04_operator.tex}
+\input{04_operator_fig.tex}
+%\input{../GraphNesting/paper/05_class_of_algos.tex}
+%\input{../GraphNesting/paper/06_thosp.tex}
+\input{06_thosp_short.tex}
+\input{07_evaluation_anonymous.tex}
+%\input{../GraphNesting/paper/07_evaluation.tex}
+\input{08_conclusions.tex}
+%\appendix
+%\input{09_languages.tex}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{../GraphNesting/paper/mbib} 
+\appendix
+\input{60_languages.tex}
+
+\end{document}

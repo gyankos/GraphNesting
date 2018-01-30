@@ -1,0 +1,75 @@
+\section{Query Benchmarks}
+\begin{lstlisting}[caption={Graph Nesting in PostgreSQL's SQL dialect. Two distinct tables are created for both vertices and edges. },language=SQL,frameround=fttt,frame=trBL,mathescape=true,label=SQLNesting]
+-- Nesting Vertices
+SELECT distinct T.sourceId as src, 
+array_agg(distinct T.dst) as papers 
+FROM edges-$i$ as T 
+GROUP BY T.sourceId;
+
+-- Nesting Edges
+SELECT distinct T.sourceId as src, 
+T1.sourceId as dst, 
+array_agg(distinct T1.targetId) as papers
+FROM edges-$i$ as T, edges-$i$ as T1 
+WHERE     T.targetId = T1.targetId 
+AND T.sourceId <> T1.sourceId 
+GROUP BY T.sourceId, T1.sourceId;
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption={Graph Nesting in SPARQL. We use properties to associate to either vertices and edges the nesting content.},language=SPARQL,frameround=fttt,frame=trBL,tabsize=2,mathescape=true,label=SPARQLNesting]
+CONSTRUCT {
+ ?autha ?newedge ?authb.
+ ?newedge <http://cnt.io/nesting> ?paper1.
+ ?authc <http://my.grph/edge> ?paper2.
+} WHERE {
+ {
+  GRAPH <http://my.grph/g/$i$/> {
+   ?autha <http://my.grph/g/edge> ?paper1.
+   ?authb <http://my.grph/g/edge> ?paper1.
+  }
+  FILTER(?autha != ?authb).
+  BIND(URI(CONCAT("http://my.grph/g/newedge/",STRAFTER(STR(?autha),"http://my.grph/g/id/"),"-",STRAFTER(STR(?authb),"http://my.grph/g/id/"))) AS  ?newedge).
+  } UNION {
+   GRAPH <http://my.grph/g/$i$/> {
+    ?authc <http://my.grph/g/edge> ?paper2. 
+   }
+   OPTIONAL {
+    ?authd <http://my.grph/g/edge> ?paper2.
+    FILTER (?authd != ?authc)
+   }
+   FILTER(!bound(?authd))
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Graph Nesting in ArangoDB using AQL. All the fields marked with an underscore represent externally indexed structures.},language=AQL,frameround=fttt,frame=trBL,tabsize=2,mathescape=true,label=AQLQueryNesting]
+-- Nesting vertices
+FOR b IN authorOf 
+COLLECT au = b._from INTO groups = [b._to] 
+RETURN {"author" : au,  "papers": groups }
+
+-- Nesting edges
+FOR x IN authorOf 
+FOR y IN authorOf 
+FILTER x._to==y._to && x._from!=y._from 
+COLLECT src = x._from, dst = y._from 
+INTO groups = [ x._to ] 
+RETURN {"src": src, "dst": dst, 
+"contain": groups}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Graph Nesting in Neo4J using Cypher as a Query Language. Please note that, even in this case, is it not possible to return one single nested graph immediately, and hence the nested vertices must be created before creating the nested edges.},language=Cypher,frameround=fttt,frame=trBL,mathescape=true,label=Neo4JQuery]
+MATCH (a1: Author)-->(p1:Paper) 
+WITH a1, collect(p1.UID) AS papers1 
+CREATE  p=(:Authors {authored: papers1, id:a1.UID})
+
+MATCH (a1: Author)-->(p:Paper)<--(a2: Author), (a1p: Authors), (a2p: Authors)
+WITH a1, a2, a1p, a2p, collect(p.UID) AS common
+WHERE a1.UID = a1p.id AND a2.UID = a2p.id AND a1.UID <> a2.UID
+CREATE p=(a1p)-[:Papers {coauthored: common}]->(a2p)
+\end{lstlisting}
+
+%\begin{lstfloat}[!t]
+%
+%\end{lstfloat}

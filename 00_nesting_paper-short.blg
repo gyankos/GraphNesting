@@ -1,0 +1,99 @@
+This is BibTeX, Version 0.99d (TeX Live 2017)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: 00_nesting_paper-short.aux
+The style file: ACM-Reference-Format.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: ../GraphNesting/paper/mbib.bib
+I was expecting a `,' or a `}'---line 1885 of file ../GraphNesting/paper/mbib.bib
+ :  
+ :  isbn = {978-0-7695-3502-9}
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+A bad cross reference---entry "GenestS98"
+refers to entry "DBLP:conf/iccs/1998", which doesn't exist
+Warning--I didn't find a database entry for "DBLP:conf/iccs/1998"
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=20001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Warning--empty address in graphml
+Warning--empty publisher in BrodkaK14
+Warning--empty address in BrodkaK14
+Warning--empty address in ChenYZHY08
+Warning--empty publisher in ChengJQ16
+Warning--empty address in ChengJQ16
+Warning--page numbers missing in both pages and numpages fields in ChengJQ16
+Warning--empty address in Etcheverry2012
+Warning--page numbers missing in both pages and numpages fields in Etcheverry2012
+Warning--empty publisher in GenestS98
+Warning--empty address in GenestS98
+Warning--numpages field, but no articleno or eid field, in statecharts
+Warning--empty publisher in jakawat
+Warning--page numbers missing in both pages and numpages fields in jakawat
+Warning--empty publisher in JunghannsPR17
+Warning--empty address in JunghannsPR17
+Warning--page numbers missing in both pages and numpages fields in JunghannsPR17
+Warning--empty address in NestedGlaucoma
+Warning--page numbers missing in both pages and numpages fields in NestedGlaucoma
+Warning--empty address in odifreddi1992
+Warning--can't use both author and editor fields in Qu2011
+Warning--unusual to have number, but no volume, for success
+Warning--page numbers missing in both pages and numpages fields in success
+Warning--empty booktitle in Tian20085
+Warning--empty publisher in Tian20085
+Warning--empty address in Tian20085
+Warning--numpages field, but no articleno or eid field, in Tian20085
+Warning--empty year in Vasilyeva13
+Warning--empty publisher in Vasilyeva13
+Warning--empty address in Vasilyeva13
+Warning--page numbers missing in both pages and numpages fields in Vasilyeva13
+Warning--empty publisher in yin
+Warning--empty address in yin
+Warning--numpages field, but no articleno or eid field, in yin
+Warning--empty booktitle in Zhao11
+Warning--empty address in Zhao11
+Warning--numpages field, but no articleno or eid field, in Zhao11
+You've used 22 entries,
+            5733 wiz_defined-function locations,
+            1462 strings with 19109 characters,
+and the built_in function-call counts, 25907 in all, are:
+= -- 3070
+> -- 1000
+< -- 0
++ -- 332
+- -- 336
+* -- 1915
+:= -- 2665
+add.period$ -- 110
+call.type$ -- 22
+change.case$ -- 158
+chr.to.int$ -- 22
+cite$ -- 59
+duplicate$ -- 2312
+empty$ -- 1622
+format.name$ -- 416
+if$ -- 6172
+int.to.chr$ -- 2
+int.to.str$ -- 1
+missing$ -- 88
+newline$ -- 215
+num.names$ -- 180
+pop$ -- 949
+preamble$ -- 1
+purify$ -- 349
+quote$ -- 0
+skip$ -- 788
+stack$ -- 0
+substring$ -- 1771
+swap$ -- 215
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 532
+warning$ -- 37
+while$ -- 153
+width$ -- 0
+write$ -- 415
+(There were 2 error messages)

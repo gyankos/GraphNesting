@@ -1,0 +1,91 @@
+% !TeX root = 00_nesting_paper-short.tex
+% THIS IS AN EXAMPLE DOCUMENT FOR VLDB 2012
+% based on ACM SIGPROC-SP.TEX VERSION 2.7
+% Modified by  Gerald Weber <gerald@cs.auckland.ac.nz>
+% Removed the requirement to include *bbl file in here. (AhmetSacan, Sep2012)
+% Fixed the equation on page 3 to prevent line overflow. (AhmetSacan, Sep2012)
+
+\documentclass[sigconf]{acmart}
+
+%%\usepackage{lastpage}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+%\usepackage{balance}  % for  \balance command ON LAST PAGE  (only there!)
+
+\usepackage{braket}
+
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{axiom}{Axiom}
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\makeatletter
+\renewcommand{\ALG@beginalgorithmic}{\small}
+\makeatother
+\makeatletter
+
+\usepackage{listings}
+%\usepackage[dvipsnames]{xcolor}
+\definecolor{eclipseBlue}{RGB}{42,0.0,255}
+\definecolor{eclipseGreen}{RGB}{63,127,95}
+\definecolor{eclipsePurple}{RGB}{127,0,85}
+\lstset{basicstyle=\ttfamily\small,%
+	%backgroundcolor=\color[rgb]{0.85,0.85,0.86},%
+	frame=single,
+	framerule=0pt,
+	xleftmargin=\fboxsep,
+	xrightmargin=\fboxsep,
+	commentstyle=\color{eclipseGreen}, % style of comments
+	keywordstyle=\color{eclipsePurple}, % style of keywords
+	stringstyle=\color{eclipseBlue},
+	breaklines=true,
+	postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}
+\lstdefinelanguage{sparql}{
+	morecomment=[l][]{\#},
+	morestring=[b][]\",
+	morekeywords={BIND,URI,CONCAT,SELECT,CONSTRUCT,DESCRIBE,ASK,WHERE,FROM,NAMED,PREFIX,BASE,OPTIONAL,FILTER,GRAPH,LIMIT,OFFSET,SERVICE,UNION,EXISTS,NOT,BINDINGS,MINUS,a},
+	sensitive=true
+}
+\lstdefinelanguage{cypher}{
+	morekeywords={MATCH,RETURN,WHERE,DISTINCT,WITH,CREATE,COUNT,AS,UNION,ALL,is,null,NOT,AND,OR},
+	sensitive=true,
+	morecomment=[l]{//}, % l is for line comment
+}
+\lstdefinelanguage{AQL}{
+	morekeywords={
+		FOR,IN,COLLECT,INTO,RETURN
+	},
+	morestring=[b]",
+	stringstyle=\color{eclipseGreen},
+	morecomment=[l]{--}, % l is for line comment
+}
+
+\usepackage{multirow}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{adjustbox}
+
+\usepackage{float}
+\newfloat{lstfloat}{htbp}{lop}
+\floatname{lstfloat}{Listing}
+
+\definecolor{webgreen}{rgb}{0,.5,0}
+\newcommand{\mstr}[1]{\textup{\color{webgreen}``#1''}}
+
+\newcommand{\nested}{\ensuremath{G_o}}
+\newcommand{\ngraph}{{g}}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\cod}{cod}
+\newcommand{\ONTA}{\mstr{onta}}
+\newcommand{\RELA}{\mstr{rela}}
+\newcommand{\SRC}{\mstr{src}}
+\newcommand{\DST}{\mstr{dst}}
+\newcommand{\VS}{\mathcal{V}}
+\newcommand{\ES}{\mathcal{E}}
+\newcommand{\Keys}{K}
+\newcommand{\Val}{V}
+\newcommand{\valF}{F}
+\newcommand{\nestF}{\nu}
+\newcommand{\prov}{\epsilon}

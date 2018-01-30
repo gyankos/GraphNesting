@@ -1,0 +1,322 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{22}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{}, \showDOI{}, and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showDOI}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showDOI #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showDOI      \undefined \def \showDOI       #1{#1}\fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[\protect\citeauthoryear{Bagan, Bonifati, Ciucanu, Fletcher, Lemay, and
+  Advokaat}{Bagan et~al\mbox{.}}{2017}]%
+        {BBCFLA17}
+\bibfield{author}{\bibinfo{person}{G. Bagan}, \bibinfo{person}{A. Bonifati},
+  \bibinfo{person}{R. Ciucanu}, \bibinfo{person}{G.~H.~L. Fletcher},
+  \bibinfo{person}{A. Lemay}, {and} \bibinfo{person}{N. Advokaat}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{{gMark}: Schema-Driven Generation of Graphs and
+  Queries}.
+\newblock \bibinfo{journal}{\emph{IEEE Transactions on Knowledge and Data
+  Engineering}} \bibinfo{volume}{29}, \bibinfo{number}{4}
+  (\bibinfo{year}{2017}), \bibinfo{pages}{856--869}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Brandes, Eiglsperger, Lerner, and
+  Pich}{Brandes et~al\mbox{.}}{2007}]%
+        {graphml}
+\bibfield{author}{\bibinfo{person}{Ulrik Brandes}, \bibinfo{person}{Markus
+  Eiglsperger}, \bibinfo{person}{J\"{u}rgen Lerner}, {and}
+  \bibinfo{person}{Christian Pich}.} \bibinfo{year}{2007}\natexlab{}.
+\newblock \showarticletitle{Graph Markup Language ({GraphML})}.
+\newblock In \bibinfo{booktitle}{\emph{Handbook of Graph Drawing and
+  Visualization}}, \bibfield{editor}{\bibinfo{person}{Roberto Tamassia}} (Ed.).
+  \bibinfo{publisher}{CRC Press}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Br{\'{o}}dka and Kazienko}{Br{\'{o}}dka and
+  Kazienko}{2014}]%
+        {BrodkaK14}
+\bibfield{author}{\bibinfo{person}{Piotr Br{\'{o}}dka} {and}
+  \bibinfo{person}{Przemyslaw Kazienko}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{Multilayered Social Networks}.
+\newblock In \bibinfo{booktitle}{\emph{Encyclopedia of Social Network Analysis
+  and Mining}}. \bibinfo{pages}{998--1013}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Chen, Yan, Zhu, Han, and Yu}{Chen
+  et~al\mbox{.}}{2008}]%
+        {ChenYZHY08}
+\bibfield{author}{\bibinfo{person}{Chen Chen}, \bibinfo{person}{Xifeng Yan},
+  \bibinfo{person}{Feida Zhu}, \bibinfo{person}{Jiawei Han}, {and}
+  \bibinfo{person}{Philip~S. Yu}.} \bibinfo{year}{2008}\natexlab{}.
+\newblock \showarticletitle{Graph OLAP: Towards Online Analytical Processing on
+  Graphs.}. In \bibinfo{booktitle}{\emph{ICDM}}. \bibinfo{publisher}{IEEE
+  Computer Society}, \bibinfo{pages}{103--112}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Cheng, Jin, and Qu}{Cheng
+  et~al\mbox{.}}{2016}]%
+        {ChengJQ16}
+\bibfield{author}{\bibinfo{person}{Gong Cheng}, \bibinfo{person}{Cheng Jin},
+  {and} \bibinfo{person}{Yuzhong Qu}.} \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{{HIEDS:} {A} Generic and Efficient Approach to
+  Hierarchical Dataset Summarization}. In \bibinfo{booktitle}{\emph{Procs. of
+  {IJCAI} 2016}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Etcheverry and Vaisman}{Etcheverry and
+  Vaisman}{2012}]%
+        {Etcheverry2012}
+\bibfield{author}{\bibinfo{person}{Lorena Etcheverry} {and}
+  \bibinfo{person}{Alejandro~A. Vaisman}.} \bibinfo{year}{2012}\natexlab{}.
+\newblock \showarticletitle{QB4OLAP: A Vocabulary for OLAP Cubes on the
+  Semantic Web.}. In \bibinfo{booktitle}{\emph{COLD}}
+  \emph{(\bibinfo{series}{CEUR Workshop Proceedings})},
+  \bibfield{editor}{\bibinfo{person}{Juan Sequeda}, \bibinfo{person}{Andreas
+  Harth}, {and} \bibinfo{person}{Olaf Hartig}} (Eds.),
+  Vol.~\bibinfo{volume}{905}. \bibinfo{publisher}{CEUR-WS.org}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Genest and Salvat}{Genest and Salvat}{1998}]%
+        {GenestS98}
+\bibfield{author}{\bibinfo{person}{David Genest} {and} \bibinfo{person}{Eric
+  Salvat}.} \bibinfo{year}{1998}\natexlab{}.
+\newblock \showarticletitle{A Platform Allowing Typed Nested Graphs: How CoGITo
+  Became CoGITaNT (Research Note)}. In \bibinfo{booktitle}{\emph{Conceptual
+  Structures: Theory, Tools and Applications, 6th International Conference on
+  Conceptual Structures, {ICCS} '98, Montpellier, France, August 10-12, 1998,
+  Proceedings}}. \bibinfo{pages}{154--164}.
+\newblock
+\urldef\tempurl%
+\url{https://doi.org/10.1007/BFb0054912}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Harel}{Harel}{1987}]%
+        {statecharts}
+\bibfield{author}{\bibinfo{person}{David Harel}.}
+  \bibinfo{year}{1987}\natexlab{}.
+\newblock \showarticletitle{Statecharts: A Visual Formalism for Complex
+  Systems}.
+\newblock \bibinfo{journal}{\emph{Sci. Comput. Program.}} \bibinfo{volume}{8},
+  \bibinfo{number}{3} (\bibinfo{date}{June} \bibinfo{year}{1987}),
+  \bibinfo{pages}{231--274}.
+\newblock
+\showISSN{0167-6423}
+\urldef\tempurl%
+\url{https://doi.org/10.1016/0167-6423(87)90035-9}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Holt, Sch{\"u}rr, Sim, and Winter}{Holt
+  et~al\mbox{.}}{2006}]%
+        {GXL}
+\bibfield{author}{\bibinfo{person}{Richard~C. Holt}, \bibinfo{person}{Andy
+  Sch{\"u}rr}, \bibinfo{person}{Susan~E. Sim}, {and} \bibinfo{person}{Andreas
+  Winter}.} \bibinfo{year}{2006}\natexlab{}.
+\newblock \showarticletitle{GXL: A graph-based standard exchange format for
+  reengineering.}
+\newblock \bibinfo{journal}{\emph{Sci. Comput. Program.}} \bibinfo{volume}{60},
+  \bibinfo{number}{2} (\bibinfo{year}{2006}), \bibinfo{pages}{149--170}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Jakawat, Favre, and Loudcher}{Jakawat
+  et~al\mbox{.}}{2015}]%
+        {jakawat}
+\bibfield{author}{\bibinfo{person}{Wararat Jakawat},
+  \bibinfo{person}{C{\'e}cile Favre}, {and} \bibinfo{person}{Sabine Loudcher}.}
+  \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{{OLAP Cube-based Graph Approach for Bibliographic
+  Data}}. In \bibinfo{booktitle}{\emph{{SOFSEM 2016}}}.
+  \bibinfo{address}{Harrachov, Czech Republic}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Junghanns, Petermann, and Rahm}{Junghanns
+  et~al\mbox{.}}{2017}]%
+        {JunghannsPR17}
+\bibfield{author}{\bibinfo{person}{Martin Junghanns},
+  \bibinfo{person}{Andr{\'{e}} Petermann}, {and} \bibinfo{person}{Erhard
+  Rahm}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Distributed Grouping of Property Graphs with
+  Gradoop}. In \bibinfo{booktitle}{\emph{Datenbanksysteme f{\"{u}}r Business,
+  Technologie und Web {(BTW} 2017).}}
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Kulikowski and Weiss}{Kulikowski and
+  Weiss}{1982}]%
+        {NestedGlaucoma}
+\bibfield{author}{\bibinfo{person}{Casimir~A. Kulikowski} {and}
+  \bibinfo{person}{Sholom~M. Weiss}.} \bibinfo{year}{1982}\natexlab{}.
+\newblock \showarticletitle{Representation of Expert Knolwedge for
+  Consultation: The {CASNET} and {EXPERT} proejcts}. In
+  \bibinfo{booktitle}{\emph{Artificial Intelligence in Medicine}}.
+  \bibinfo{publisher}{Westview Press}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Odifreddi}{Odifreddi}{1992}]%
+        {odifreddi1992}
+\bibfield{author}{\bibinfo{person}{P. Odifreddi}.}
+  \bibinfo{year}{1992}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{{Classical Recursion Theory: The Theory of
+  Functions and Sets of Natural Numbers (Studies in Logic and the Foundations
+  of Mathematics)}} (\bibinfo{edition}{new ed} ed.)}.
+\newblock \bibinfo{publisher}{North Holland}.
+\newblock
+\showISBNx{0444894837}
+
+
+\bibitem[\protect\citeauthoryear{Park, Ahn, and Kim}{Park
+  et~al\mbox{.}}{2016}]%
+        {Park2016355}
+\bibfield{author}{\bibinfo{person}{Minjae Park}, \bibinfo{person}{Hyun Ahn},
+  {and} \bibinfo{person}{Kwanghoon~Pio Kim}.} \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{Workflow-supported social networks: Discovery,
+  analyses, and system}.
+\newblock \bibinfo{journal}{\emph{Journal of Network and Computer
+  Applications}}  \bibinfo{volume}{75} (\bibinfo{year}{2016}),
+  \bibinfo{pages}{355 -- 373}.
+\newblock
+\showISSN{1084-8045}
+
+
+\bibitem[\protect\citeauthoryear{Poulovassilis and Levene}{Poulovassilis and
+  Levene}{1994}]%
+        {Poulovassilis1994}
+\bibfield{author}{\bibinfo{person}{A. Poulovassilis} {and} \bibinfo{person}{M.
+  Levene}.} \bibinfo{year}{1994}\natexlab{}.
+\newblock \showarticletitle{A Nested-Graph Model for the Representation and
+  Manipulation of Complex Objects}.
+\newblock \bibinfo{journal}{\emph{ACM Trans. Information Systems}}
+  \bibinfo{volume}{12}, \bibinfo{number}{1} (\bibinfo{year}{1994}),
+  \bibinfo{pages}{35--68}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Qu, Zhu, Yan, Han, Yu, and Li}{Qu
+  et~al\mbox{.}}{2011}]%
+        {Qu2011}
+\bibfield{author}{\bibinfo{person}{Qiang Qu}, \bibinfo{person}{Feida Zhu},
+  \bibinfo{person}{Xifeng Yan}, \bibinfo{person}{Jiawei Han},
+  \bibinfo{person}{Philip~S. Yu}, {and} \bibinfo{person}{Hongyan Li}.}
+  \bibinfo{year}{2011}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{Efficient Topological OLAP on Information
+  Networks}}.
+\newblock \bibinfo{publisher}{Springer Berlin Heidelberg},
+  \bibinfo{address}{Berlin, Heidelberg}, \bibinfo{pages}{389--403}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Richter, Heidemann, Klier, and
+  Behrendt}{Richter et~al\mbox{.}}{2013}]%
+        {success}
+\bibfield{author}{\bibinfo{person}{Alexander Richter}, \bibinfo{person}{Julia
+  Heidemann}, \bibinfo{person}{Mathias Klier}, {and} \bibinfo{person}{Sebastian
+  Behrendt}.} \bibinfo{year}{2013}\natexlab{}.
+\newblock \showarticletitle{Success Measurement of Enterprise Social Networks}.
+\newblock \bibinfo{journal}{\emph{Wirtschaftsinformatik}} \bibinfo{number}{20}
+  (\bibinfo{year}{2013}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Tian, Hankins, and Patel}{Tian
+  et~al\mbox{.}}{2008}]%
+        {Tian20085}
+\bibfield{author}{\bibinfo{person}{Yuanyuan Tian}, \bibinfo{person}{Richard~A.
+  Hankins}, {and} \bibinfo{person}{Jignesh~M. Patel}.}
+  \bibinfo{year}{2008}\natexlab{}.
+\newblock \showarticletitle{Efficient Aggregation for Graph Summarization}
+  \emph{(\bibinfo{series}{SIGMOD})}. \bibinfo{pages}{567--580}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Vasilyeva, Thiele, Bornh\"{o}vd, and
+  Lehner}{Vasilyeva et~al\mbox{.}}{[n. d.]}]%
+        {Vasilyeva13}
+\bibfield{author}{\bibinfo{person}{Elena Vasilyeva}, \bibinfo{person}{Maik
+  Thiele}, \bibinfo{person}{Christof Bornh\"{o}vd}, {and}
+  \bibinfo{person}{Wolfgang Lehner}.} \bibinfo{year}{[n. d.]}\natexlab{}.
+\newblock \showarticletitle{Leveraging Flexible Data Management with Graph
+  Databases}. In \bibinfo{booktitle}{\emph{1st International Workshop on Graph
+  Data Management Experiences and Systems}} \emph{(\bibinfo{series}{GRADES
+  '13})}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Xie, Kelley, and Szymanski}{Xie
+  et~al\mbox{.}}{2013}]%
+        {xie}
+\bibfield{author}{\bibinfo{person}{Jierui Xie}, \bibinfo{person}{Stephen
+  Kelley}, {and} \bibinfo{person}{Boleslaw~K. Szymanski}.}
+  \bibinfo{year}{2013}\natexlab{}.
+\newblock \showarticletitle{Overlapping Community Detection in Networks: The
+  State-of-the-art and Comparative Study}.
+\newblock \bibinfo{journal}{\emph{ACM Comput. Surv.}} \bibinfo{volume}{45},
+  \bibinfo{number}{4}, Article \bibinfo{articleno}{43} (\bibinfo{date}{Aug.}
+  \bibinfo{year}{2013}), \bibinfo{numpages}{35}~pages.
+\newblock
+\showISSN{0360-0300}
+
+
+\bibitem[\protect\citeauthoryear{Yin and Gao}{Yin and Gao}{2016}]%
+        {yin}
+\bibfield{author}{\bibinfo{person}{Dan Yin} {and} \bibinfo{person}{Hong Gao}.}
+  \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{A flexible aggregation framwork on large-scale
+  heterogeneous information networks}. In \bibinfo{booktitle}{\emph{Journal of
+  Information Science}}. \bibinfo{pages}{1--18}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Zhao, Li, Xin, and Han}{Zhao
+  et~al\mbox{.}}{2011}]%
+        {Zhao11}
+\bibfield{author}{\bibinfo{person}{Peixiang Zhao}, \bibinfo{person}{Xiaolei
+  Li}, \bibinfo{person}{Dong Xin}, {and} \bibinfo{person}{Jiawei Han}.}
+  \bibinfo{year}{2011}\natexlab{}.
+\newblock \showarticletitle{Graph Cube: On Warehousing and OLAP
+  Multidimensional Networks} \emph{(\bibinfo{series}{SIGMOD '11})}.
+  \bibinfo{publisher}{ACM}, 12.
+\newblock
+
+
+\end{thebibliography}
