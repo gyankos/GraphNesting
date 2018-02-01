@@ -1,7 +1,7 @@
 *.tex~
 *.bib~
 *.rb~
-*.pdf
+00_paper_entrypoint.pdf
 .idea
 *.odg#
 
