@@ -58,7 +58,8 @@ where $dt$ is an arbitrary bijection associating a  $n$-tuple in $\mathbb{N}^n$ 
 \end{definition}
 
 
-\subsection{Two HOp Separated Patterns Algorithm}\label{sec:THOSPA}
+\section{Two HOp Separated Patterns Algorithm}
+\label{sec:THOSPA}
 In order to solve our specific graph nesting problem as presented in the introduction, we want to evaluate $\nu$ when the non-traversed vertices and edges are not preserved ($\textbf{keep}=\texttt{false}$), where $g_V$ and $g_E$ are the ones represented in Figure \ref{fig:bibex2} and the UDFs associate to each nested vertex the authors' informations and creates nested edges with \texttt{coAuthorship} label and no associated tuple. In particular:
 \[\mu_E(G_C)=\Braket{f_C(\gamma_E^{src}),f_C(\gamma_E^{dst})}\quad s.t.\quad g_E\xrightarrow{f_C}G_C\]
 \[\mu_\Omega(G_C)=\begin{cases}
