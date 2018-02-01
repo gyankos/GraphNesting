@@ -6,6 +6,30 @@ Despite an increasing number of applications, a general operator that aggregates
  The operation of adding structural aggregations to an existing graph is called \textit{graph nesting}.
 A respective operator shall not only create a new graph of \textit{nested vertices} and \textit{nested edges}, each containing subgraphs of the original input graph, but also preserve the vertices and edges that are not affected by the actual operation. Further on, the operator must ensure that the nested elements can be freely unnested such that the original graph may be obtained back again. Vertices or edges of the original graph will be called \textit{members} of a nested vertex or edge, if they appear in its underlying subgraph.
 
+\begin{figure}[!t]
+  \caption{Nesting a bibliographic network: the provenance information is nested within the original node. }
+  \label{fig:bibex2}
+  \begin{minipage}[!t]{0.5\textwidth}
+    \centering
+    \includegraphics[width=.8\textwidth]{images/nesting/patterns/04bibliography}
+    \subcaption{Input bibliographical network.}
+    \label{fig:inputbibex2}
+  \end{minipage}
+  \medskip
+
+  \begin{minipage}[!t]{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{images/nesting/patterns/042nested}
+    \subcaption{Nested result: given two \texttt{Author}s $\color{orange}a$ and $\color{orange}a'$, there exist two  \texttt{coauthorship} edges, $\color{blue}a\to a'$ and $\color{blue}a'\to a$ if and only if they share some authored paper contained respectively in $\epsilon({\color{blue}a\to a'})$ and $\epsilon({\color{blue}a'\to a})$. Moreover, each author $\color{orange}a$ is associated to the set of his authored papers $\epsilon({\color{orange}a})$. }
+    \label{fig:outputnested}
+  \end{minipage}
+\end{figure}
+
+\begin{em}
+ \textsc{Example}: Given a graph (Figure \ref{fig:inputbibex2}) representing a bibliographic network with (at least) \textsc{Author}s and \textsc{Paper}s as vertices and \textsc{authorOf} relationships as edges which connect authors to papers they have authored . With the graph nesting operator, we want to ``roll up'' the network into a coauthorship network (Figure \ref{fig:outputnested}). Here each \textsc{Author} will be connected by a \textsc{coAuthor} edge with another \textsc{Author}(2) if they have published at least one paper in common.
+ More precisely, each resulting \textsc{Author}(2) vertex shall contain authored papers as vertices and each \textsc{coAuthor} edge all coauthored papers with regard to source and target \textsc{Author}s. However, we want to exclude \textsc{coAuthor} hooks over the same vertex.
+\end{em}
+
 In a resulting nested graph, edges connecting nested vertices express that members of the nested vertices are connected by an edge or, more general, by a path in the original graph.
 In contrast to this general approach, current literature distinguishes between \textit{vertex summarization} and \textit{path summarization}. Thus, it is not possible to define a single algorithm that evaluates both kinds of patterns at the same time. Before outlining our proposed algorithmic solution, let's have a look on these existing approaches:
 
@@ -26,34 +50,11 @@ Cypher, the query language of the productive graph database Neo4j, can perform d
 %As a result, the query plan optimizers of such query languages do not allow to avoid to visit one same graph more than once whether possible.
 
 This paper shows that such query language limitations can be reduced by using a graph nesting operator, which performs both vertex and path summarization queries concurrently with only a single visit of the input graph. %The following example provides an example of how such query can be formulated and performed. --> Old example
-We study specific graph patterns and propose algorithmic optimizations and a specific physical model for efficient graph nesting. Hereby, we show that our algorithmic approaches reduce the time complexity of the visiting and nesting problem. Further on, our optimized data structure requires less indexing time than our competitors.
-
-\begin{figure}[!t]
-	\begin{minipage}[!t]{0.5\textwidth}
-		\centering
-		\includegraphics[width=.8\textwidth]{images/nesting/patterns/04bibliography}
-		\subcaption{Input bibliographical network.}
-		\label{fig:inputbibex2}
-	\end{minipage}
-	\medskip
-	
-	\begin{minipage}[!t]{0.5\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{images/nesting/patterns/042nested}
-		\subcaption{Nested result: given two \texttt{Author}s $\color{orange}a$ and $\color{orange}a'$, there exist two  \texttt{coauthorship} edges, $\color{blue}a\to a'$ and $\color{blue}a'\to a$ if and only if they share some authored paper contained respectively in $\epsilon({\color{blue}a\to a'})$ and $\epsilon({\color{blue}a'\to a})$. Moreover, each author $\color{orange}a$ is associated to the set of his authored papers $\epsilon({\color{orange}a})$. }
-		\label{fig:outputnested}
-	\end{minipage}
-	\caption{Nesting a bibliographic network: the provenance information is nested within the original node. }
-	\label{fig:bibex2}
-\end{figure}
-
-
-\begin{example}
-	\label{ex:nestingbib}
-	Given a bibliographic network containing (at least) \textsc{Author}s and \textsc{Paper}s as vertices, and where \textsc{authorOf} edges connect each author to the papers he has authored (Figure \ref{fig:inputbibex2}), we want to ``roll up'' the network into a coauthorship network, where each \textsc{Author} is connected by a \textsc{coAuthor} edge with another  \textsc{Author}(2) with which he has published some papers (Figure \ref{fig:outputnested}). In particular, for each resulting \textsc{Author}(2) vertex, nest inside it  its papers as vertices, and nest inside each \textsc{coAuthor} edge all the papers coauthored by  the source and destination \textsc{Author}s. We also want to exclude \textsc{coAuthor} hooks over the same vertex.
-	
+We propose graph patterns to declare graph nesting operations and propose algorithmic optimizations as well as a specific physical model for efficient execution.
 	
 \begin{figure}[!t]
+  \caption{Vertex and Path summarization patterns for the query expressed in Example \ref{ex:nestingbib}. Vertex and edge grouping references are marked by a light blue circled node. As we can see, the vertex grouping reference depicts the same property expressed by edge grouping references.}
+  \label{fig:patterns}
 	\centering
 	\begin{minipage}[!t]{0.5\textwidth}
 		\centering
@@ -66,30 +67,35 @@ We study specific graph patterns and propose algorithmic optimizations and a spe
 		\subcaption{Path summarization pattern ($g_E$). Author$_{src}$ and Author$_{dst}$ are respectively edge grouping references $\gamma_E^{src}$ and $\gamma_E^{dst}$.}
 		\label{fig:pathPat}
 	\end{minipage}
-	\caption{Vertex and Path summarization patterns for the query expressed in Example \ref{ex:nestingbib}. Vertex and edge grouping references are marked by a light blue circled node. As we can see, the vertex grouping reference depicts the same property expressed by edge grouping references.}
-	\label{fig:patterns}
+
 \end{figure}
-	Figure \ref{fig:patterns} represents the desired vertex ($g_V$) and path ($g_E$) summarization patterns: the former will create a nested \textsc{Author}(2) vertex and the latter will create a \textsc{coAuthor} nested edge. Given that $g_V$ appears twice in $g_E$, we may also pre-istantiate the pattern $g_V$ by visting $g_E$ once. The two patterns have different key roles: while the vertex summarization retrieves all the papers that one author has published and nest them within one single matched author, the path summarizations return all the papers authored by two different authors and creates an edge between the two previously nested vertices. %This construction implies that a join between the two paths must be carried out. 
+
+
+\begin{em}
+  \textsc{Example}:
+	Figure \ref{fig:patterns} shows summarization patterns to describe the vertex ($g_V$) and path ($g_E$) nestings of our bibliographic network example: the former will create a nested \textsc{Author}(2) vertex and the latter will create a \textsc{coAuthor} nested edge. Given that $g_V$ appears twice in $g_E$, we may also pre-istantiate the pattern $g_V$ by visiting $g_E$ once. The two patterns have different key roles: while the vertex summarization retrieves all the papers that one author has published and nest them within one single matched author, the path summarizations return all the papers authored by two different authors and creates an edge between the two previously nested vertices. %This construction implies that a join between the two paths must be carried out.
 	
 	
-	This problem can be solved by visiting the graph only once; %by visiting the graph starting from the vertices:
-	if the current vertex is a \textsc{Paper}, traverse backwards all the \textsc{authorOf} edges, thus reaching all of its \textsc{Author}s, that are going to be \textsc{coAuthor} for at least the current paper. Instead of associating the nesting content at the end of the graph visiting process, I can incrementally define the subgraph to be nested by using a separated nesting index: by visiting the two distinct \textsc{Author} vertices adjacent to the current \textsc{Paper}, the latter one shall  be contained in both final \textsc{Author}(2) vertices, thus allowing the definition of a  \textsc{coAuthor} edge. %%The remaining types of vertices and edges %All the other vertices and edges 
+	We solve this problem by visiting the graph only once: %by visiting the graph starting from the vertices:
+	If the current vertex is a \textsc{Paper}, traverse backwards all the \textsc{authorOf} edges, thus reaching all of its \textsc{Author}s, that are going to be \textsc{coAuthor} for at least the current paper. Instead of associating the nesting content at the end of the graph visiting process, I can incrementally define the subgraph to be nested by using a separated nesting index: by visiting the two distinct \textsc{Author} vertices adjacent to the current \textsc{Paper}, the latter one shall be contained in both final \textsc{Author}(2) vertices, thus allowing the definition of a  \textsc{coAuthor} edge. %%The remaining types of vertices and edges %All the other vertices and edges
 	%%may be discarded. %as a starting point for the graph visiting process
 	By doing this, only the edges are visited twice, but the vertices are visited only once. Hereby, with these patterns we reach the optimal solution by visiting the graph only once.
 	
 	%This pattern comparison remarks that, in order to reduce the graph time visit, we must start from visiting the \texttt{Paper}, which is shared among the two distinct patterns, and then keep going with the graph visit by exploring the source and target vertices. 
-\end{example}
+\end{em}
 
 %There might be other possible patterns that can be optimized, but we're going to focus just on vertex and path summarization patterns where edge grouping references are connected to each other at a 2 edge step distance (Section \ref{sec:THOSPA}). We're also going to show how such optimizations can be detected beforehand by looking at the pattern representation.
 
-The fulfilment of the former scenario is achieved by this paper via the following three contributions:
+
+In the remainder of this paper, we will show that our algorithmic approaches reduce the time complexity of the visiting and nesting problem. Further on, our optimized data structure requires less indexing time than our competitors. This is achieved by the following contributions:
 
 \begin{itemize}
-	\item We implement the aforementioned solution into a nested graph data model, where the logical model differs from the physical one.
-	\item \textbf{Graph Nesting Operator} (Section \ref{sec:nestingdef}); we provide a general definition of the nesting operator which combines the path  with the vertex summarization approaches to nesting graphs.
-	\item \textsc{{Two HOp Separated Patterns}} \textbf{(THoSP) algorithm for a specific graph nesting task} (Section \ref{sec:THOSPA}): we
-	compare it to its implementation
-	over both graph  (SPARQL, Cypher), relational (SQL) and document oriented (AQL) query languages. The results of such experiments shows that the sum of both indexing and query evaluation time of our proposed solution outperforms by at least one order of magnitude the aforementioned solutions evaluated on such databases with their respective query languages (Section \ref{sec:nestexpeval}). Consequently, our data model also proved to be curcial in providing an enhanced implementation of the specific graph nesting task.
+	\item We propose a \textbf{Nested Graph Data Model} that is capable to implement the aforementioned solution of our example scenario. We use an optimized physical model that differs from the logical one (Section \ref{sec:model}).
+
+	\item We provide  a general definition of a \textbf{Graph Nesting Operator} which combines vertex and path summarization approaches to nesting graphs (Section \ref{sec:nestingdef}).
+	\item We introduce the  \textbf{\textsc{{Two HOp Separated Patterns}} (THoSP)} algorithm for graph nesting (Section \ref{sec:THOSPA}). We present the results of an experimental evaluation that compare it to alternative implementations using graph (SPARQL, Cypher), relational (SQL) and document oriented (AQL) query languages. The results show that our solution outperforms all competitors by at least one order of magnitude with regard to the sum of both indexing and query evaluation time (Section \ref{sec:nestexpeval}).
+
+%  the aforementioned solutions evaluated on such databases with their respective query languages . Consequently, our data model also proved to be crucial in providing an enhanced implementation of the specific graph nesting task.
 	%\item A general strategy on how to extend the THoSP algorithm for patterns having vertex and edge grouping references is provided (Section \ref{sec:optimizableClass}).
 	%%\item By extending the concept of binary predicates into edges, Edge Joins are introduced as a preliminary step towards the definition of Graph Nesting (Chapter \ref{cha:nesting}).
 \end{itemize}
