@@ -7,8 +7,6 @@ Despite an increasing number of applications, a general operator that aggregates
 A respective operator shall not only create a new graph of \textit{nested vertices} and \textit{nested edges}, each containing subgraphs of the original input graph, but also preserve the vertices and edges that are not affected by the actual operation. Further on, the operator must ensure that the nested elements can be freely unnested such that the original graph may be obtained back again. Vertices or edges of the original graph will be called \textit{members} of a nested vertex or edge, if they appear in its underlying subgraph.
 
 \begin{figure}[!t]
-  \caption{Nesting a bibliographic network: the provenance information is nested within the original node. }
-  \label{fig:bibex2}
   \begin{minipage}[!t]{0.5\textwidth}
     \centering
     \includegraphics[width=.8\textwidth]{images/nesting/patterns/04bibliography}
@@ -23,10 +21,12 @@ A respective operator shall not only create a new graph of \textit{nested vertic
     \subcaption{Nested result: given two \texttt{Author}s $\color{orange}a$ and $\color{orange}a'$, there exist two  \texttt{coauthorship} edges, $\color{blue}a\to a'$ and $\color{blue}a'\to a$ if and only if they share some authored paper contained respectively in $\epsilon({\color{blue}a\to a'})$ and $\epsilon({\color{blue}a'\to a})$. Moreover, each author $\color{orange}a$ is associated to the set of his authored papers $\epsilon({\color{orange}a})$. }
     \label{fig:outputnested}
   \end{minipage}
+\caption{Nesting a bibliographic network: the provenance information is nested within the original node. }
+\label{fig:bibex2}
 \end{figure}
 
 \begin{em}
- \textsc{Example}: Given a graph (Figure \ref{fig:inputbibex2}) representing a bibliographic network with (at least) \textsc{Author}s and \textsc{Paper}s as vertices and \textsc{authorOf} relationships as edges which connect authors to papers they have authored . With the graph nesting operator, we want to ``roll up'' the network into a coauthorship network (Figure \ref{fig:outputnested}). Here each \textsc{Author} will be connected by a \textsc{coAuthor} edge with another \textsc{Author}(2) if they have published at least one paper in common.
+ \textsc{Example}:  Figure \ref{fig:inputbibex2} represents a bibliographic network with (at least) \textsc{Author}s and \textsc{Paper}s as vertices and \textsc{authorOf} relationships as edges which connect authors to papers they have authored . With the graph nesting operator, we want to ``roll up'' the network into a coauthorship network (Figure \ref{fig:outputnested}). Here each \textsc{Author} will be connected by a \textsc{coAuthor} edge with another \textsc{Author}(2) if they have published at least one paper in common.
  More precisely, each resulting \textsc{Author}(2) vertex shall contain authored papers as vertices and each \textsc{coAuthor} edge all coauthored papers with regard to source and target \textsc{Author}s. However, we want to exclude \textsc{coAuthor} hooks over the same vertex.
 \end{em}
 
@@ -53,8 +53,6 @@ This paper shows that such query language limitations can be reduced by using a 
 We propose graph patterns to declare graph nesting operations and propose algorithmic optimizations as well as a specific physical model for efficient execution.
 	
 \begin{figure}[!t]
-  \caption{Vertex and Path summarization patterns for the query expressed in Example \ref{ex:nestingbib}. Vertex and edge grouping references are marked by a light blue circled node. As we can see, the vertex grouping reference depicts the same property expressed by edge grouping references.}
-  \label{fig:patterns}
 	\centering
 	\begin{minipage}[!t]{0.5\textwidth}
 		\centering
@@ -67,12 +65,13 @@ We propose graph patterns to declare graph nesting operations and propose algori
 		\subcaption{Path summarization pattern ($g_E$). Author$_{src}$ and Author$_{dst}$ are respectively edge grouping references $\gamma_E^{src}$ and $\gamma_E^{dst}$.}
 		\label{fig:pathPat}
 	\end{minipage}
-
+  \caption{Vertex and Path summarization patterns for the query expressed in the running example. Vertex and edge grouping references are marked by a light blue circled node. As we can see, the vertex grouping reference depicts the same property expressed by edge grouping references.}
+\label{fig:patterns}
 \end{figure}
 
 
 \begin{em}
-  \textsc{Example}:
+  \textsc{Example (cont'd)}:
 	Figure \ref{fig:patterns} shows summarization patterns to describe the vertex ($g_V$) and path ($g_E$) nestings of our bibliographic network example: the former will create a nested \textsc{Author}(2) vertex and the latter will create a \textsc{coAuthor} nested edge. Given that $g_V$ appears twice in $g_E$, we may also pre-istantiate the pattern $g_V$ by visiting $g_E$ once. The two patterns have different key roles: while the vertex summarization retrieves all the papers that one author has published and nest them within one single matched author, the path summarizations return all the papers authored by two different authors and creates an edge between the two previously nested vertices. %This construction implies that a join between the two paths must be carried out.
 	
 	

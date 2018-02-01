@@ -2,17 +2,16 @@
 \begin{lstlisting}[caption={Graph Nesting in PostgreSQL's SQL dialect. Two distinct tables are created for both vertices and edges. },language=SQL,frameround=fttt,frame=trBL,mathescape=true,label=SQLNesting]
 -- Nesting Vertices
 SELECT distinct T.sourceId as src, 
-array_agg(distinct T.dst) as papers 
+       array_agg(distinct T.dst) as papers 
 FROM edges-$i$ as T 
 GROUP BY T.sourceId;
-
 -- Nesting Edges
 SELECT distinct T.sourceId as src, 
-T1.sourceId as dst, 
-array_agg(distinct T1.targetId) as papers
+       T1.sourceId as dst, 
+       array_agg(distinct T1.targetId) as papers
 FROM edges-$i$ as T, edges-$i$ as T1 
-WHERE     T.targetId = T1.targetId 
-AND T.sourceId <> T1.sourceId 
+WHERE T.targetId = T1.targetId 
+AND   T.sourceId <> T1.sourceId 
 GROUP BY T.sourceId, T1.sourceId;
 \end{lstlisting}
 
@@ -48,15 +47,13 @@ CONSTRUCT {
 FOR b IN authorOf 
 COLLECT au = b._from INTO groups = [b._to] 
 RETURN {"author" : au,  "papers": groups }
-
 -- Nesting edges
 FOR x IN authorOf 
 FOR y IN authorOf 
 FILTER x._to==y._to && x._from!=y._from 
 COLLECT src = x._from, dst = y._from 
 INTO groups = [ x._to ] 
-RETURN {"src": src, "dst": dst, 
-"contain": groups}
+RETURN {"src": src, "dst": dst, "contain": groups}
 \end{lstlisting}
 
 \begin{lstlisting}[caption={Graph Nesting in Neo4J using Cypher as a Query Language. Please note that, even in this case, is it not possible to return one single nested graph immediately, and hence the nested vertices must be created before creating the nested edges.},language=Cypher,frameround=fttt,frame=trBL,mathescape=true,label=Neo4JQuery]
