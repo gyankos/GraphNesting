@@ -45,7 +45,7 @@ where $dt$ is an arbitrary bijection associating a  $n$-tuple in $\mathbb{N}^n$ 
 	\end{split}\]
 	The vertices and edges in $G_{(c,i)}$ that appear neither in a nested vertex nor in a nested edge may be also returned if $\textbf{keep}$ is set to \texttt{true}. As a result, the nested graph database is updated by using the nested graph classifier and user defined functions as follows:
 	\[\begin{split}
-	\Big\langle&\VS\cup \iota_G(g_V(G_{(c,i)}))\cup\{\overline{c},i)\}, \ES\cup \iota_G(g_E(G_{(c,i)})),\\
+	\Big\langle&\VS\cup \iota_G(g_V(G_{(c,i)}))\cup\{(\overline{c},i)\}, \ES\cup \iota_G(g_E(G_{(c,i)})),\\
 	& \lambda\oplus \bigoplus_{G_C\in g_E(G_{(c,i)})}\iota_G(G_C)\mapsto \mu_E(G_C),\\
 	& \ell\oplus\bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto\texttt{fst}\;\mu_\Omega(G_C),\\
 	& \omega\oplus\bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto\texttt{snd}\;\mu_\Omega(G_C),\\
@@ -54,21 +54,24 @@ where $dt$ is an arbitrary bijection associating a  $n$-tuple in $\mathbb{N}^n$ 
 	& \epsilon\oplus \bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto E_C\Big\rangle\\
 	& \;\; \oplus (\overline{c},i)\mapsto\{e\in \epsilon(c,i) | E(e)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_E(G_{(c,i)}))\Big\rangle
 	\end{split}\]
-	where $f\oplus g$ denotes the extension of the (finite) function $f$ with another (finite) function $g$.
+	where $f\oplus g$ denotes the extension of the (finite) function $f$ with another (finite) function $g$. $a\mapsto b$ defines a finite function, which domain contains only $a$.
 \end{definition}
 
 
 \section{Two HOp Separated Patterns Algorithm}
 \label{sec:THOSPA}
 In order to solve our specific graph nesting problem as presented in the introduction, we want to evaluate $\eta$ when the non-traversed vertices and edges are not preserved ($\textbf{keep}=\texttt{false}$), where $g_V$ and $g_E$ are the ones represented in Figure \ref{fig:bibex2} and the UDFs associate to each nested vertex the authors' informations and creates nested edges with \texttt{coAuthorship} label and no associated tuple. In particular:
-\[\mu_E(G_C)=\Braket{f_C(\gamma_E^{src}),f_C(\gamma_E^{dst})}\quad s.t.\quad g_E\xrightarrow{f_C}G_C\]
+\[\begin{split}
+\mu_E(G_C)&=\Braket{(\overline{c},\texttt{snd}f_C(\gamma_E^{src})),(\overline{c},\texttt{snd}f_C(\gamma_E^{dst}))}\; s.t.\\
+&\; g_E\xrightarrow{f_C}G_C,\quad \overline{c}=\max\{c|(c,i)\in\mathcal{V}\cup\mathcal{E}\}+1\\
+\end{split}\]
 \[\mu_\Omega(G_C)=\begin{cases}
 ([\mstr{coAuthor}],\;\emptyset) & G_C \in g_E(G_{(c,i)})\\
 (\ell(f_C(\gamma_V))),\;\omega(f_C(\gamma_V))) & G_C \in g_V(G_{(c,i)})\\
 \end{cases}\]
 
 
-The \textbf{input data  represnetation} for the THoSP algorithm is presented in Figure \ref{nestedGraphVertex}, which represents an  extension of the usual graph adjacency lists. In addition to the information pertaining to both the ingoing and outgoing edges, each vertex $o$ has an associated \texttt{header} containing its id ($o$), its associated hash and the offset pointing to other serialzied fields, such as the information of the  nested vertices and edges a set of labels ($\ell(o)$), and eventually its property-value representation ($\omega(o)$). Last, for each edge we store its id and hash value, as well as the hash and the id of the adjacent vertex. Hash values are used within the proposed THoSP algorithm to store the correspondences with the graph patterns in Figure \ref{fig:patterns}; therefore, each $\ell(o)$ is associated to a distinct hash value. We also suppose that the input graph data to be serialized does not represent an exact adjacency list: for this reason, the graph is firstly created in primary memory without the offset information, and then serialized into secondary memory. This first preprocessing step provides the loading and indexing step of our algorithm, where no further ancillary indexing data structures are serialized.
+The \textbf{input data  represnetation} for the THoSP algorithm is presented in Figure \ref{nestedGraphVertex}, which represents an  extension of the usual graph adjacency lists. In addition to the information pertaining to both the ingoing and outgoing edges, each vertex $o$ has an associated \texttt{header} containing its id ($o$), its associated hash and the offset pointing to other serialzied fields, such as the information of the  nested vertices and edges a set of labels ($\ell(o)$), and eventually its property-value representation ($\omega(o)$). Last, for each edge we store its id and hash value, as well as the hash and the id of the adjacent vertex. Hash values are used within the proposed THoSP algorithm to store the correspondences with the graph patterns in Figure \ref{fig:patterns}; therefore, each $h(o)\approx \ell(o)$ is associated to a distinct hash value. We also suppose that the input graph data to be serialized does not represent an exact adjacency list: for this reason, the graph is firstly created in primary memory without the offset information, and then serialized into secondary memory. This first preprocessing step provides the loading and indexing step of our algorithm, where no further ancillary indexing data structures are serialized.
 
 
 
@@ -110,33 +113,29 @@ The \textbf{input data  represnetation} for the THoSP algorithm is presented in 
 			\algrenewcommand\algorithmicindent{1em}
 			\begin{algorithmic}[1]
 				\Procedure{PartitionHashJoin}{$(g_V,\gamma_V),({g_E},\gamma_E^{src},\gamma_E^{dst});\; \nested$}
-				\State \textsc{File} $AdjFile$ = \textsc{Open\_MemoryMap}($\nested$);
+				\State \textsc{File} $AdjFile$ = \textsc{Open\_MemoryMap}($\nested$);\label{openMMAP}
 				\State \textsc{File} $Nesting$ = \textsc{Open}(\textbf{new});
 				\State \textsc{Adjacency} $toSerialize$ = \par \textbf{new} \textsc{Map<Vertex,<Edge,Vertex>>}();
 				\State {$\alpha:=g_V\cap {g_E}\backslash(\gamma_V\cup\gamma_E^{src}\cup\gamma_E^{dst})$;}\label{restriction}
 				\For{\textbf{each vertex} $(c,v)$ in $AdjFile$}\label{firstJoin}
 				\If{$(c,v)\vDash\alpha$}\label{vdashalpha}
 				\For {\textbf{each} $ ((c',u),e,(c,v))\vDash \gamma_V$} \label{substantiallyIs}
-				\State{$u':=dt(1,dt(c',u))$} 
-				\State{$NestingIndex$.write($\Braket{u',u}$)} 
+				\State{$u':=(\overline{c},u)$} 
+				\State{$NestingIndex$.write($\Braket{u',(c',u)}$)} 
 				\State{$NestingIndex$.write($\Braket{u',e}$)}
-				\State{$NestingIndex$.write($\Braket{u',v}$)}
+				\State{$NestingIndex$.write($\Braket{u',(c,v)}$)}
 				\For {\textbf{each} $ ((c'',w),e,(c,v))\vDash \gamma_V$} \label{substantiallyIs2}
-				\If{$ ((c',u),e,(c,v),e',w)\vDash\gamma_E$}\label{thereIsEdge}
-				\State{$w':=dt(1,dt(0,w))$} 
-				\State{$\varepsilon:=dt(1,dt(u,w))$}
-				\State{$NestingIndex$.write($\Braket{\varepsilon,u}$)}
-				\State{$NestingIndex$.write($\Braket{\varepsilon,e}$)}
-				\State{$NestingIndex$.write($\Braket{\varepsilon,w}$)}
-				\State{$NestingIndex$.write($\Braket{\varepsilon,e'}$)}
-				\State{$NestingIndex$.write($\Braket{\varepsilon,v}$)} 
+				\If{$ ((c',u),e,(c,v),e',(c'',w))\vDash\gamma_E$}\label{thereIsEdge}
+				\State{$w':=(\overline{c},w)$} 
+				\State{$\varepsilon:=(\overline{c},dt(u,w))$}
+				\State{$NestingIndex$.write($\Braket{\varepsilon,u}$,$\Braket{\varepsilon,e}$,$\Braket{\varepsilon,w}$,$\Braket{\varepsilon,e'}$,$\Braket{\varepsilon,v}$)} 
 				\State{$toSerialize$.put($u'$,$\Braket{\varepsilon,w'}$)}
 				\EndIf
 				\EndFor
 				\EndFor
 				\EndIf
 				\EndFor
-				$AdjFile$.serialize($toSerialize$);
+				\State $AdjFile$.serialize($toSerialize$);\label{serialize}
 				
 				\EndProcedure
 			\end{algorithmic}
@@ -146,13 +145,13 @@ The \textbf{input data  represnetation} for the THoSP algorithm is presented in 
 
 Algorithm \ref{alg:THoSPAlgorithm} provides the desired solution as sketched in the paper's introduction: we focus on intersecting a specific class of graph visiting patterns that can be possibly optimized as in the former solution. For each vertex pattern we're going to elect one vertex as a \textbf{vertex grouping reference} ($\gamma_V$), in which we're going to nest the matched vertices and edges  during the graph traversal. Similarly, each edge path summarization pattern is going to elect a source ($\gamma_E^{src}$) and a target ($\gamma_E^{dst}$) vertex, which are going to be called \textbf{edge grouping references}: such vertces must both coincide with the vertex grouping references, so that the newly generated edge will have as sources and target the previously vertex-nested elements. In particular, this paper focuses on $g_E$ where $\gamma_E^{src}$  and $\gamma_E^{dst}$ are separated by a two-edge (hop) distance.
 %provides the desired implementation of the THoSP algorithm using the outcome of the previous preprocessing. We first restrict $\alpha$ to one single vertex and two edges 
- We must first identify a sub-pattern $\alpha$ (Line \ref{restriction}) that is going to be visited only once within the graph (Line \ref{vdashalpha}), after which either the vertex or the path summarization pattern can be visited in their entirety. We also perform some restrictions over these patterns enhancing such optimizations: for each vertex $(c,v)$ matched by $\alpha$ (Line \ref{vdashalpha}) we know that we must (possibly) visit all the edges going from $(c,v)$ towards the vertices $\gamma_E^{src}$ and $\gamma_E^{dst}$, that substantially are $\gamma_V$.  Therefore, having an edge as a constraint in $\alpha$ linking $v$ towards $\gamma_E^{src}$ or $\gamma_E^{dst}$ both in $g_E$ and $g_V$ can reduce all the possible computations to the actual edges traversed from $(c,v)$ meeting the grouping references (Line \ref{thereIsEdge}). Therefore, we know whether we finished visiting our patterns after exhaustively matching all the elements within the pattern.
+ After opening the previously-serialized graph operand through memory mapping (Line \ref{openMMAP}), we must first identify a sub-pattern $\alpha$ (Line \ref{restriction}) that is going to be visited only once within the graph (Line \ref{vdashalpha}), after which either the vertex or the path summarization pattern can be visited in their entirety. We also perform some restrictions over these patterns enhancing such optimizations: for each vertex $(c,v)$ matched by $\alpha$ (Line \ref{vdashalpha}) we know that we must (possibly) visit all the edges going from $(c,v)$ towards the vertices $\gamma_E^{src}$ and $\gamma_E^{dst}$, that substantially are $\gamma_V$.  Therefore, having an edge as a constraint in $\alpha$ linking $v$ towards $\gamma_E^{src}$ or $\gamma_E^{dst}$ both in $g_E$ and $g_V$ can reduce all the possible computations to the actual edges traversed from $(c,v)$ meeting the grouping references (Line \ref{thereIsEdge}). Therefore, we know whether we finished visiting our patterns after exhaustively matching all the elements within the pattern.
 As a consequence, a ``path join'' is performed between the two nested patterns (Line \ref{firstJoin} with \ref{substantiallyIs2}): this is evident from the two vertex nested for loops appearing in the algorithm.  %%We can now reduce the cost to check when we finished traversing all the elements reaching  $\gamma_E^{src}$ and $\gamma_E^{dst}$ from $v$  after a linear scan of all the ingoing or outgoing nodes. %Hereby, the most simple graph nesting example is where $v$ is the middle node between a path between $\gamma_E^{src}$ and $\gamma_E^{dst}$ vertices. 
 
 %Even in this case, the main memory is used to create the graph (represented as an adjacency list) that is going to be later on serialized using the same data structure used for providing the result for graph joins,  We can easily observe that this approach may slow down the whole algorithm, that can be quickened by directly storing the graph representation in secondary memory by using linear hashing. 
 
 
-Our physical data model differentiates the \textit{input data  represnetation} from the \textbf{query result}. 
+Our physical data model differentiates the \textit{input data  represnetation} from the \textbf{query result} (Line \ref{serialize}). 
 We suppose that the latter is only used by the user to read the outcome of the nesting process as in other  query languages (such as SPARQL and SQL) and does not have to
 produce ``materialized views''. Therefore, the result of the graph query itself can postpone the creation of a complete ``materialized view'', which will later use the same representation of the input data by using both the id information and the application of the User Defined Functions. In particular, the dovetailing function is used to associate both the nested vertices, $u'$ and $w'$, and the nested edge $\varepsilon$ to their grouping references, thus allowing to easily go back to the original grouping references by using the inverse function of $dt$, thus allowing the application of the user defined functions.
 
