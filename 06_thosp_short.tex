@@ -120,13 +120,13 @@ The \textbf{input data  represnetation} for the THoSP algorithm is presented in 
 				\For{\textbf{each vertex} $(c,v)$ in $AdjFile$}\label{firstJoin}
 				\If{$(c,v)\vDash\alpha$}\label{vdashalpha}
 				\For {\textbf{each} $ ((c',u),e,(c,v))\vDash \gamma_V$} \label{substantiallyIs}
-				\State{$u':=(\overline{c},u)$} 
+				\State{$u':=(\overline{c},dt(u))$} 
 				\State{$NestingIndex$.write($\Braket{u',(c',u)}$)} 
 				\State{$NestingIndex$.write($\Braket{u',e}$)}
 				\State{$NestingIndex$.write($\Braket{u',(c,v)}$)}
 				\For {\textbf{each} $ ((c'',w),e,(c,v))\vDash \gamma_V$} \label{substantiallyIs2}
 				\If{$ ((c',u),e,(c,v),e',(c'',w))\vDash\gamma_E$}\label{thereIsEdge}
-				\State{$w':=(\overline{c},w)$} 
+				\State{$w':=(\overline{c},dt(w))$} 
 				\State{$\varepsilon:=(\overline{c},dt(u,w))$}
 				\State{$NestingIndex$.write($\Braket{\varepsilon,u}$,$\Braket{\varepsilon,e}$,$\Braket{\varepsilon,w}$,$\Braket{\varepsilon,e'}$,$\Braket{\varepsilon,v}$)} 
 				\State{$toSerialize$.put($u'$,$\Braket{\varepsilon,w'}$)}
