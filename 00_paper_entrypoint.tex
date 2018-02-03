@@ -2,16 +2,8 @@
 
 
 \begin{abstract}
-Despite the existance of valuable graph operations creating new
-vertices and edges from existing graphs, such as graph
-transformations and graph summarization, an operator allowing
-both to summarize a subgraph content into one single vertex or edge
-and to keep the information of the contained vertices and edges is
-missing. This deficiency is not only due to the operators’ definitions,
-but has to be sought on the current graph data model definition not
-supporting nestings for overlapping subgraphs. In this paper we
-propose a novel graph data structure for nested property graphs.
-Based thereon, we also propose a graph nesting operator and a specific algorithm, THoSP, outperforming the solution propoed by graph (Cypher, SPARQL) relational (SQL) and document oriented (ArangoDB) databases.
+  Despite the growing popularity of techniques related to graph summarization, a general operator for the flexible nesting of graphs is still missing.
+  We propose a novel nested graph data model and a powerful graph nesting operator. In contrast to existing approaches, our approach is able to summarize vertices and paths among vertex groups within a single query. Further on, our model supports partial nestings under the preservation of original graph elements as well as the full recovery of the original graph. We propose an efficient nesting algorithm (THoSP) that is able to perform vertex and path nestings in a single visit of the input graph. Results of an experimental evaluation show that THoSP outperforms equivalent implementations based on graph (Cypher, SPARQL), relational (SQL) and document oriented (ArangoDB) databases.
 \end{abstract}
 
 \begin{document}
