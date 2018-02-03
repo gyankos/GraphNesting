@@ -39,7 +39,7 @@ where $dt$ is an arbitrary bijection associating a  $n$-tuple in $\mathbb{N}^n$ 
 
 \begin{definition}[Graph Nesting]
 	Given a nested graph $G_{(c,i)}$ within a nested graph database $G$, an object user defined function $\mu_\Omega$, an edge user defined function $\mu_E$ and an indexing function $\iota_G$,
-	the graph nesting operator $\eta_{g_V,g_E,\mu_\Omega,\mu_E,\iota_G}^{\textbf{keep}}$ converts each subgraph in $G_C\in g_V(G_{(c,i)})$ (and $G_C\in g_E(G_{(c,i)})$) into a nested vertex (and nested edge) $\iota_G(G_C)$ and adds them in a nested vertex $(\overline{c},i):=(\max\{c|(c,i)\in(V\cup E)\}+1,i)$, to which the following nested graph is associated:
+	the graph nesting operator $\eta_{g_V,g_E,\mu_\Omega,\mu_E,\iota_G}^{\textbf{keep}}$ converts each subgraph in $G_C\in g_V(G_{(c,i)})$ (and $G_C\in g_E(G_{(c,i)})$) into a nested vertex (and nested edge) $\iota_G(G_C)$ and adds them in a nested vertex $(\overline{c},i):=(\max\{c|(c,i)\in(\mathcal{V}\cup \mathcal{E})\}+1,i)$, to which the following nested graph is associated:
 	\[\begin{split}
 	\eta&{}_{g_V,g_E,\mu_\Omega,\mu_E,\iota_G}^{\textbf{keep}}(G_{(c,i)})=G_{(\overline{c},i)}\\
 	\end{split}\]
