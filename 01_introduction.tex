@@ -46,7 +46,7 @@ Currently, approaches to path summarization can only be found within graph query
 %This problem is also reflected by 
 These languages also support vertex summarization, but no combination of both approaches in a single step.
 %This constraint thwarts the advantages of performing vertex and path summarizations concurrently:
-Cypher, the query language of the productive graph database Neo4j, can perform distinct aggregations only within distinct \texttt{MATCH} clauses. SPARQL 1.1, the standard query language of the resource description framework (RDF), requires to combine vertex and path aggregation with a \texttt{UNION} operator, i.e., the same input graph must be visited twice.
+Cypher, the query language of the productive graph database Neo4j, can perform distinct aggregations only within distinct \texttt{MATCH} clauses. SPARQL, the standard query language of the resource description framework (RDF), requires to combine vertex and path aggregation with a \texttt{UNION} operator, i.e., the same input graph must be visited twice.
 %As a result, the query plan optimizers of such query languages do not allow to avoid to visit one same graph more than once whether possible.
 
 This paper shows that such query language limitations can be reduced by using a graph nesting operator, which performs both vertex and path summarization queries concurrently with only a single visit of the input graph. %The following example provides an example of how such query can be formulated and performed. --> Old example
