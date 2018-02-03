@@ -39,20 +39,20 @@ where $dt$ is an arbitrary bijection associating a  $n$-tuple in $\mathbb{N}^n$ 
 
 \begin{definition}[Graph Nesting]
 	Given a nested graph $G_{(c,i)}$ within a nested graph database $G$, an object user defined function $\mu_\Omega$, an edge user defined function $\mu_E$ and an indexing function $\iota_G$,
-	the graph nesting operator $\eta_{g_V,g_E,\mu_\Omega,\mu_E,\iota_G}^{\textbf{keep}}$ converts each subgraph in $G_C\in g_V(G_{(c,i)})$ (and $G_C\in g_E(G_{(c,i)})$) into a nested vertex (and nested edge) $\iota_G(G_C)$ and adds them in the resulting nested graph:
+	the graph nesting operator $\eta_{g_V,g_E,\mu_\Omega,\mu_E,\iota_G}^{\textbf{keep}}$ converts each subgraph in $G_C\in g_V(G_{(c,i)})$ (and $G_C\in g_E(G_{(c,i)})$) into a nested vertex (and nested edge) $\iota_G(G_C)$ and adds them in a nested vertex $(\overline{c},i):=(\max\{c|(c,i)\in(V\cup E)\}+1,i)$, to which the following nested graph is associated:
 	\[\begin{split}
-	\eta&{}_{g_V,g_E,\mu_\Omega,\mu_E,\iota_G}^{\textbf{keep}}(G_{(c,i)})=\\
-	&\big\langle \{v\in \nu(c,i) | V(v)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_V(G_{(c,i)})),\\
-	&\;\{e\in \epsilon(c,i) | E(e)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_E(G_{(c,i)}))\big\rangle\\
+	\eta&{}_{g_V,g_E,\mu_\Omega,\mu_E,\iota_G}^{\textbf{keep}}(G_{(c,i)})=G_{(\overline{c},i)}\\
 	\end{split}\]
 	The vertices and edges in $G_{(c,i)}$ that appear neither in a nested vertex nor in a nested edge may be also returned if $\textbf{keep}$ is set to \texttt{true}. As a result, the nested graph database is updated by using the nested graph classifier and user defined functions as follows:
 	\[\begin{split}
-	\Big\langle&\VS\cup \iota_G(g_V(G_{(c,i)})),\;\ES\cup \iota_G(g_E(G_{(c,i)})),\\
+	\Big\langle&\VS\cup \iota_G(g_V(G_{(c,i)}))\cup\{\overline{c},i)\}, \ES\cup \iota_G(g_E(G_{(c,i)})),\\
 	& \lambda\oplus \bigoplus_{G_C\in g_E(G_{(c,i)})}\iota_G(G_C)\mapsto \mu_E(G_C),\\
 	& \ell\oplus\bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto\texttt{fst}\;\mu_\Omega(G_C),\\
 	& \omega\oplus\bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto\texttt{snd}\;\mu_\Omega(G_C),\\
-	& \nu\oplus \bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto V_C,\\
+	& \nu\oplus \bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto V_C\\
+	& \;\; \oplus (\overline{c},i)\mapsto \{v\in \nu(c,i) | V(v)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_V(G_{(c,i)})) \\
 	& \epsilon\oplus \bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto E_C\Big\rangle\\
+	& \;\; \oplus (\overline{c},i)\mapsto\{e\in \epsilon(c,i) | E(e)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_E(G_{(c,i)}))\Big\rangle
 	\end{split}\]
 	where $f\oplus g$ denotes the extension of the (finite) function $f$ with another (finite) function $g$.
 \end{definition}
