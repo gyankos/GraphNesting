@@ -45,14 +45,14 @@ where $dt$ is an arbitrary bijection associating a  $n$-tuple in $\mathbb{N}^n$ 
 	\end{split}\]
 	The vertices and edges in $G_{(c,i)}$ that appear neither in a nested vertex nor in a nested edge may be also returned if $\textbf{keep}$ is set to \texttt{true}. As a result, the nested graph database is updated by using the nested graph classifier and user defined functions as follows:
 	\[\begin{split}
-	\Big\langle&\VS\cup \iota_G(g_V(G_{(c,i)}))\cup\{(\overline{c},i)\}, \ES\cup \iota_G(g_E(G_{(c,i)})),\\
+	\Big\langle&\VS\cup \iota_G(g_V(G_{(c,i)}))\cup\{(\overline{c},i)\},\quad \ES\cup \iota_G(g_E(G_{(c,i)})),\\
 	& \lambda\oplus \bigoplus_{G_C\in g_E(G_{(c,i)})}\iota_G(G_C)\mapsto \mu_E(G_C),\\
 	& \ell\oplus\bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto\texttt{fst}\;\mu_\Omega(G_C),\\
 	& \omega\oplus\bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto\texttt{snd}\;\mu_\Omega(G_C),\\
 	& \nu\oplus \bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto V_C\\
-	& \;\; \oplus (\overline{c},i)\mapsto \{v\in \nu(c,i) | V(v)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_V(G_{(c,i)})) \\
+	& \;\; \oplus (\overline{c},i)\mapsto \{v\in \nu(c,i) | V(v)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_V(G_{(c,i)})), \\
 	& \epsilon\oplus \bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto E_C\Big\rangle\\
-	& \;\; \oplus (\overline{c},i)\mapsto\{e\in \epsilon(c,i) | E(e)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_E(G_{(c,i)}))\Big\rangle
+	& \;\; \oplus (\overline{c},i)\mapsto\{e\in \epsilon(c,i) | E(e)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_E(G_{(c,i)}))\Big\rangle\\
 	\end{split}\]
 	where $f\oplus g$ denotes the extension of the (finite) function $f$ with another (finite) function $g$. $a\mapsto b$ defines a finite function, which domain contains only $a$.
 \end{definition}
