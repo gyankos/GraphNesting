@@ -53,15 +53,15 @@
 		every entity name/.style={every property/.try, align=center}
 	}
 	
-	\begin{tikzpicture}[every node/.style={font=\ttfamily}, node distance=0.5in]
+	\begin{tikzpicture}[every node/.style={font=\ttfamily\Large}, node distance=0.5in]
 	
-	\matrix [entity=Paper,fill=green!10,label={above right:3}] at (-2,-3) (s1) {
+	\matrix [entity=Paper,fill=green!10,label={above right:3}] at (-2,-4) (s1) {
 		\entitynamenode
 		\properties{
 			title : On Joining Graphs
 		}
 	};
-	\matrix [entity=Paper,fill=green!10,label={above right:4}] at (5,-3) (s3) {
+	\matrix [entity=Paper,fill=green!10,label={above right:4}] at (5,-4) (s3) {
 		\entitynamenode
 		\properties{
 			title : Object Databases
@@ -71,7 +71,7 @@
 	\node[inner sep=25pt,rounded corners,draw=blue!80,fit=(s3),label=above right :{$\epsilon({\color{blue}\texttt{0}\to\texttt{1}}),\epsilon({\color{blue}\texttt{1}\to\texttt{0}})$}] (12c){
 	};
 	
-	\matrix [entity=Paper,fill=green!10,label={above right:5}] at (12,-3) (s2) {
+	\matrix [entity=Paper,fill=green!10,label={above right:5}] at (12,-4) (s2) {
 		\entitynamenode
 		\properties{
 			title : On Nesting Graphs
@@ -90,6 +90,8 @@
 	};
 	\draw[color=orange!80] (a1.south) -- (s1c.north west);
 	\draw[color=orange!80] (a1.south) -- (s1c.north east);
+	
+	\path[top color=orange!50, bottom color=orange!10,opacity=0.2] (a1.south) -- (s1c.north west) -- (s1c.north east) -- (a1.south);
 	
 	\node[inner sep=25pt,rounded corners,draw=blue!80,fit=(s1),
 	label=above  :{$\epsilon({\color{blue}\texttt{0}\to\texttt{2}}),\epsilon({\color{blue}\texttt{2}\to\texttt{0}})\qquad \qquad\qquad\qquad\qquad $ }
@@ -118,15 +120,16 @@
 			surname :  Norman
 		}
 	};
-	\draw[color=orange!80] (a3.south) -- (c22.north);
-	\draw[color=orange!80] (a3.south) -- (c22.north east);
+	\draw[color=orange!80] (a3.south west) -- (c22.north);
+	\draw[color=orange!80] (a3.south west) -- (c22.north east);
+	\path[top color=orange!50, bottom color=orange!10,opacity=0.2] (a3.south west) -- (c22.north) -- (c22.north east) -- (a3.south west);
 	
 	
-	\draw[latex-latex] (a1.south) edge [bend right] node  [elabel,sloped] (c02) {\color{blue}coauthorship} (a3.south west) ;
+	\draw[latex-latex] (a1.north) edge [bend left] node  [elabel,sloped] (c02) {\color{blue}coauthorship} (a3.north west) ;
 	\draw[color=blue!80] (c02.south) -- (02c.north);
 	\draw[color=blue!80] (c02.south) -- (02c.north east);
 	
-	\draw[latex-latex] (a3.south east) edge [bend right] node [elabel,sloped] (c21) {\color{blue}coauthorship} (a2.south) ;
+	\draw[latex-latex] (a3.north east) edge [bend left] node [elabel,sloped] (c21) {\color{blue}coauthorship} (a2.north) ;
 	\draw[color=blue!80] (c21.south) -- (12c.north);
 	\draw[color=blue!80] (c21.south) -- (12c.north east);
 	
@@ -135,8 +138,10 @@
 	};
 	
 	
-	\draw[color=orange!80] (a2.south) -- ($ (c24.north east) - (1,0) $);
-	\draw[color=orange!80] (a2.south) -- (c24.north east);
+	\draw[color=orange!80] (a2.south east) -- ($ (c24.north east) - (1,0) $);
+	\draw[color=orange!80] (a2.south east) -- (c24.north east);
+	
+	\path[top color=orange!50, bottom color=orange!10,opacity=0.2] (a2.south east) -- ($ (c24.north east) - (1,0) $) -- (c24.north east) -- (a2.south east);
 	
 	\end{tikzpicture}   
 	
