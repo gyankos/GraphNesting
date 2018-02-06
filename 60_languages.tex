@@ -56,7 +56,7 @@ INTO groups = [ x._to ]
 RETURN {"src": src, "dst": dst, "contain": groups}
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Graph Nesting in Neo4J using Cypher as a Query Language. Please note that, even in this case, is it not possible to return one single nested graph immediately, and hence the nested vertices must be created before creating the nested edges.},language=Cypher,frameround=fttt,frame=trBL,mathescape=true,label=Neo4JQuery]
+\begin{lstlisting}[caption={Graph Nesting in Neo4J using Cypher as a Query Language. Please note that the nested vertices must be created before creating the nested edges.},language=Cypher,frameround=fttt,frame=trBL,mathescape=true,label=Neo4JQuery]
 MATCH (a1: Author)-->(p1:Paper) 
 WITH a1, collect(p1.UID) AS papers1 
 CREATE  p=(:Authors {authored: papers1, id:a1.UID})
@@ -68,9 +68,8 @@ CREATE p=(a1p)-[:Papers {coauthored: common}]->(a2p)
 \end{lstlisting}
 
 \section{$dt$ function}
-Given the following function allowing to associate each pair in $\mathbb{N}^2$ into one single integer $\mathbb{N}$ \cite{odifreddi1992}:
-\[f(i,j)=\sum_{k=0}^{i+j}k\;+\;j\]
-we can define the $dt$ function associating one $n$-tuple in $\mathbb{N}^n$ into one single integer as follows:
+Given a function $f(i,j)=\sum_{k=0}^{i+j}k\;+\;j$ associating each pair in $\mathbb{N}^2$ into one single integer $\mathbb{N}$ \cite{odifreddi1992},
+the $dt$ function associating one $n$-tuple in $\mathbb{N}^n$ to one single integer in $\mathbb{N}$ as follows:
 	\[dt(l)=\begin{cases}
 f(0,0) & |l| = 0\\
 f(1,i) & l=\{i\}\\
