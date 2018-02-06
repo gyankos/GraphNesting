@@ -8,7 +8,7 @@ In a property graph a single \textit{label}  is associated to every vertex and e
 
 \begin{definition}[Nested Graph DataBase]
 Given a set $\Sigma^*$ of strings,
-	a \textbf{nested (property) graph database} $G$ is a tuple $G=\Braket{\VS, \ES, \lambda,\ell,\omega,\nestF,\prov}$, where $\VS$ and $\ES$ are disjoint sets, respectively referring to vertex and edge identifiers $(c,i)\in\mathbb{N}^2$; $c$ is an incremental unique number associated to each graph. In particular, input data graphs have $c=0$ while data views containing new elements may have new vertices or edges with $c>0$. 
+	a \textbf{nested (property) graph database} $G$ is a tuple $G=\Braket{\VS, \ES, \lambda,\ell,\omega,\nestF,\prov}$, where $\VS$ and $\ES$ are disjoint sets, respectively referring to vertex and edge identifiers $o\equiv(c,i)\in\mathbb{N}^2$; $c$ is an incremental unique number associated to each graph. In particular, input data graphs have $c=0$ while data views containing new elements may have new vertices or edges with $c>0$. 
 	
 	Each vertex and edge is assigned to multiple possible labels through the labelling function $\ell:\VS\cup \ES\to \wp(\Sigma^*)$. $\lambda$ is a function $\ES\to \VS^2$ mapping each edge to its source and target vertex. $\omega$ is a function mapping each vertex and edge into a relational tuple.
 	
@@ -29,3 +29,20 @@ Therefore, we additionally introduce the following constraints to be set at a ne
 \end{axiom}
 
 A vertex $v$ having a non-empty vertex or edge members is called \textbf{nested vertex}, while vertices with no members are simply referred to \textbf{simple vertices}. For edges, we respectively use the terms \textbf{nested edges} and \textbf{simple edges}. 
+
+\begin{ex}[label=exImpl]
+The property graph in Figure \ref{fig:inputbibex2} can be represented by the graph $G_{(0,11)}$ represented as a nested vertex contained in the following nested graph database:
+\[\Braket{\{(0,0),(0,1),\dots,(0,5),(0,11)\}, \{(0,6),\dots,(0,10)\},\lambda,\ell,\omega,\nu,\epsilon}\]
+
+The nested vertex $(0,11)$  represents a \mstr{Bibliography} graph ($\ell(0,11)=[\mstr{Bibliography}]$), to which no an empty tuple is associated ($\omega(0,11)=\{\}$). Its vertex ($\nu$) and edge ($\epsilon$) members are defined as follows:
+\[\nu(0,11)=\{(0,0),\dots,(0,5)\}\quad\epsilon(0,11)=\{(0,6),\dots,(0,10)\}\]
+
+Edge $(0,6)$ has labels $\ell(0,6)=[\mstr{AuthorOf}]$, it is associated to an empty tuple ($\omega(0,6)=\{\}$) and it is a simple edge ($\nu(0,6)=\epsilon(0,6)=\emptyset$).
+The source and target vertices in $6$ are represented as 
+$\lambda(0,6)=\Braket{(0,0),\;(0,3)}$. Similar considerations can be carried out for all the remaining edges.
+
+The simple vertex $(0,0)$ refers to the \mstr{Author} \texttt{Abigail Conner}. This is represented by:
+\[\ell(0,0)=[\mstr{Author}]\quad\nu(0,0)=\epsilon(0,0)=\emptyset\] \[\omega(0,0)=\{\texttt{\textbf{name}}\colon\texttt{Abigail},\texttt{\textbf{surname}}\colon\texttt{Conner}\}\]
+Similar considerations can be carried out for all the remaining vertices.
+
+\end{ex}

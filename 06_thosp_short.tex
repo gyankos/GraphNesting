@@ -27,7 +27,7 @@ The graph nesting operator uses a classifier to group all the vertices and edges
 	\[g_\kappa(G_o)=\Set{\Braket{\VS_C,\ES_C}|C\in\mathcal{C},\VS_C\neq\emptyset,\ES_C\neq\emptyset}\]
 \end{definition}
 
-The former definition is also going to express graph pattern evaluations, where $\kappa$ may be represented as a graph (cf. Neo4J). This assumption allows us to use the graphs in Figure \ref{fig:patterns} as possible $\kappa$. In order to represent the subgraphs in $g_\kappa(G_o)$ as either vertices and edges, we may use
+The former definition is also going to express graph pattern evaluations, where $\kappa$ may be represented as a graph (cf. Neo4J). This assumption allows us to use the graphs in Figure \ref{fig:patterns} as possible $\kappa$. When $\kappa$ is a graph, we denote as $\kappa\xrightarrow{f_C} G_C$ the function associating  each vertex (and edge) in $\kappa$ to possibly more than one vertex (and one edge) in a subgraph $G_C\in g_\kappa(G_o)$. In order to represent such subgraphs  as either vertices and edges, we may use
 the following \textsc{User-Defined Functions}:
 \begin{definition}[User-Defined Functions]
 	An \textbf{object user defined function} $\mu_\Omega$ maps each subgraph $G_C\in g_\kappa(G_o)$ into a pair $\mu_\Omega(G_C)=(L,t)$, where $L\in\wp(\Sigma^*)$ is a set of labels and $t$ is a relational tuple.
@@ -35,9 +35,37 @@ the following \textsc{User-Defined Functions}:
 	An \textbf{edge user defined function} $\mu_E$ maps each subgraph $G_C\in g_\kappa(G_o)$ into a pair of identifiers $\mu_E(G_C)=(s,t)$ where $s,t\in\mathbb{N}^2$.
 \end{definition}
 
-While $\mu_\Omega$ may be used for transforming subgraphs to both vertices and edges, $\mu_E$ is only used to map subgraphs to edges. In order to complete such transformation,  we have to map each graph in $g_\kappa(G)$ into a new id $(\textbf{c},\textbf{i})\notin \VS\cup \ES$, for which an indexing function has to be defined as follows:
-\[\iota_G(G_C)=(\max\Set{c|(c,i)\in V\cup E}+1,dt(\mathcal{V}_C\cup \mathcal{E}_C))\]
-where $dt$ is an arbitrary bijection associating a  $n$-tuple in $\mathbb{N}^n$ to one single number $\mathbb{N}$ \cite{odifreddi1992}. The combination of all the previous functions allow the definition of the following nesting operator:
+While $\mu_\Omega$ may be used for transforming subgraphs to both vertices and edges, $\mu_E$ is only used to map subgraphs to edges.  
+In order to complete such transformation, we have to map each graph in $g_\kappa(G)$ into a new id $(\textbf{c},\textbf{i})\notin \VS\cup \ES$, for which an indexing function $\iota_G$ over each $G_C$ has to be defined within our specific task. 
+
+\begin{ex}[continues=ex2,label=udfExample]
+Before providing an example of $\mu_\Omega$ and $\mu_E$ UDFs, we must firstly define an indexing function $\iota_G$ that enables the task of creating both nested vertices and nested edges.
+\[\iota_G(G_C)=\begin{cases}
+(\overline{c},dt(\texttt{snd}f_C(\gamma_V))) & G_C \in g_V(G_{o})\\
+(\overline{c},dt\left(\texttt{snd}f_C(\gamma_E^{src}),\;\texttt{snd}f_C(\gamma_E^{dst})\right)) & G_C \in g_E(G_{o})\\
+\end{cases}\]
+where $\overline{c}=\max\{c|(c,i)\in\mathcal{V}\cup\mathcal{E}\}+1$, and $dt$ is an arbitrary bijection associating a  $n$-tuple in $\mathbb{N}^n$ to one single number $\mathbb{N}$ \cite{odifreddi1992}. An example of such function is defined as follows:
+\[dt(l)=\begin{cases}
+f(0,0) & |l| = 0\\
+f(1,i) & l=\{i\}\\
+f(|l|,r(l)) & \textup{oth.}\\  
+\end{cases}\quad r(l)=\begin{cases}
+f(i,j) & l = \{i,j\}\\
+f(h,r(t)) & l = \{h\}\cup t\\
+\end{cases}\]
+\[f(i,j)=\sum_{k=0}^{i+j}k\;+\;j\]
+With reference to Figure \ref{fig:patterns}, this means that each nested vertex's (and nested edge's) id is derived from the matched vertices as vertex (and edge) grouping references.
+	
+With reference to our running example, the desired UDFs associate to each nested vertex resuling from $g_{V}(G_{o})$ the authors' informations and creates nested edges with \textsc{coAuthorship} label and no associated tuple. This requirement is achieved by the following definition:
+\[\mu_\Omega(G_C)=\begin{cases}
+([\mstr{coAuthorship}],\;\emptyset) & G_C \in g_E(G_{o})\\
+(\ell(f_C(\gamma_V))),\;\omega(f_C(\gamma_V))) & G_C \in g_V(G_{o})\\
+\end{cases}\]
+On the other hand, the creation of such edges requires that we know the id of the vertex that is going to be returned in our final nested graph. Given that the $\iota_G$ assumes that we can retrieve the nested vertex's id from its vertex grouping reference, we can link the matched coauthors as follows:
+\[\mu_E(G_C)=\Braket{(\overline{c},dt(\texttt{snd}f_C(\gamma_E^{src}))),\;(\overline{c},dt(\texttt{snd}f_C(\gamma_E^{dst})))}\]
+\end{ex}
+
+The combination of all the previous functions allow the definition of the following nesting operator:
 
 
 
@@ -45,7 +73,7 @@ where $dt$ is an arbitrary bijection associating a  $n$-tuple in $\mathbb{N}^n$ 
 	Given a nested graph $G_{(c,i)}$ within a nested graph database $G$, an object user defined function $\mu_\Omega$, an edge user defined function $\mu_E$ and an indexing function $\iota_G$,
 	the graph nesting operator $\eta_{g_V,g_E,\mu_\Omega,\mu_E,\iota_G}^{\textbf{keep}}$ converts each subgraph in $G_C\in g_V(G_{(c,i)})$ (and $G_C\in g_E(G_{(c,i)})$) into a nested vertex (and nested edge) $\iota_G(G_C)$ and adds them in a nested vertex $(\overline{c},i):=(\max\{c|(c,i)\in(\mathcal{V}\cup \mathcal{E})\}+1,i)$, to which the following nested graph is associated:
 	\[\begin{split}
-	\eta&{}_{g_V,g_E,\mu_\Omega,\mu_E,\iota_G}^{\textbf{keep}}(G_{(c,i)})=G_{(\overline{c},i)}\\
+	\eta&{}_{g_V,g_E,\mu_\Omega,\mu_E,\iota_G}^{\textbf{keep}}(G_{(c,i)})=G_{(\overline{c},dt(i))}\\
 	\end{split}\]
 	The vertices and edges in $G_{(c,i)}$ that appear neither in a nested vertex nor in a nested edge may be also returned if $\textbf{keep}$ is set to \texttt{true}. As a result, the nested graph database is updated by using the nested graph classifier and user defined functions as follows:
 	\[\begin{split}
@@ -54,27 +82,34 @@ where $dt$ is an arbitrary bijection associating a  $n$-tuple in $\mathbb{N}^n$ 
 	& \ell\oplus\bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto\texttt{fst}\;\mu_\Omega(G_C),\\
 	& \omega\oplus\bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto\texttt{snd}\;\mu_\Omega(G_C),\\
 	& \nu\oplus \bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto V_C\\
-	& \;\; \oplus (\overline{c},i)\mapsto \{v\in \nu(c,i) | V(v)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_V(G_{(c,i)})), \\
+	& \;\; \oplus (\overline{c},dt(i))\mapsto \{v\in \nu(c,i) | V(v)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_V(G_{(c,i)})), \\
 	& \epsilon\oplus \bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto E_C\\
-	& \;\; \oplus (\overline{c},i)\mapsto\{e\in \epsilon(c,i) | E(e)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_E(G_{(c,i)}))\Big\rangle\\
+	& \;\; \oplus (\overline{c},dt(i))\mapsto\{e\in \epsilon(c,i) | E(e)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_E(G_{(c,i)}))\Big\rangle\\
 	\end{split}\]
 	where $f\oplus g$ denotes the extension of the (finite) function $f$ with another (finite) function $g$. $a\mapsto b$ defines a finite function, which domain contains only $a$.
 \end{definition}
 
+\begin{ex}[continues=exImpl,label=exNest]
+Figure \ref{fig:outputnested} provides the result of $\eta$ when the non-traversed vertices and edges are not preserved ($\textbf{keep}=\texttt{false}$), where $g_V$ and $g_E$ are the ones represented in Figure \ref{fig:bibex2} and the UDF functions are the ones presented in Example \vref{udfExample}. As showed by the former definition, the nesting operation updates the nested graph database by creating new nested vertices ($(1,0),(1,1),(1,2)$) and nested edges ($(1,3),(1,5),(1,7),(1,8)$), through which a new nested vertex representing $G_{(1,11)}$ is provided. Therefore, the resulting nested graph has the following members:
+\[\nu(1,11)=\{(1,0),(1,1),(1,2)\}\quad \epsilon(1,11)=\{(1,3),(1,5),(1,7),(1,8)\}\]
+Therefore, the resulting nested graph database may be represented as follows:
+\[\begin{split}
+\big\langle &\{(0,0),(0,1),\dots,(0,5),(0,11),(1,0),(1,1),(1,2),(1,11)\},\\
+	  & \{(0,6),\dots,(0,10),(1,3),(1,5),(1,7),(1,8)\}, \\
+	  & \lambda,\ell,\omega,\nu,\epsilon\big\rangle\\
+\end{split}\]
+As requested by the UDF functions, each resulting nested \textsc{Author}s(2) preserve the original data vertices' tuple information, and its vertex members correspond to the \textsc{Paper}s authored by the corresponding \textsc{Author}(1). For easing the nested graph representation, we assume that each \textsc{Author}(2) has an associated  id $(1,i)$, which derives from a simple vertex with id $(0,i)$ in $G_{(0,11)}$. Therefore, vertex $(1,0)$ is represented as follows:
+\[\ell(1,0)=[\mstr{Author}]\quad\nu(1,0)=\{(0,3)\}\quad \epsilon(1,0)=\emptyset\] \[\omega(1,0)=\{\texttt{\textbf{name}}\colon\texttt{Abigail},\texttt{\textbf{surname}}\colon\texttt{Conner}\}\]
+
+Last, each resulting nested edge \textsc{coAuthorship} has a \mstr{coAuthorship} label and no tuple information, and its vertex members correspond to the \textsc{Paper}s coauthored by source and target \textsc{Paper}.
+For easing the nested graph representation, we assume that each \textsc{coAuthorship} edge $(1,a)\to (1,a')$ has an associated id $(1,\sum_{k=0}^{a+a'}k\;+\;a')$, which derives from the grouping references. Therefore, edge $0\to 2$ in Figure \ref{fig:outputnested} is represented as follows:
+\[\ell(1,5)=[\mstr{coAuthorship}]\quad\nu(1,5)=\{(0,3)\}\] \[\epsilon(1,0)=\emptyset\quad \omega(1,0)=\{\}\]
+\end{ex}
+
 
 \section{Two HOp Separated Patterns Algorithm}
 \label{sec:THOSPA}
-In order to solve our specific graph nesting problem as presented in the introduction, we want to evaluate $\eta$ when the non-traversed vertices and edges are not preserved ($\textbf{keep}=\texttt{false}$), where $g_V$ and $g_E$ are the ones represented in Figure \ref{fig:bibex2} and the UDFs associate to each nested vertex the authors' informations and creates nested edges with \texttt{coAuthorship} label and no associated tuple. In particular:
-\[\begin{split}
-\mu_E(G_C)&=\Braket{(\overline{c},\texttt{snd}f_C(\gamma_E^{src})),(\overline{c},\texttt{snd}f_C(\gamma_E^{dst}))}\; s.t.\\
-&\; g_E\xrightarrow{f_C}G_C,\quad \overline{c}=\max\{c|(c,i)\in\mathcal{V}\cup\mathcal{E}\}+1\\
-\end{split}\]
-\[\mu_\Omega(G_C)=\begin{cases}
-([\mstr{coAuthor}],\;\emptyset) & G_C \in g_E(G_{(c,i)})\\
-(\ell(f_C(\gamma_V))),\;\omega(f_C(\gamma_V))) & G_C \in g_V(G_{(c,i)})\\
-\end{cases}\]
-
-
+In order to solve our specific graph nesting problem as presented in the introduction, we want to evaluate $\eta$ in the use case outlined in the last Example.
 The \textbf{input data  representation} for the THoSP algorithm is presented in Figure \ref{nestedGraphVertex}, which represents an  extension of the usual graph adjacency lists. In addition to the information pertaining to both the ingoing and outgoing edges, each vertex $o$ has an associated \texttt{header} containing its id ($o$), its associated hash and the offset pointing to other serialzied fields, such as the information of the  nested vertices and edges a set of labels ($\ell(o)$), and eventually its property-value representation ($\omega(o)$). Last, for each edge we store its id and hash value, as well as the hash and the id of the adjacent vertex. Hash values are used within the proposed THoSP algorithm to store the correspondences with the graph patterns in Figure \ref{fig:patterns}; therefore, each $h(o)\approx \ell(o)$ is associated to a distinct hash value. We also suppose that the input graph data to be serialized does not represent an exact adjacency list: for this reason, the graph is firstly created in primary memory without the offset information, and then serialized into secondary memory. This first preprocessing step provides the loading and indexing step of our algorithm, where no further ancillary indexing data structures are serialized.
 
 
@@ -113,25 +148,25 @@ The \textbf{input data  representation} for the THoSP algorithm is presented in 
 \begin{algorithm}[!t]
 	\caption{Two HOp Separated Patterns Algorithm (THoSP)}\label{alg:THoSPAlgorithm}
 	\begin{adjustbox}{max width=\textwidth}
-		\begin{minipage}{1.2\linewidth}
+		\begin{minipage}{1\linewidth}
 			\algrenewcommand\algorithmicindent{1em}
 			\begin{algorithmic}[1]
 				\Procedure{PartitionHashJoin}{$(g_V,\gamma_V),({g_E},\gamma_E^{src},\gamma_E^{dst});\; \nested$}
-				\State \textsc{File} $AdjFile$ = \textsc{Open\_MemoryMap}($\nested$);\label{openMMAP}
-				\State \textsc{File} $NestingIndex$ = \textsc{Open}(\textbf{new});
-				\State \textsc{Adjacency} $toSerialize$ = \par \textbf{new} \textsc{Map<Vertex,<Edge,Vertex>>}();
-				\State {$\alpha:=g_V\cap {g_E}\backslash(\gamma_V\cup\gamma_E^{src}\cup\gamma_E^{dst})$;}\label{restriction}
+				\State \textsc{File} $AdjFile$ = \textsc{Open\_MemoryMap}($\nested$);\label{openMMAP}\Comment{Serialized operand}
+				\State \textsc{File} $NestingIndex$ = \textsc{Open}(\textbf{new}); \Comment{$\nu \cup\epsilon$, member information}
+				\State \textsc{Adjacency} $toSerialize$ = \par \textbf{new} \textsc{Map<Vertex,<Edge,Vertex>>}(); \Comment{Nested graph, adj. list}
+				\State {$\alpha:=g_V\cap {g_E}\backslash(\gamma_V\cup\gamma_E^{src}\cup\gamma_E^{dst})$;}\Comment{Shared pattern} \label{restriction} 
 				\For{\textbf{each vertex} $(c,v)$ in $AdjFile$}\label{firstJoin}
 				\If{$(c,v)\vDash\alpha$}\label{vdashalpha}
 				\For {\textbf{each} $ ((c',u),e,(c,v))\vDash \gamma_V$} \label{substantiallyIs}
-				\State{$u':=(\overline{c},dt(u))$} 
+				\State{$u':=(\overline{c},dt(u))$} \Comment{$\iota_G$, nested vertex}
 				\State{$NestingIndex$.write($\Braket{u',(c',u)}$)} 
 				\State{$NestingIndex$.write($\Braket{u',e}$)}
 				\State{$NestingIndex$.write($\Braket{u',(c,v)}$)}
 				\For {\textbf{each} $ ((c'',w),e,(c,v))\vDash \gamma_V$} \label{substantiallyIs2}
 				\If{$ ((c',u),e,(c,v),e',(c'',w))\vDash\gamma_E$}\label{thereIsEdge}
-				\State{$w':=(\overline{c},dt(w))$} 
-				\State{$\varepsilon:=(\overline{c},dt(u,w))$}
+				\State{$w':=(\overline{c},dt(w))$}  \Comment{$\iota_G$, nested vertex}
+				\State{$\varepsilon:=(\overline{c},dt(u,w))$} \Comment{$\iota_G$, nested edge}
 				\State{$NestingIndex$.write($\Braket{\varepsilon,u}$,$\Braket{\varepsilon,e}$,$\Braket{\varepsilon,w}$,$\Braket{\varepsilon,e'}$,$\Braket{\varepsilon,v}$)} 
 				\State{$toSerialize$.put($u'$,$\Braket{\varepsilon,w'}$)}
 				\EndIf
@@ -140,7 +175,7 @@ The \textbf{input data  representation} for the THoSP algorithm is presented in 
 				\EndIf
 				\EndFor
 				\State $AdjFile$.serialize($toSerialize$);\label{serialize}
-				\State \Return{($AdjFile$,$NestingIndex$)}
+				\State \Return{($AdjFile$,$NestingIndex$)}\Comment{Nested graph}
 				
 				\EndProcedure
 			\end{algorithmic}

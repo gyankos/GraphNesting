@@ -25,10 +25,10 @@ A respective operator shall not only create a new graph of \textit{nested vertic
 \label{fig:bibex2}
 \end{figure}
 
-\begin{em}
- \textsc{Example}:  Figure \ref{fig:inputbibex2} represents a bibliographic network with (at least) \textsc{Author}s and \textsc{Paper}s as vertices and \textsc{authorOf} relationships as edges which connect authors to papers they have authored. With the graph nesting operator, we want to ``roll up'' the network into a coauthorship network (Figure \ref{fig:outputnested}). Here each \textsc{Author} will be connected by a \textsc{coAuthor} edge with another \textsc{Author}(2) if they have published at least one paper in common.
- More precisely, each resulting \textsc{Author}(2) vertex shall contain authored papers as vertices and each \textsc{coAuthor} edge all coauthored papers with regard to source and target \textsc{Author}s. However, we want to exclude \textsc{coAuthor} hooks over the same vertex.
-\end{em}
+\begin{ex}[label=ex1]
+Figure \ref{fig:inputbibex2} represents a bibliographic network with (at least) \textsc{Author}s and \textsc{Paper}s as vertices and \textsc{authorOf} relationships as edges which connect authors to papers they have authored. With the graph nesting operator, we want to ``roll up'' the network into a coauthorship network (Figure \ref{fig:outputnested}). Here each \textsc{Author} will be connected by a \textsc{coAuthor} edge with another \textsc{Author}(2) if they have published at least one paper in common.
+More precisely, each resulting \textsc{Author}(2) vertex shall contain authored papers as vertices and each \textsc{coAuthor} edge all coauthored papers with regard to source and target \textsc{Author}s. However, we want to exclude \textsc{coAuthor} hooks over the same vertex.
+\end{ex}
 
 In a resulting nested graph, edges connecting nested vertices express that members of the nested vertices are connected by an edge or, more generally, by a path in the original graph.
 In contrast to this general approach, current literature distinguishes between \textit{vertex summarization} and \textit{path summarization}. Thus, it is not possible to define a single algorithm that evaluates both kinds of patterns at the same time. Before outlining our proposed algorithmic solution, let's have a look on these existing approaches:
@@ -57,12 +57,12 @@ We propose graph patterns to declare graph nesting operations and propose algori
 	\begin{minipage}[!t]{0.5\textwidth}
 		\centering
 		\includegraphics[width=.6\textwidth]{images/nesting/patterns/00_vertex_pattern.pdf}
-		\subcaption{Vertex summarization pattern ($g_V$). Author is the vertex grouping reference $\gamma_V$.}
+		\subcaption{Vertex summarization pattern ($V$). Author is the vertex grouping reference $\gamma_V$.}
 		\label{fig:vertexPat}
 	\end{minipage} \begin{minipage}[!t]{0.4\textwidth}
 		\centering
 		\includegraphics[width=1\textwidth]{images/nesting/patterns/00_path_pattern.pdf}
-		\subcaption{Path summarization pattern ($g_E$). Author$_{src}$ and Author$_{dst}$ are respectively edge grouping references $\gamma_E^{src}$ and $\gamma_E^{dst}$.}
+		\subcaption{Path summarization pattern ($E$). Author$_{src}$ and Author$_{dst}$ are respectively edge grouping references $\gamma_E^{src}$ and $\gamma_E^{dst}$.}
 		\label{fig:pathPat}
 	\end{minipage}
   \caption{Vertex and Path summarization patterns for the query expressed in the running example. Vertex and edge grouping references are marked by a light blue circled node. As we can see, the vertex grouping reference depicts the same property expressed by edge grouping references.}
@@ -70,18 +70,17 @@ We propose graph patterns to declare graph nesting operations and propose algori
 \end{figure}
 
 
-\begin{em}
-  \textsc{Example (cont'd)}:
+\begin{ex}[label=ex2,continues=ex1]
 	Figure \ref{fig:patterns} shows summarization patterns to describe the vertex ($g_V$) and path ($g_E$) nestings of our bibliographic network example: the former will create a nested \textsc{Author}(2) vertex and the latter will create a \textsc{coAuthor} nested edge. Given that $g_V$ appears twice in $g_E$, we may also pre-istantiate the pattern $g_V$ by visiting $g_E$ once. The two patterns have different key roles: while the vertex summarization retrieves all the papers that one author has published and nest them within one single matched author, the path summarizations return all the papers authored by two different authors and creates an edge between the two previously nested vertices. %This construction implies that a join between the two paths must be carried out.
 	
 	
 	We solve this problem by visiting the graph only once: %by visiting the graph starting from the vertices:
-	If the current vertex is a \textsc{Paper}, traverse backwards all the \textsc{authorOf} edges, thus reaching all of its \textsc{Author}s, that are going to be \textsc{coAuthor} for at least the current paper. Instead of associating the nesting content at the end of the graph visiting process, I can incrementally define the subgraph to be nested by using a separated nesting index: by visiting the two distinct \textsc{Author} vertices adjacent to the current \textsc{Paper}, the latter one shall be contained in both final \textsc{Author}(2) vertices, thus allowing the definition of a  \textsc{coAuthor} edge. %%The remaining types of vertices and edges %All the other vertices and edges
+	If the current vertex is a \textsc{Paper}, traverse backwards all the \textsc{authorOf} edges, thus reaching all of its \textsc{Author}s (\textbf{edge grouping references}, $\gamma_E^{src}$ and $\gamma_E^{dst}$), that are going to be \textsc{coAuthor}s for at least the current paper. Instead of associating the nesting content at the end of the graph visiting process, I can incrementally define the subgraph to be nested by using a separated nesting index: by visiting the two distinct \textsc{Author} vertices adjacent to the current \textsc{Paper}, the latter one shall be contained in both final \textsc{Author}(2) vertices, thus allowing the definition of a  \textsc{coAuthor} edge. %%The remaining types of vertices and edges %All the other vertices and edges
 	%%may be discarded. %as a starting point for the graph visiting process
 	By doing this, only the edges are visited twice, but the vertices are visited only once. Hereby, with these patterns we reach the optimal solution by visiting the graph only once.
 	
 	%This pattern comparison remarks that, in order to reduce the graph time visit, we must start from visiting the \texttt{Paper}, which is shared among the two distinct patterns, and then keep going with the graph visit by exploring the source and target vertices. 
-\end{em}
+\end{ex}
 
 %There might be other possible patterns that can be optimized, but we're going to focus just on vertex and path summarization patterns where edge grouping references are connected to each other at a 2 edge step distance (Section \ref{sec:THOSPA}). We're also going to show how such optimizations can be detected beforehand by looking at the pattern representation.
 
