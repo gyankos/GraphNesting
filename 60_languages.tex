@@ -67,6 +67,20 @@ WHERE a1.UID = a1p.id AND a2.UID = a2p.id AND a1.UID <> a2.UID
 CREATE p=(a1p)-[:Papers {coauthored: common}]->(a2p)
 \end{lstlisting}
 
+\section{$dt$ function}
+Given the following function allowing to associate each pair in $\mathbb{N}^2$ into one single integer $\mathbb{N}$ \cite{odifreddi1992}:
+\[f(i,j)=\sum_{k=0}^{i+j}k\;+\;j\]
+we can define the $dt$ function associating one $n$-tuple in $\mathbb{N}^n$ into one single integer as follows:
+	\[dt(l)=\begin{cases}
+f(0,0) & |l| = 0\\
+f(1,i) & l=\{i\}\\
+f(|l|,r(l)) & \textup{oth.}\\  
+\end{cases}\quad r(l)=\begin{cases}
+f(i,j) & l = \{i,j\}\\
+f(h,r(t)) & l = \{h\}\cup t\\
+\end{cases}\]
+
+
 %\begin{lstfloat}[!t]
 %
 %\end{lstfloat}
