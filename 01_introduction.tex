@@ -10,7 +10,7 @@ A respective operator shall not only create a new graph of \textit{nested vertic
   \begin{minipage}[!t]{0.5\textwidth}
     \centering
     \includegraphics[width=.8\textwidth]{images/nesting/patterns/04bibliography.pdf}
-    \subcaption{Input bibliographical network represented as a Property Graph.}
+    \subcaption{Input bibliographical graph represented as a Property Graph.}
     \label{fig:inputbibex2}
   \end{minipage}
   \medskip
@@ -18,16 +18,16 @@ A respective operator shall not only create a new graph of \textit{nested vertic
   \begin{minipage}[!t]{0.5\textwidth}
     \centering
     \includegraphics[width=\textwidth]{images/nesting/patterns/042nested.pdf}
-    \subcaption{Nested result: given two \texttt{Author}s $\color{orange}a$ and $\color{orange}a'$, there exist two  \texttt{coauthorship} edges, $\color{blue}a\to a'$ and $\color{blue}a'\to a$ if and only if they share some authored paper contained respectively in $\epsilon({\color{blue}a\to a'})$ and $\epsilon({\color{blue}a'\to a})$. Moreover, each author $\color{orange}a$ is associated to the set of his authored papers $\epsilon({\color{orange}a})$. }
+    \subcaption{Nested required result: given two \texttt{Author}s $\color{orange}a$ and $\color{orange}a'$, there exist two  \texttt{coauthorship} edges, $\color{blue}a\to a'$ and $\color{blue}a'\to a$ if and only if they share some authored paper contained respectively in $\epsilon({\color{blue}a\to a'})$ and $\epsilon({\color{blue}a'\to a})$. Moreover, each author $\color{orange}a$ is associated to the set of his authored papers $\epsilon({\color{orange}a})$. }
     \label{fig:outputnested}
   \end{minipage}
-\caption{Nesting a bibliographic network: the provenance information is nested within the original node. }
+\caption{Nesting a bibliographic graph: the provenance information is nested within the original node. }
 \label{fig:bibex2}
 \end{figure}
 
 \begin{ex}[label=ex1]
-Figure \ref{fig:inputbibex2} represents a bibliographic network with (at least) \textsc{Author}s and \textsc{Paper}s as vertices and \textsc{authorOf} relationships as edges which connect authors to papers they have authored. With the graph nesting operator, we want to ``roll up'' the network into a coauthorship network (Figure \ref{fig:outputnested}). Here each \textsc{Author} will be connected by a \textsc{coAuthor} edge with another \textsc{Author}(2) if they have published at least one paper in common.
-More precisely, each resulting \textsc{Author}(2) vertex shall contain authored papers as vertices and each \textsc{coAuthor} edge all coauthored papers with regard to source and target \textsc{Author}s. However, we want to exclude \textsc{coAuthor} hooks over the same vertex.
+Figure \ref{fig:inputbibex2} represents a bibliographic graph with (at least) \textsc{Author}s and \textsc{Paper}s as vertices and \textsc{authorOf} relationships as edges which connect authors to papers they have authored. With the graph nesting operator, we want to ``roll up'' the graph into a coauthorship graph (Figure \ref{fig:outputnested}):  each \textsc{Author} will be connected by a \textsc{coAuthor} edge with another \textsc{Author}(2) if they have published at least one paper in common.
+More precisely, each resulting \textsc{Author}(2) vertex shall contain authored papers as vertices and each \textsc{coAuthor} edge shall contain all the coauthored papers with regard to source and target \textsc{Author}s. However, we want to exclude \textsc{coAuthor} hooks over the same vertex.
 \end{ex}
 
 In a resulting nested graph, edges connecting nested vertices express that members of the nested vertices are connected by an edge or, more generally, by a path in the original graph.
