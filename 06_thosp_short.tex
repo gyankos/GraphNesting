@@ -25,7 +25,7 @@ The graph nesting operator uses a classifier to group all the vertices and edges
 	Given a set of cluster labels $\;\mathcal{C}$, a \textbf{nested graph classifier} operator $g_\kappa$ maps a nested graph $G_o$ into a nested  graph collection $\{G_C\}_{C\in\mathcal{C},G_C\neq \emptyset}$ of subgraphs of $G_o$. Such operator uses a classifier function $\kappa\colon \VS\cup \ES\to \wp(\mathcal{C})$ mapping each vertex or edge in either no graph or more than one non-empty subgraph. Each nested graph $G_C$ is a pair
 	$G_C=\Braket{\VS_C,\ES_C}$
 	where $\VS_C$ (and $\ES_C$) is the set of all the vertices $v$ (and edges $e$) in $G_o$ having $C\in \kappa(v)$ (and $C\in \kappa(e)$). Therefore, the nested graph classifier is defined as follows:
-	\[g_\kappa(G_o)=\Set{\Braket{\VS_C,\ES_C}|C\in\mathcal{C},\VS_C\neq\emptyset,\ES_C\neq\emptyset}\]
+	\[g_\kappa(G_o)=\Set{\Braket{\VS_C,\ES_C}|C\in\mathcal{C},(\VS_C\neq\emptyset\vee\ES_C=\emptyset)}\]
 \end{definition}
 
 The former definition is also going to express graph pattern evaluations, where $\kappa$ may be represented as a graph (cf. Neo4J). This assumption allows us to use the graphs in Figure \ref{fig:patterns} as possible $\kappa$. When $\kappa$ is a graph, we denote as $\kappa\xrightarrow{f_C} G_C$ the function $f_C$ associating  each vertex (and edge) in $\kappa$ to possibly more than one vertex (and one edge) in a subgraph $G_C\in g_\kappa(G_o)$. In order to represent the latter subgraphs  as either vertices and edges, we may use
@@ -45,7 +45,7 @@ Within our use case scenario, $\mu_\Omega$  must associate  the authors' informa
 \end{ex}
 
 While $\mu_\Omega$ may be used for transforming subgraphs to both vertices and edges, $\mu_E$ is only used to map subgraphs to edges.  
-In order to complete such transformation, we have to map each graph in $g_\kappa(G)$ into a new id $(\textbf{c},\textbf{i})\notin \VS\cup \ES$, for which an indexing function $\iota_G$ over each $G_C$ has to be defined within our specific task. As we will see in the next section, by imposing some constraints on both vertex and edge summarization patterns we can define indexing functions that uniquely associate each matched subgraph  $G_C$ referable to the grouping references' ids.
+In order to complete such transformation, we have to map each graph in $g_\kappa(G)$ into a new id $(\textbf{c},\textbf{i})\notin \VS\cup \ES$, for which an indexing function $\iota_G$ over each $G_C$ has to be defined within our specific task. As we will see in the next section, our scenario provides some constraints on both patterns allowing the definition of an indexing function  uniquely associating each matched subgraph  $G_C$  to the grouping references' ids.
 The combination of all the previous functions allow the definition of the following nesting operator:
 
 
@@ -74,7 +74,7 @@ where $\overline{c}=\max\{c|(c,i)\in\mathcal{V}\cup\mathcal{E}\}+1$. As a side e
 The following example describes the outcome of the graph nesting process.
 
 \begin{ex}[label=exNest]
-Figure \ref{fig:outputnested} provides the result of $\eta$ when the non-traversed vertices and edges are not preserved ($\textbf{keep}=\texttt{false}$), where $g_V$ and $g_E$ are the ones represented in Figure \ref{fig:bibex2}. As showed by the former definition, the nesting operation updates the nested graph database by creating new nested vertices ($(1,0),(1,1),(1,2)$) and nested edges ($(1,3),(1,5),(1,7),(1,8)$). Such nested components are contained within the returned nested graph $G_{(1,11)}$, which is represented as a nested vertex with the following members:
+Figure \ref{fig:outputnested} provides the result of $\eta$ when the non-traversed vertices and edges are not preserved ($\textbf{keep}=\texttt{false}$) and where $V$ and $E$ are the ones represented in Figure \ref{fig:bibex2}. As showed by the former definition, the nesting operation updates the nested graph database by creating new nested vertices ($(1,0),(1,1),(1,2)$) and nested edges ($(1,3),(1,5),(1,7),(1,8)$). Such nested components are contained within the returned nested graph $G_{(1,11)}$, which is represented as a nested vertex with the following members:
 \[\nu(1,11)=\{(1,0),(1,1),(1,2)\}\quad \epsilon(1,11)=\{(1,3),(1,5),(1,7),(1,8)\}\]
 The nested graph database updated as a side effect of the graph nesting may be represented as follows:
 \[\begin{split}
@@ -87,7 +87,7 @@ Let us now focus on the nested vertices and edges of $G_{(1,11)}$. As requested 
 
 Last, each resulting nested edge \textsc{coAuthorship} has a \mstr{coAuthorship} label, it has no tuple information and its vertex members correspond to the \textsc{Paper}s coauthored by source and target \textsc{Paper}.
 For easing the nested graph representation, we assume that each \textsc{coAuthorship} edge $(1,a)\to (1,a')$ has an associated id $(1,\sum_{k=0}^{a+a'}k\;+\;a')$, which derives from the grouping references. Therefore, edge $0\to 2$ in Figure \ref{fig:outputnested} is represented as follows:
-\[\ell'(1,5)=[\mstr{coAuthorship}]\quad\nu'(1,5)=\{(0,3)\}\] \[\epsilon'(1,0)=\emptyset\quad \omega'(1,0)=\{\}\]
+\[\ell'(1,5)=[\mstr{coAuthorship}]\;\nu'(1,5)=\{(0,3)\}\;\epsilon'(1,0)=\emptyset\; \omega'(1,0)=\{\}\] 
 \end{ex}
 
 
