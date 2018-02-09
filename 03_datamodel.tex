@@ -10,7 +10,7 @@ In a property graph a collection of \textit{labels}  is associated to every vert
 Given a set $\Sigma^*$ of strings,
 	a \textbf{nested (property) graph database} $G$ is a tuple $G=\Braket{\VS, \ES, \lambda,\ell,\omega,\nestF,\prov}$, where $\VS$ and $\ES$ are disjoint sets, respectively referring to vertex and edge identifiers $o\equiv(c,i)\in\mathbb{N}^2$; $c$ is an incremental unique number associated to each graph. In particular, input data graphs have $c=0$ while  nested graphs created at nesting steps exhibit $c>0$. 
 	
-	Each vertex and edge is assigned to multiple possible labels through the labelling function $\ell:\VS\cup \ES\to \wp(\Sigma^*)$. $\lambda$ is a function $\ES\to \VS^2$ mapping each edge to its source and target vertex. $\omega$ is a function mapping each vertex and edge into a relational tuple.
+	A function $\lambda\colon \ES\to \VS^2$ maps each edge to its source and target vertex. Each vertex and edge is assigned to multiple possible labels through the labelling function $\ell:\VS\cup \ES\to \wp(\Sigma^*)$.  $\omega$ is a function mapping each vertex and edge into a relational tuple.
 	
 	In addition to the previous components defining a property graph, we also introduce functions representing \textit{vertex members} $\nestF\colon (\VS\cup \ES)\to\wp(\VS)$ and \textit{edge members} $\prov\colon(\VS\cup \ES)\to \wp(\ES)$. These functions induce the nesting by associating a set of vertices or edges to each vertex and edge. Each vertex or edge $o\in V\cup E$ induces a \textbf{nested (property) graph} as the following pair:
 	\[G_o=\Braket{\nu(o),\{e\in\epsilon(o)|\lambda(e)\in {\nu\epsilon}^*(o)\}}\]

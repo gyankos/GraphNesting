@@ -11,7 +11,7 @@
 \begin{figure*}[!ht]
 	
 \begin{tabular}{c}
-	{$o\equiv\Braket{\textbf{\textsc{Header}},\nu(o),\epsilon(o),\Braket{\ell(o),\omega(o)},\texttt{outLen},\textit{\textsc{OutgoingEdges[]}},\texttt{inLen},\textit{\textsc{IngoingEdges[]}}}$} \\
+	{$AdjFile[o]\equiv\Braket{\textbf{\textsc{Header}},\nu(o),\epsilon(o),\Braket{\ell(o),\omega(o)},\texttt{outLen},\textit{\textsc{OutgoingEdges[]}},\texttt{inLen},\textit{\textsc{IngoingEdges[]}}}$} \\
 	$\textit{\textsc{OutgoingEdges[}i\textsc{]}}\equiv\textit{\textsc{IngoingEdges[}i\textsc{]}}\equiv \textsc{\textbf{EdgeEntry}[}i\textsc{]}$ \\
 	\linebreak \\
 	{$\textbf{\textsc{Header}}:=\Braket{\texttt{length},\texttt{id},\texttt{hash},\texttt{ellOffset},\texttt{epsilonOffset},\texttt{contentOffset},\texttt{outOffset},\texttt{inOffset}}$}\\ $\textsc{\textbf{EdgeEntry}[}i\textsc{]}:=\Braket{\textsc{id[}i\textsc{]},\textsc{hash[}i\textsc{]},\textsc{adjVertexId[}i\textsc{]},\textsc{adjVertexHash[}i\textsc{]}}$\\
@@ -19,10 +19,10 @@
 	\caption{Serialized data structure representing an extended adjacency list for one nested vertex $o$. The header contains some basic information (such the representation size of $o$, its id and associated hash) and the offsets to the remaining fields. $\nu$ and $\epsilon$ are empty when the serialized graph represents a basic property graph as the one in Figure \ref{fig:inputbibex2}.}\label{nestedGraphVertex}
 \end{figure*}
 \section{Graph Nesting}\label{sec:nestingdef}
-The graph nesting operator uses a classifier to group all the vertices and edges that shall appear as a member of a cluster $C$. 
+The graph nesting operator uses a classifier function grouping all the vertices and edges that shall appear as a member of a cluster $C$. 
 
 \begin{definition}[Nested Graph Classifier, $g_\kappa$]
-	Given a set of cluster labels $\;\mathcal{C}$, a \textbf{nested graph classifier} operator $g_\kappa$ maps a nested graph $G_o$ into a nested  graph collection $\{G_C\}_{C\in\mathcal{C},G_C\neq \emptyset}$ of subgraphs of $G_o$. Such operator uses a classifier function $\kappa\colon \VS\cup \ES\to \wp(\mathcal{C})$ mapping each vertex or edge in either no graph or more than one non-empty subgraph. Each nested graph $G_C$ is a pair
+	Given a set of cluster labels $\;\mathcal{C}$, a \textbf{nested graph classifier} function $g_\kappa$ maps a nested graph $G_o$ into a nested  graph collection $\{G_C\}_{C\in\mathcal{C},G_C\neq \emptyset}$ of subgraphs of $G_o$. Such function uses a classifier function $\kappa\colon \VS\cup \ES\to \wp(\mathcal{C})$ mapping each vertex or edge in either no graph or more than one non-empty subgraph. Each nested graph $G_C$ is a pair
 	$G_C=\Braket{\VS_C,\ES_C}$
 	where $\VS_C$ (and $\ES_C$) is the set of all the vertices $v$ (and edges $e$) in $G_o$ having $C\in \kappa(v)$ (and $C\in \kappa(e)$). Therefore, the nested graph classifier is defined as follows:
 	\[g_\kappa(G_o)=\Set{\Braket{\VS_C,\ES_C}|C\in\mathcal{C},(\VS_C\neq\emptyset\vee\ES_C=\emptyset)}\]
@@ -45,8 +45,8 @@ Within our use case scenario, $\mu_\Omega$  must associate  the authors' informa
 \end{ex}
 
 While $\mu_\Omega$ may be used for transforming subgraphs to both vertices and edges, $\mu_E$ is only used to map subgraphs to edges.  
-In order to complete such transformation, we have to map each graph in $g_\kappa(G)$ into a new id $(\textbf{c},\textbf{i})\notin \VS\cup \ES$, for which an indexing function $\iota_G$ over each $G_C$ has to be defined within our specific task. As we will see in the next section, our scenario provides some constraints on both patterns allowing the definition of an indexing function  uniquely associating each matched subgraph  $G_C$  to the grouping references' ids.
-The combination of all the previous functions allow the definition of the following nesting operator:
+In order to complete such transformation, we have to map each graph in $g_\kappa(G)$ into a new id $(\textbf{c},\textbf{i})\notin \VS\cup \ES$, for which an indexing function $\iota_G$ over each $G_C$ has to be defined within our specific task. As we will see in the next section, our scenario provides some constraints on both patterns; this allows the definition of an indexing function  uniquely associating each matched subgraph  $G_C$  to the grouping references' ids.
+The previous functions are involved in the definition of our general graph nesting operator:
 
 
 
@@ -158,13 +158,14 @@ Please note that the former function provides such association without additiona
 		\begin{minipage}{1\linewidth}
 			\algrenewcommand\algorithmicindent{1em}
 			\begin{algorithmic}[1]
-				\Procedure{doNest}{$Nesting,\textsc{pattern},f,\vec{c}=\{c_1,\dots,c_n\}$}
-				\For{\textbf{each} $c_i\in \vec{c}$ \textbf{s.t.} \textsc{pattern}($\vec{c}$).doSerialize($c_i$)}\label{patternrequire}
-				\State{$Nesting$.write($\Braket{f,c_i}$)} 
+				\Procedure{doNest}{$Index,\textsc{pattern},f, \protect\overrightarrow{memb} =\{m_1,\dots,m_n\}$}
+				\For{\textbf{each} $c_i\in \protect\overrightarrow{memb}$ \textbf{s.t.} \textsc{pattern}($\protect\overrightarrow{memb}$).doSerialize($m_i$)}\label{patternrequire}
+				\State{$Index$.write($\Braket{f,m_i}$)} 
 				\EndFor
 				\EndProcedure
+				\State
 				
-				\Procedure{$\eta^{\texttt{false}}_{g_{(V;\gamma_V)}\;,g_{(E;\gamma_E^{src},\gamma_E^{dst})}}$}{$\nested$}
+				\Procedure{$\eta^{\texttt{false}}_{g_{V}\;,g_{E},\dots}$}{$\nested$}
 				\State \textsc{File} $AdjFile$ = \textsc{Open\_MemoryMap}($\nested$);\label{openMMAP}\Comment{Serialized operand}
 				\State \textsc{File} $Nesting$ = \textsc{Open}(\textbf{new}); \Comment{$\nu \cup\epsilon$, member information}
 				\State \textsc{Adjacency} $toSerialize$ = \par \textbf{new} \textsc{Map<Vertex,<Edge,Vertex>>}(); \Comment{Nested graph, adj. list}
@@ -178,7 +179,7 @@ Please note that the former function provides such association without additiona
 				\If{$ (u',e,v',e',w')\vDash E$}\label{thereIsEdge}
 				\State{$\overline{w}:=(\overline{c},dt(w))$}  \Comment{$\iota_G$, nested vertex}
 				\State{$\overline{e}:=(\overline{c},dt(u,w))$} \Comment{$\iota_G$, nested edge} 
-				\State{\textsc{doNest}($Nesting$, V, $\overline{u},\{u',e,v',e',w'\}$)}
+				\State{\textsc{doNest}($Nesting$, E, $\overline{e},\{u',e,v',e',w'\}$)}
 				\State{$toSerialize$.put($\overline{u}$,$\Braket{\overline{e},\overline{w}}$)}
 				\EndIf
 				\EndFor
@@ -207,7 +208,7 @@ We suppose that the latter is only used by the user to read the outcome of the n
 produce ``materialized views''. Therefore, the result of the graph query itself can postpone the creation of a complete ``materialized view'', which will later use the same representation of the input data by using both the id information and the application of the User Defined Functions. In particular, the dovetailing function is used to associate both the nested vertices, $\overline{u}$ and $\overline{w}$, and the nested edge $\overline{e}$ to their grouping references, thus allowing to easily go back to the original grouping references by using the inverse function of $dt$, thus allowing the application of the user defined functions.
 
 
-Last, the \textsc{doNest} procedure performs the association between the nested vertices (and edges) $f$ and its members within the input graph $c_i$. When the pattern requires that $c_i$ should be a member of $f$ in the final nested graph, such procedure stores in a $Nesting$ file as a set of pairs $\Braket{f,c_i}$. By doing so, we omit the \texttt{GROUP BY} cost which affects the previously seen query languages. 
+Last, the \textsc{doNest} procedure performs the association between the nested vertices (and edges) $f$ and its members within the input graph $m_i$. When the pattern requires that $m_i$ should be a member of $f$ in the final nested graph, such procedure stores in a $Nesting$ file as a set of pairs $\Braket{f,m_i}$. By doing so, we omit the \texttt{GROUP BY} cost which affects the previously seen query languages. 
 
 
 %Table \ref{tab:comparisonTwo} provides a comparison between the general Nesting Algorithm \texttt{[Should we put the previous CIKM version on arXive, so that here we just focus on the main\\ algorithm?]} and over the THoSP implementation of the query provided in our running example, under the assumptions that are going to be soon introduced in the next section. In particular, while THoSP increases linearly alongside the data size, the general nesting algorithm grows quadratically, thus quickly leading to a intractable time evaluation for big data scenarios. Hereby, the THoSP algorithm is going to be used in comparisons with other problem-specific queries on different query languages and data structures.
