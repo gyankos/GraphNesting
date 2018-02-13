@@ -7,15 +7,16 @@ This model allows both \textit{external edges} and \textit{internal edges}: an e
 
 Statecharts were also adopted as a basis for the subsequent \textbf{hypernode} data model \cite{Poulovassilis1994}. Unlike statecharts, hypernodes allow neither edge labelling nor external and internal edges. As previously stated for statecharts, even this model does not allow to fully represent a property graph, since the attribute-value association must be necessarily expressed as a relation between two different vertices.  A first extension of the hypernode model towards data representation is represented by CoGITaNT \cite{GenestS98}, where any type of edge (thus including internal and external ones) are included and data is firstly contained inside a node. Nested graphs are also supported by GraphML \cite{graphml} and GXL \cite{GXL}.
 
- Two different approaches have been used to extend present graph databases to support nesting operations:
+Current literature uses two different approaches for extending
+% Two different approaches have been used to extend 
+graph databases to support nesting operations:
 some try to overcome graph data structure limitations by extending their query languages, while others try to extend the data structures used for both input and intermediate computations. Among the first type of approaches, \cite{Etcheverry2012} proposes the definition of a RDF  vocabulary over which the OLAP  cube can be defined. On top of this ``structured'' RDF graph, an algorithm generates the SPARQL query that will allow to perform either the roll-up or the drill-down operation. This implies that each possible computation over the data view has to be always recomputed on top of the raw data as in ROLAP systems, thus thwarting the benefits of updating the intermediate query result. On the other hand, the last type of approaches has been recently widely investigated  and seems to be more promising with regard to optimization techniques. In these approaches \cite{Tian20085,ChenYZHY08,Qu2011}, graph data structures are associated with external graph indices and, thus, allow to connect one graph to a broader one with respect to the roll-up query. As a consequence, these solutions do not allow to freely expand any aggregate components at the same time but can only backtrack the aggregation to a previous known state. %Some further details are going to be provided on Chapter \vref{cha:nesting}, where such operator will be implemented on a specific algorithm.
 %As it will be showed in Chapter \ref{cha:graphsdef}, in order to meet such goals the nesting indices are going to be directly embedded within the definition of the nested (graph) data model, thus allowing to extend all the aforementioned approaches.
 
 
 \subsection{Databases and Query Languages}\label{subsec:pathsumm}
-As already mentioned before, some recent graph query languages can add graph nesting semantics to their graph data model. To express the query presented in our running example, these query languages must support id collections or nested representations.
-
-For these reasons, we firstly select PostgreSQL's dialect which, by extending the SQL-3 syntax and by allowing JSON data, provides \texttt{array\_agg} aggregation function. The latter collects (i.e., groups) the result-set into arrays.  We  represent  graphs by  storing edge triples in the following form:
+As previously mentioned, some recent  query languages support graph nesting semantics by exploiting the underlying data model's features. To express the query presented in our running example, these query languages must support id collections or nested representations.
+For these reasons, we firstly select PostgreSQL which, by extending the SQL-3 syntax and by allowing JSON data, provides \texttt{array\_agg} aggregation function in its SQL dialect. The latter collects (i.e., groups) the result-set into arrays.  We  represent  graphs by  storing edge triples in the following form:
 \begin{center}
  \texttt{Edge}(\textit{edgeId},\;\textit{sourceId},\;\textit{edgeLabel},\;\textit{targetId})
 \end{center}

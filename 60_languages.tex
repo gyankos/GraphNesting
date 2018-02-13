@@ -70,8 +70,8 @@ CREATE p=(a1p)-[:Papers {coauthored: common}]->(a2p)
 \end{lstlisting}
 
 \section{$dt$ function}
-Given a function $f(i,j)=\sum_{k=0}^{i+j}k\;+\;j$ associating each pair in $\mathbb{N}^2$ into one single integer $\mathbb{N}$ \cite{odifreddi1992},
-the $dt$ function associating one $n$-tuple in $\mathbb{N}^n$ to one single integer in $\mathbb{N}$ as follows:
+Given a function $f(i,j)=\sum_{k=0}^{i+j}k\;+\;j$ associating each pair in $\mathbb{N}^2$ to one single integer $\mathbb{N}$ \cite{odifreddi1992},
+the $dt$ function associating one $n$-tuple in $\mathbb{N}^n$ to one single integer is defined as follows:
 	\[dt(l)=\begin{cases}
 f(0,0) & |l| = 0\\
 f(1,i) & l=\{i\}\\

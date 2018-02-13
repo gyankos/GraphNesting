@@ -23,10 +23,10 @@ Since the member functions $\nu$ and $\epsilon$ induce the expansion of each sin
 Therefore, we additionally introduce the following constraints to be set at a nested property graph database level:
 
 \begin{axiom}[Recursion Constraints]
-	For each correctly nested property graph, each vertex $v\in \VS$ must not contain $v$ at any level of containment of $\epsilon$ and, any of its descendants $c$ must not contain $v$:
-	\[\forall v\in \VS. \forall c\in \nu^+(v).\;\; c\neq v\wedge v\notin \nu^+(c)\]
+	For each correctly nested property graph, each vertex $v\in \VS$ must not contain $v$ at any level of containment of $\nu$ and, any of its descendants $m$ must not contain $v$:
+	\[\forall v\in \VS. \forall m\in \nu^+(v).\;\; m\neq v\wedge v\notin \nu^+(m)\]
 	where $+$ is the Kleene's plus. Similarly to vertices, any edge shall not contain itself at any nesting level:
-	\[\forall e\in \ES. \forall c\in \epsilon^+(e). c\neq e\wedge e\notin \epsilon^+(c)\]
+	\[\forall e\in \ES. \forall m\in \epsilon^+(e). m\neq e\wedge e\notin \epsilon^+(m)\]
 \end{axiom}
 
 A vertex $v$ having a non-empty vertex or edge members is called \textbf{nested vertex}, while vertices with no members are simply referred to \textbf{simple vertices}. For edges, we respectively use the terms \textbf{nested edges} and \textbf{simple edges}. 
