@@ -4,7 +4,7 @@
 \label{sec:model}
 The term \textit{property graph}  \cite{angles12} usually refers to a directed, labelled and attributed multigraph. 
 % In other words, if there is a schema, each vertex and edge will be represented by a relational tuple and without, by a document of key-value pairs. 
-In a property graph a collection of \textit{labels}  is associated to every vertex and edge (e.g., \texttt{[\mstr{Author}]} or \texttt{[\mstr{coAuthorsip}]}). Further on, vertices and edges may have arbitrary named attributes (\textit{properties}) in the form of key-value pairs (e.g., \texttt{name:"Baldwin"} or \texttt{surname:"Oliver"}). Property-value associations of vertices and edges can be represented by relational tuples; this is a common approach in literature used even when graphs have no fixed schema \cite{angles12}. We define the\textit{ nested (property) graph database} as the following extension of the property graph data model for nested information:
+In a property graph a collection of \textit{labels}  is associated to every vertex and edge (e.g., \texttt{[\mstr{Author}]} or \texttt{[\mstr{coAuthorsip}]}). Further on, vertices and edges may have arbitrary named attributes (\textit{properties}) in the form of key-value pairs (e.g., \texttt{\textbf{name}:Baldwin} or \texttt{\textbf{surname}:Oliver}). Property-value associations of vertices and edges can be represented by relational tuples; this is a common approach in literature used even when graphs have no fixed schema \cite{angles12}. We define the\textit{ nested (property) graph database} as the following extension of the property graph data model for nested information:
 
 \begin{definition}[Nested Graph DataBase]
 Given a set $\Sigma^*$ of strings,
@@ -14,7 +14,7 @@ Given a set $\Sigma^*$ of strings,
 	
 	In addition to the previous components defining a property graph, we also introduce functions representing \textit{vertex members} $\nestF\colon (\VS\cup \ES)\to\wp(\VS)$ and \textit{edge members} $\prov\colon(\VS\cup \ES)\to \wp(\ES)$. These functions induce the nesting by associating a set of vertices or edges to each vertex and edge. Each vertex or edge $o\in V\cup E$ induces a \textbf{nested (property) graph} as the following pair:
 	\[G_o=\Braket{\nu(o),\{e\in\epsilon(o)|\lambda(e)\in {\nu\epsilon}^*(o)\}}\]
-	where $*$ is the Kleene star and $\nu\epsilon$ returns the vertices contained in both vertices and edges, and is defined as $\nu\epsilon(x)=\nu(x)\cup \nu(\epsilon(x))$.
+	where $*$ is the Kleene star and $\nu\epsilon$ returns the vertices contained in both vertices and edges; it is defined as $\nu\epsilon(x)=\nu(x)\cup \nu(\epsilon(x))$.
 \end{definition}
 
 

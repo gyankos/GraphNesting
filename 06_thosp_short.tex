@@ -159,7 +159,7 @@ Please note that the former function provides such association without additiona
 			\algrenewcommand\algorithmicindent{1em}
 			\begin{algorithmic}[1]
 				\Procedure{doNest}{$Index,\textsc{pattern},f, \protect\overrightarrow{memb} =\{m_1,\dots,m_n\}$}
-				\For{\textbf{each} $c_i\in \protect\overrightarrow{memb}$ \textbf{s.t.} \textsc{pattern}($\protect\overrightarrow{memb}$).doSerialize($m_i$)}\label{patternrequire}
+				\For{\textbf{each} $m_i\in \protect\overrightarrow{memb}$ \textbf{s.t.} \textsc{pattern}($\protect\overrightarrow{memb}$).doSerialize($m_i$)}\label{patternrequire}
 				\State{$Index$.write($\Braket{f,m_i}$)} 
 				\EndFor
 				\EndProcedure
@@ -208,7 +208,7 @@ We suppose that the latter is only used by the user to read the outcome of the n
 produce ``materialized views''. Therefore, the result of the graph query itself can postpone the creation of a complete ``materialized view'', which will later use the same representation of the input data by using both the id information and the application of the User Defined Functions. In particular, the former $dt$ function is used to associate both the nested vertices, $\overline{u}$ and $\overline{w}$, and the nested edge $\overline{e}$ to their grouping references, thus allowing to easily go back to the original grouping references by using the inverse function of $dt$, thus allowing the postponed application of the user defined functions.
 
 
-Last, the \textsc{doNest} procedure performs the association between the nested vertices (and edges) $f$ and its members within the input graph $m_i$. When the pattern requires that $m_i$ should be a member of $f$ in the final nested graph,  \textsc{doNest} stores in a $Nesting$ file those membershi associations as pairs $\Braket{f,m_i}$. By doing so, we omit the \texttt{GROUP BY} cost which affects the previously seen query languages. 
+Last, the \textsc{doNest} procedure performs the association between the nested vertices (and edges) $f$ and its members within the input graph $m_i$. When the pattern requires that $m_i$ should be a member of $f$ in the final nested graph,  \textsc{doNest} stores in a $Nesting$ file those membership associations as pairs $\Braket{f,m_i}$. By doing so, we omit the \texttt{GROUP BY} cost which affects the previously seen query languages. 
 
 
 %Table \ref{tab:comparisonTwo} provides a comparison between the general Nesting Algorithm \texttt{[Should we put the previous CIKM version on arXive, so that here we just focus on the main\\ algorithm?]} and over the THoSP implementation of the query provided in our running example, under the assumptions that are going to be soon introduced in the next section. In particular, while THoSP increases linearly alongside the data size, the general nesting algorithm grows quadratically, thus quickly leading to a intractable time evaluation for big data scenarios. Hereby, the THoSP algorithm is going to be used in comparisons with other problem-specific queries on different query languages and data structures.
