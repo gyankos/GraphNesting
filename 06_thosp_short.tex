@@ -22,7 +22,7 @@
 The graph nesting operator uses a classifier function grouping all the vertices and edges that shall appear as a member of a cluster $C$. 
 
 \begin{definition}[Nested Graph Classifier, $g_\kappa$]
-	Given a set of cluster labels $\;\mathcal{C}$, a \textbf{nested graph classifier} function $g_\kappa$ maps a nested graph $G_o$ into a nested  graph collection $\{G_C\}_{C\in\mathcal{C},G_C\neq \emptyset}$ of subgraphs of $G_o$. Such function uses a classifier function $\kappa\colon \VS\cup \ES\to \wp(\mathcal{C})$ mapping each vertex or edge in either no graph or more than one non-empty subgraph. Each nested graph $G_C$ is a pair
+	Given a set of cluster labels $\;\mathcal{C}$, a \textbf{nested graph classifier} function $g_\kappa$ maps a nested graph $G_o$ into a nested  graph collection $\{G_C\}_{C\in\mathcal{C},G_C\neq \emptyset}$ of subgraphs of $G_o$. Such function uses a classifier function $\kappa\colon \VS\cup \ES\to \wp(\mathcal{C})$ mapping each vertex or edge in either no graph or at least one non-empty subgraph. Each nested graph $G_C$ is a pair
 	$G_C=\Braket{\VS_C,\ES_C}$
 	where $\VS_C$ (and $\ES_C$) is the set of all the vertices $v$ (and edges $e$) in $G_o$ having $C\in \kappa(v)$ (and $C\in \kappa(e)$). Therefore, the nested graph classifier is defined as follows:
 	\[g_\kappa(G_o)=\Set{\Braket{\VS_C,\ES_C}|C\in\mathcal{C},(\VS_C\neq\emptyset\vee\ES_C=\emptyset)}\]
@@ -53,8 +53,8 @@ The previous functions are involved in the definition of our general graph nesti
 \begin{definition}[Graph Nesting]
 Given a nested graph $G_{(c,i)}$ within a nested graph database $G$, an object user defined function $\mu_\Omega$, an edge user defined function $\mu_E$ and an indexing function $\iota_G$, the graph nesting operator $\eta_{g_V,g_E,\mu_\Omega,\mu_E,\iota_G}^{\textbf{keep}}$ converts each subgraph in $G_C\in g_V(G_{(c,i)})$ (and $G_C\in g_E(G_{(c,i)})$) into a nested vertex (and nested edge) $\iota_G(G_C)$ and adds them in a newly-created nested vertex; vertices and edges in $G_{(c,i)}$ appearing neither in a nested vertex nor in a nested edge may be also returned if $\textbf{keep}$ is set to \texttt{true}. This operator returns the following nested graph:
 \[\begin{split}
-\eta&{}_{g_V,g_E,\mu_\Omega,\mu_E,\iota_G}^{\textbf{keep}}(G_{(c,i)})=G_{(\overline{c},dt(i))}\equiv\\
-&\equiv\Big\langle \{v\in \nu(c,i) | V(v)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_V(G_{(c,i)})),\\
+\eta&{}_{g_V,g_E,\mu_\Omega,\mu_E,\iota_G}^{\textbf{keep}}(G_{(c,i)})=G_{(\overline{c},dt(i))}=\\
+&=\Big\langle \{v\in \nu(c,i) | V(v)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_V(G_{(c,i)})),\\
 &\qquad \{e\in \epsilon(c,i) | E(e)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_E(G_{(c,i)}))\Big\rangle\\
 \end{split}\]
 where $\overline{c}=\max\{c|(c,i)\in\mathcal{V}\cup\mathcal{E}\}+1$. As a side effect of the graph nesting operation, the nesting graph database is updated using the nested graph classifier and user defined functions as follows:
@@ -68,7 +68,7 @@ where $\overline{c}=\max\{c|(c,i)\in\mathcal{V}\cup\mathcal{E}\}+1$. As a side e
 	& \epsilon\oplus \bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto \mathcal{E}_C\\
 	& \;\; \oplus (\overline{c},dt(i))\mapsto\{e\in \epsilon(c,i) | E(e)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_E(G_{(c,i)}))\Big\rangle\\
 	\end{align*}
-	where $f\oplus g$ denotes the extension of the (finite domain) function $f$ with another (finite domain) function $g$. $a\mapsto b$ defines a finite function, which domain contains only $a$.
+	where $(f\oplus g)(x)$ returns $g(x)$ if $x\in\textup{dom}(g)$ and $f(x)$ otherwise, and both $f$ and $g$ are finite domain functions. $a\mapsto b$ denotes a finite function, which domain contains only $a$.
 \end{definition}
 
 The following example describes the outcome of the graph nesting process.
@@ -93,7 +93,7 @@ For easing the nested graph representation, we assume that each \textsc{coAuthor
 
 \section{Two HOp Separated Patterns Algorithm}
 \label{sec:THOSPA}
-The THoSP algorithm requires a preliminary phase, where the operand is loaded into secondary memory using the \textbf{input data  representation}, and where no further ancillary indexing data structures are serialized. Such representation is presented in Figure \ref{nestedGraphVertex}: it is an extension of the usual graph adjacency lists (\textit{\textsc{OutgoingEdges[]}}, \textit{\textsc{IngoingEdges[]}}) where each vertex $o$ has an associated \textbf{\textsc{Header}} containing its id ($o$), its associated hash and the offset pointing to other serialzied fields, such as the labelset and eventually its property-value representation ($\Braket{\ell(o),\omega(o)}$). Last, for each edge we store its id and hash value, as well as the hash and the id of the adjacent vertex. Hash values are used within the proposed THoSP algorithm to store the correspondences with the graph patterns in Figure \ref{fig:patterns}; therefore, each $h(o)\approx \ell(o)$ is associated to a distinct hash value. We also suppose that the input graph data to be serialized does not represent an exact adjacency list: for this reason, the graph is firstly created in primary memory without the offset information, and then serialized into secondary memory. 
+The THoSP algorithm requires a preliminary phase, where the operand is loaded into secondary memory using the \textbf{input data  representation}, and where no further ancillary indexing data structures are serialized. Such representation is presented in Figure \ref{nestedGraphVertex}: it is an extension of the usual graph adjacency lists (\textit{\textsc{OutgoingEdges[]}}, \textit{\textsc{IngoingEdges[]}}) where each vertex $o$ has an associated \textbf{\textsc{Header}} containing its id ($o$), its associated hash and the offset pointing to other serialzied fields, such as the labelset and eventually its property-value representation ($\Braket{\ell(o),\omega(o)}$). Last, for each edge we store its id and hash value, as well as the hash and the id of the adjacent vertex. Hash values are used within the proposed THoSP algorithm to store the correspondences with the graph patterns in Figure \ref{fig:patterns}; therefore, each $\ell(o)$ is associated to a distinct hash value  $h(o)$. We also suppose that the input graph data to be serialized does not represent an exact adjacency list: for this reason, the graph is firstly created in primary memory without the offset information, and then serialized into secondary memory. 
 
 In order to solve our specific graph nesting problem as presented in Example \vref{ex2}, we have to formally determine the $\eta$ parameters representing THoSP.
 We focus on vertex (and edge) summarization patterns which grouping references associate unique vertices to distinct matching subgraphs; they require that:
