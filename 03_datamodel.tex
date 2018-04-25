@@ -1,7 +1,33 @@
 % !TeX root = 00_paper_entrypoint.tex
 
-\section{Nested Graphs}
-\label{sec:model}
+\section{Nested Graphs}\label{sec:model}
+\begin{table}
+\begin{adjustbox}{max width=.48\textwidth}
+\begin{tabular}{c|l|c}
+\toprule
+\parbox[t]{2mm}{\multirow{6}{*}{\rotatebox[origin=c]{90}{$G$, NGDB}}} & $\mathcal{V},\mathcal{E}$ & vertex/edge indices in $\mathbb{N}^2$\\
+                                 & $\lambda$ & edge to source-target vertices function\\
+                                 & $\ell$ & vertex/edge multilabelling in $\Sigma^*$\\
+                                 & $\omega$ & vertex/edge to tuple function\\
+                                 & $\nu,\varepsilon$ & vertex/edge containment functions for $\mathcal{V}\cup\mathcal{E}$\\
+                                 & $G_o$ & nested graph induced by vertex/edge $o\in\mathcal{V}\cup\mathcal{E}$\\
+\midrule
+\parbox[t]{2mm}{\multirow{10}{*}{\rotatebox[origin=c]{90}{$\eta$ operator dependencies}}} & $dt$ & index dovetailing function \\
+                                 & $f\colon D\xrightarrow{f}C$ & function $f$ with domain $D$ and codomain $C$\\
+                                 & $a\mapsto b$ & finite lambda function with domain $\{a\}$\\
+                                 & $\oplus$ & finite function extension\\         
+                                 & $\kappa$ & (graph) pattern, i.e. multilabelled graph classifier\\
+                                 & $g_\kappa(G_o)$ & nested graph classifier for $G_o$ over $\kappa$\\ 
+                                 & $f_C(\kappa)$ & morphism between pattern $\kappa$ and subgraph $G_C$\\
+                                 & $\iota_{G_o}(G_C)$ & indexing function for subgraphs $G_C\subseteq G_o$\\   
+                                 & $\mu_\Omega(G_C)$ & object user defined function\\  
+                                 & $\mu_E(G_C)$ & edge user defined function\\      
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{Table Of Notations}
+\vspace{-2em}
+\end{table}
 The term \textit{property graph}  \cite{angles12} usually refers to a directed, labelled and attributed multigraph. 
 % In other words, if there is a schema, each vertex and edge will be represented by a relational tuple and without, by a document of key-value pairs. 
 In a property graph a collection of \textit{labels} \cite{bergamimm17} is associated to every vertex and edge (e.g., \texttt{[}\mstr{Author}\texttt{]}) or \texttt{[}\mstr{coAuthorsip}\texttt{]}). Further on, vertices and edges may have arbitrary named attributes (\textit{properties}) in the form of key-value pairs (e.g., \texttt{\textbf{name}:Baldwin} or \texttt{\textbf{surname}:Oliver}). Property-value associations of vertices and edges can be represented by relational tuples; this is a common approach in literature used even when graphs have no fixed schema \cite{angles12}. We define the\textit{ nested (property) graph database} as the following extension of the property graph data model for nested information:

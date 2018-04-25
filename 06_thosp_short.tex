@@ -12,7 +12,8 @@
 	\caption{Serialized data structure representing an extended adjacency list for one nested vertex $o$. The header contains some basic information (such the representation size of $o$, its id and associated hash) and the offsets to the remaining fields. $\nu$ and $\epsilon$ are empty when the serialized graph represents a basic property graph as the one in Figure \ref{fig:inputbibex2}.}\label{nestedGraphVertex}
 \end{figure*}
 \section{Graph Nesting}\label{sec:nestingdef}
-The graph nesting operator uses a classifier function grouping all the vertices and edges that shall appear as a member of a cluster $C$. 
+We now define the graph nesting operation, which uses the outcome of the following partial and overlapping graph clustering operator (e.g., graph pattern matching) to provide structural aggregation:
+%The graph nesting operator uses a classifier function grouping all the vertices and edges that shall appear as a member of a cluster $C$. 
 
 \begin{definition}[Nested Graph Classifier, $g_\kappa$]
 	Given a set of cluster labels $\;\mathcal{C}$, a \textbf{nested graph classifier} function $g_\kappa$ maps a nested graph $G_o$ into a nested  graph collection $\{G_C\}_{C\in\mathcal{C},G_C\neq \emptyset}$ of subgraphs of $G_o$. Such function uses a classifier function $\kappa\colon \VS\cup \ES\to \wp(\mathcal{C})$ mapping each vertex or edge in either no graph or at least one non-empty subgraph. Each nested graph $G_C$ is a pair $G_C=\Braket{\VS_C,\ES_C}$
@@ -20,7 +21,7 @@ The graph nesting operator uses a classifier function grouping all the vertices 
 	\[g_\kappa(G_o)=\Set{\Braket{\VS_C,\ES_C}|C\in\mathcal{C},(\VS_C\neq\emptyset\vee\ES_C=\emptyset)}\]
 \end{definition}
 
-The former definition is also going to express graph pattern evaluations, where $\kappa$ may be represented as a graph (cf. Neo4J). This assumption allows us to use the graphs in Figure \ref{fig:patterns} as possible $\kappa$. When $\kappa$ is a graph, we denote as $\kappa\xrightarrow{f_C} G_C$ the function $f_C$ associating  each vertex (and edge) in $\kappa$ to possibly more than one vertex (and one edge) in a subgraph $G_C\in g_\kappa(G_o)$. In order to represent the latter subgraphs  as either vertices and edges, we may use
+When $\kappa$ is a pattern matching graph as in Figure  \ref{fig:patterns} as possible $\kappa$,   $\kappa\xrightarrow{f_C} G_C$ is the function $f_C$ associating  each vertex (and edge) in $\kappa$ to possibly more than one vertex (and one edge) in a subgraph $G_C\in g_\kappa(G_o)$. In order to represent the latter subgraphs  as either vertices and edges, we may use
 the following \textsc{User-Defined Functions}:
 \begin{definition}[User-Defined Functions]
 	An \textbf{object user defined function} $\mu_\Omega$ maps each subgraph $G_C\in g_\kappa(G_o)$ into a pair $\mu_\Omega(G_C)=(L,t)$, where $L\in\wp(\Sigma^*)$ is a set of labels and $t$ is a relational tuple.
@@ -38,7 +39,7 @@ Within our use case scenario, $\mu_\Omega$  must associate  the authors' informa
 
 While $\mu_\Omega$ may be used for transforming subgraphs to both vertices and edges, $\mu_E$ is only used to map subgraphs to edges.  
 In order to complete such transformation, we have to map each graph in $g_\kappa(G)$ into a new id $(\textbf{c},\textbf{i})\notin \VS\cup \ES$, for which an indexing function $\iota_G$ over each $G_C$ has to be defined within our specific task. As we will see in the next section, our scenario provides some constraints on both patterns; this allows the definition of an indexing function  uniquely associating each matched subgraph  $G_C$  to the grouping references' ids.
-The previous functions are involved in the definition of our general graph nesting operator:
+The previous functions are involved in the definition of our general graph nesting operator, generalizing current literatures' graph summarization and roll-up operators:
 
 
 
@@ -56,7 +57,7 @@ where $\overline{c}=\max\{c|(c,i)\in\mathcal{V}\cup\mathcal{E}\}+1$. As a side e
 	& \ell\oplus\bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto\texttt{fst}\;\mu_\Omega(G_C),\\
 	& \omega\oplus\bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto\texttt{snd}\;\mu_\Omega(G_C),\\
 	& \nu\oplus \bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto \mathcal{V}_C\\
-	& \;\; \oplus (\overline{c},dt(i))\mapsto \{v\in \nu(c,i) | V(v)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_V(G_{(c,i)})), \displaybreak\\
+	& \;\; \oplus (\overline{c},dt(i))\mapsto \{v\in \nu(c,i) | V(v)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_V(G_{(c,i)})), \\
 	& \epsilon\oplus \bigoplus_{G_C\in g_E(G_{(c,i)})\cup g_V(G_{(c,i)})}\iota_G(G_C)\mapsto \mathcal{E}_C\\
 	& \;\; \oplus (\overline{c},dt(i))\mapsto\{e\in \epsilon(c,i) | E(e)=\emptyset\wedge\textbf{keep} \}\cup \iota_G(g_E(G_{(c,i)}))\Big\rangle\\
 	\end{align*}
@@ -83,9 +84,8 @@ For easing the nested graph representation, we assume that each \textsc{coAuthor
 \end{ex}
 
 
-\section{Two HOp Separated Patterns Algorithm}
-\label{sec:THOSPA}
-The THoSP algorithm requires a preliminary phase, where the operand is loaded into secondary memory using the \textbf{input data  representation}, and where no ancillary indexing data structures are serialized. Such representation is presented in Figure \ref{nestedGraphVertex}: it is an extension of the usual graph adjacency lists (\textit{\textsc{OutgoingEdges[]}}, \textit{\textsc{IngoingEdges[]}}) where each vertex $o$ has an associated \textbf{\textsc{Header}} containing its id ($o$), its associated hash and the offset pointing to other serialzied fields, such as the labelset and eventually its property-value representation ($\Braket{\ell(o),\omega(o)}$). Last, for each edge we store its id and hash value, as well as the hash and the id of the adjacent vertex. Hash values are used within the proposed THoSP algorithm to store the correspondences with the graph patterns in Figure \ref{fig:patterns}; therefore, each $\ell(o)$ is associated to a distinct hash value  $h(o)$. We also suppose that the input graph data to be serialized does not represent an exact adjacency list: for this reason, the graph is initially created in primary memory without the offset information and afterwards serialized into secondary memory. 
+\section{Two HOp Separated Patterns Algorithm} \label{sec:THOSPA}
+Walking on the footsteps of relational databases, where algorithms were provided for specific instances of relational operators, THoSP provides an implementation for a specific graph nesting task. We now propose a sequential algorithm requiring a preliminary phase, where the operand is loaded into secondary memory using the \textbf{input data  representation}, and where no ancillary indexing data structures are serialized. Such representation is presented in Figure \ref{nestedGraphVertex}: it is an extension of the graph adjacency lists serialization previously proposed in \cite{bergamimm17} where each vertex $o$ has an associated \textbf{\textsc{Header}} containing its id ($o$), its associated hash and the offset pointing to other serialzied fields, such as the labelset and eventually its property-value representation ($\Braket{\ell(o),\omega(o)}$). Last, for each edge we store its id and hash value, as well as the hash and the id of the adjacent vertex. Hash values are used within the proposed THoSP algorithm to store the correspondences with the graph patterns in Figure \ref{fig:patterns}; therefore, each $\ell(o)$ is associated to a distinct hash value  $h(o)$. We also suppose that the input graph data to be serialized does not represent an exact adjacency list: for this reason, the graph is initially created in primary memory without the offset information and afterwards serialized into secondary memory. 
 
 In order to solve our specific graph nesting problem as presented in Example \vref{ex2}, we have to formally determine the $\eta$ parameters representing THoSP.
 We focus on vertex (and edge) summarization patterns which grouping references associate unique vertices to distinct matching subgraphs; they require that:
@@ -144,6 +144,7 @@ Please note that the former function provides such association without additiona
 				\EndProcedure
 			\end{algorithmic}
 		\end{minipage}
+	\vspace{-2em}
 	\end{adjustbox}
 \end{algorithm}
 
@@ -152,12 +153,14 @@ Algorithm \ref{alg:THoSPAlgorithm} provides the desired interpretation for the t
  After opening the previously-loaded graph operand through memory mapping (Line \ref{openMMAP}), we must first identify a sub-pattern $\alpha$ (Line \ref{restriction}) that is going to be visited only once within the graph (Line \ref{vdashalpha}), after which either the vertex or the path summarization pattern can be visited in their entirety. We also perform some restrictions over these patterns enhancing such optimizations: for each vertex $v'$ matched by $\alpha$ (Line \ref{vdashalpha}) we know that we must (possibly) visit all the edges going from $v'$ towards the vertices $\gamma_E^{src}$ and $\gamma_E^{dst}$.  Therefore, having an edge as a constraint in $\alpha$ linking $v$ towards $\gamma_E^{src}$ or $\gamma_E^{dst}$ both in $E$ and $V$  reduces the graph visiting time to the actual edges traversed from $v'$ meeting the grouping references (Line \ref{thereIsEdge}). Therefore, we know when we finish  our patterns' instantiation after exhaustively matching all the elements within the pattern.
 As a consequence, a ``path join'' is performed between the two nested patterns (Line \ref{firstJoin} with \ref{substantiallyIs2}): this is evident from the two vertex nested for loops appearing in the algorithm.  
 
+\input{99_results_table.tex}
 
 Our physical data model differentiates the \textit{input data  represnetation} from the \textbf{query result} (Line \ref{serialize}). 
 We suppose that the latter is only used by the user to read the outcome of the nesting process as in other query languages (such as SPARQL and SQL) and does not have to
 produce ``materialised views''. Therefore, the result of the graph query itself can postpone the creation of a complete ``materialised view'', which will later use the same representation of the input data by using both the id information and the application of the User Defined Functions. In particular, the former $dt$ function is used to associate both the nested vertices, $\overline{u}$ and $\overline{w}$, and the nested edge $\overline{e}$ to their grouping references. This allows to easily reconstruct the complete nested graph information by using the inverse function of $dt$, thus allowing the postponed application of the user-defined functions.
 
 
+
 Last, the \textsc{doNest} procedure performs the association between the nested vertices (and edges) $f$ and its members within the input graph $m_i$. When the pattern requires that $m_i$ should be a member of $f$ in the final nested graph,  \textsc{doNest} stores those membership associations as pairs $\Braket{f,m_i}$ in a $Nesting$ file. By doing so, we omit the \texttt{GROUP BY} cost which affects the previously seen query languages. 
 
-Please note that if in $g_E$ there is no path connecting $\alpha$ to $\gamma_E^{src}$ or $\gamma_E^{dst}$, the problem may quickly become cubic with regard to the size of the vertices, because we must create all the possible permutations where $v'$ is present alongside another element matching $\gamma_E^{src}$ or $\gamma_E^{dst}$.
+%% TODO: Please note that if in $g_E$ there is no path connecting $\alpha$ to $\gamma_E^{src}$ or $\gamma_E^{dst}$, the problem may quickly become cubic with regard to the size of the vertices, because we must create all the possible permutations where $v'$ is present alongside another element matching $\gamma_E^{src}$ or $\gamma_E^{dst}$.

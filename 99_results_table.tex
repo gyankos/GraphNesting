@@ -1,0 +1,107 @@
+
+\begin{table*}[!t]
+	\centering
+\begin{minipage}[!t]{0.47\textwidth}
+	\begin{adjustbox}{max width=\textwidth}
+		%\begin{minipage}[b]{\textwidth}
+		\centering
+		\begin{tabular}{@{}c|rrrr|r@{}}
+			\toprule
+			\multicolumn{1}{c}{\textbf{Operand}} & \multicolumn{5}{|c}{\textbf{Operand Loading and Indexing Time (C/C++)} (ms)}  \\
+			$|V|$  & {PostgreSQL} & {Virtuoso} & {ArangoDB}  &  {Neo4J (Java)} & {\textbf{Nested Graphs}}  \\
+			\midrule
+			$10$   & 8.00$\cdot 10^0$ & 3.67$\cdot 10^0$ & 4.30$\cdot 10^1$ & 3.95$\cdot 10^3$  & 1.30$\cdot 10^{-1}$\\
+			$10^2$  & 1.80$\cdot 10^1$ & 6.86$\cdot 10^0$ & 2.67$\cdot 10^2$ &  4.12$\cdot 10^3$ & 3.30$\cdot 10^{-1}$\\
+			$10^3$  & 4.50$\cdot 10^1$ & 2.35$\cdot 10^1$ & 1.28$\cdot 10^3$ & 5.25$\cdot 10^3$ & 3.51$\cdot 10^0$\\
+			$10^4$   & 2.25$\cdot 10^2$ & 3.71$\cdot 10^2$ & 1.15$\cdot 10^4$ &  1.12$\cdot 10^4$ & 3.18$\cdot 10^1$\\
+			$10^5$   & 1.87$\cdot 10^3$ & 3.51$\cdot 10^3$ & 1.35$\cdot 10^5$ &  1.19$\cdot 10^6$ & 3.37$\cdot 10^2$ \\
+			$10^6$  & 1.91$\cdot 10^4$ & 3.46$\cdot 10^4$ & 1.36$\cdot 10^6$ & $>$1H & 3.69$\cdot 10^3$\\
+			$10^7$   & 1.84$\cdot 10^5$ & 3.64$\cdot 10^5$ & $>$1H & $>$1H & 4.40$\cdot 10^4$\\
+			$10^8$  & 1.98$\cdot 10^6$ & $>$1H & $>$1H & $>$1H & 5.18$\cdot 10^5$\\
+			\bottomrule
+		\end{tabular}
+	}
+	%\end{minipage}
+	\subcaption{\textit{Operand Loading and Indexing Time}. PostgreSQL and Neo4J have transactions, while Virtuoso and ArangoDB are transactionless. Nested Graphs are our transactionless proposed method.}
+	\label{tab:storeevaluation}
+\end{adjustbox}
+\end{minipage}\quad \begin{minipage}[!t]{0.45\textwidth}
+\begin{adjustbox}{max width=\textwidth}
+	%\begin{minipage}[b]{\textwidth}
+	\centering
+	\begin{tabular}{@{}cr|rrrr|r@{}}
+		\toprule
+		\multicolumn{2}{c}{\textbf{Operands Size}} & \multicolumn{5}{|c}{\textbf{\textsc{Two HOp Separated Pattern} Time (C/C++)} (ms)}  \\
+		$|V|$  & \#Subgraph  &  {SQL+JSON} & SPARQL & AQL  &  Cypher &{\textbf{THoSP}}  \\
+		\midrule
+		$10$ & $3$  & 2.10$\cdot 10^0$ &  1.10$\cdot 10^1$ & 3.89$\cdot 10^0$  & 6.81$\cdot 10^2$  & \textbf{1.10}$\cdot 10^{-1}$\\
+		$10^2$ & $58$  & 9.68$\cdot 10^0$ &  6.30$\cdot 10^1$ & 1.23$\cdot 10^1$  &  1.94$\cdot 10^3$ & \textbf{1.40}$\cdot 10^{-1}$\\
+		$10^3$ & $968$  & 1.80$\cdot 10^1$ & 6.30$\cdot 10^1$ & 1.50$\cdot 10^1$ & $>$1H & \textbf{4.60}$\cdot 10^{-1}$\\
+		$10^4$ & $8,683$  & 6.92$\cdot 10^1$ & 3.64$\cdot 10^2$ & 4.67$\cdot 10^1$ &  $>$1H & \textbf{4.07}$\cdot 10^0$\\
+		$10^5$ & $88,885$  & 2.94$\cdot 10^2$ & 4.15$\cdot 10^3$ & 5.09$\cdot 10^2$ &  $>$1H & \textbf{4.38}$\cdot 10^1$ \\
+		$10^6$ & $902,020$  & 2.61$\cdot 10^3$ & 5.03$\cdot 10^4$ & 7.21$\cdot 10^3$ & $>$1H & \textbf{5.63}$\cdot 10^2$\\
+		$10^7$ & $8,991,417$  & 2.57$\cdot 10^4$ & 6.72$\cdot 10^5$ & 9.22$\cdot 10^5$ & $>$1H & \textbf{8.20}$\cdot 10^3$\\
+		$10^8$ & $89,146,891$  & 3.96$\cdot 10^5$ & $>$1H & $>$1H & $>$1H & \textbf{9.18}$\cdot 10^4$\\
+		\bottomrule
+	\end{tabular}
+}
+\subcaption{\textit{Graph Nesting Time}. The columns in this table provide the query languages used to benchmark }\label{tab:querytimeeval}
+%\end{minipage}
+\end{adjustbox}
+\end{minipage}
+\caption{Two HOp Separated Pattern. Experimental evaluations over gMark. We set a timeout at $1H=3.6\cdot 10^{6}$ ms.}
+\vspace{-2em}
+\end{table*}
+\begin{table*}[!t]
+	\centering
+	\begin{minipage}[!t]{0.47\textwidth}
+		\begin{adjustbox}{max width=\textwidth}
+			%\begin{minipage}[b]{\textwidth}
+			\centering
+			\begin{tabular}{@{}c|rrrr|r@{}}
+				\toprule
+				\multicolumn{1}{c}{\textbf{Operand}} & \multicolumn{5}{|c}{\textbf{Operand Loading and Indexing Time (C/C++)} (ms)}  \\
+				$|V|$  & {PostgreSQL} & {Virtuoso} & {ArangoDB}  &  {Neo4J (Java)} & {\textbf{Nested Graphs}}  \\
+				\midrule
+				$10$   & 2.59$\cdot 10^1$   & 1.21$\cdot 10^1$  & 2.43$\cdot 10^2$ &  2.93$\cdot 10^3$ & \textbf{3.49}$\cdot 10^{-1}$\\
+				$10^2$  & 2.80$\cdot 10^1$  & 1.22$\cdot 10^1$  & 3.91$\cdot 10^2$ & 3.10$\cdot 10^3$  & \textbf{8.87}$\cdot 10^{-1}$\\
+				$10^3$  & 2.96$\cdot 10^1$  & 7.86$\cdot 10^1$  & 2.67$\cdot 10^3$ & 4.65$\cdot 10^3$ & \textbf{6.53}$\cdot 10^0$\\
+				$10^4$   & \textbf{4.00}$\cdot 10^1$ & 7.43$\cdot 10^2$  & 2.34$\cdot 10^4$ & 4.23$\cdot 10^4$ & 6.90$\cdot 10^1$\\
+				$10^5$   & 3.44$\cdot 10^3$ & 2.11$\cdot 10^4$  & 6.08$\cdot 10^5$ & $>$1H & \textbf{1.58}$\cdot 10^3$ \\
+				$10^6$  & 1.35$\cdot 10^4$  & 1.38$\cdot 10^5$  & $>$1H & $>$1H & \textbf{1.18}$\cdot 10^4$\\
+				$10^7$   & \textbf{4.77}$\cdot 10^4$ &              $>$1H  & $>$1H & $>$1H & 1.05$\cdot 10^5$\\
+				%$10^8$  & -- & $>$1H & $>$1H & $>$1H & 1.08$\cdot 10^6$\\
+				\bottomrule
+			\end{tabular}
+		}
+		%\end{minipage}
+		\subcaption{\textit{Operand Loading and Indexing Time}. For this dataset, our proposed operand loading time is comparable with PostgreSQL's physical model.}
+		\label{tab:storeevaluation2}
+	\end{adjustbox}
+\end{minipage}\quad \begin{minipage}[!t]{0.45\textwidth}
+	\begin{adjustbox}{max width=\textwidth}
+		%\begin{minipage}[b]{\textwidth}
+		\centering
+		\begin{tabular}{@{}cr|rrrr|r@{}}
+			\toprule
+			\multicolumn{2}{c}{\textbf{Operands Size}} & \multicolumn{5}{|c}{\textbf{\textsc{Two HOp Separated Pattern} Time (C/C++)} (ms)}  \\
+			$|V|$  & \#Subgraph  &  {SQL+JSON} & SPARQL & AQL  &  Cypher &{\textbf{THoSP}}  \\
+			\midrule
+			$10$ & 19  & 1.69$\cdot 10^0$   &  3.4$\cdot 10^1$  & 6.57$\cdot 10^{-1}$  & 2.38$\cdot 10^3$    & \textbf{2.82}$\cdot 10^{-1}$\\
+			$10^2$ & 255 & 1.75$\cdot 10^0$  & 3.22$\cdot 10^2$ & 2.51$\cdot 10^0$  & 1.01$\cdot 10^4$    & \textbf{3.46}$\cdot 10^{-1}$\\
+			$10^3$ & 23,119  & 4.71$\cdot 10^1$ &  1.22$\cdot 10^3$ & 8.18$\cdot 10^1$  & $>$1H & \textbf{1.39}$\cdot 10^{1}$\\
+			$10^4$ & 5,411,205  & 1.53$\cdot 10^4$ &  2.77$\cdot 10^5$ & 2.08$\cdot 10^4$  & $>$1H & \textbf{2.58}$\cdot 10^3$\\
+			$10^5$ & 97,079,329  & 1.20$\cdot 10^6$ & $>$1H & {\color{red}OOM$^1$}  & $>$1H & \textbf{1.97}$\cdot 10^5$ \\
+			$10^6$ & 241,448,529  & $>$1H &           $>$1H & {\color{red}OOM$^1$}  & $>$1H    & \textbf{6.22}$\cdot 10^5$\\
+			$10^7$ & 361,759,509  & {\color{red}OOM$^2$} &      $>$1H & {\color{red}OOM$^1$}  & $>$1H      & \textbf{7.74}$\cdot 10^5$\\
+			%$10^8$ & --  & -- & $>$1H & $>$1H & $>$1H & --\\
+			\bottomrule
+		\end{tabular}
+	}
+	\subcaption{\textit{Graph Nesting Time}. In some cases, an {\color{red}Out Of Memory} error (for either primary$^{\color{red}1}$ or secondary$^{\color{red}2}$ memory) interrupts the benchmarks before the 1H timeout.}\label{tab:querytimeeval2}
+	%\end{minipage}
+\end{adjustbox}
+\end{minipage}
+\caption{Two HOp Separated Pattern. Experimental evaluations over a subset of Microsoft Academic Graph \cite{Tang08,Sinha15}. Our solution clearly outperforms the default query plan implemented over those different graph query languages and databases.}
+\vspace{-2em}
+\end{table*}
