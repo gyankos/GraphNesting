@@ -1,6 +1,4 @@
 \input{preamb.tex}
-
-
 \begin{abstract}
   Despite the growing popularity of techniques related to graph summarization, a general operator for the flexible nesting of graphs is still missing.
   We propose a novel nested graph data model and a powerful graph nesting operator. In contrast to existing approaches, our approach is able to summarize vertices and paths among vertex groups within a single query. Further on, our model supports partial nestings under the preservation of original graph elements as well as the full recovery of the original graph. We propose an efficient nesting algorithm (THoSP) that is able to perform vertex and path nestings in a single visit of the input graph. Results of an experimental evaluation show that THoSP outperforms equivalent implementations based on graph (Cypher, SPARQL), relational (SQL) and document oriented (ArangoDB) databases.
@@ -9,35 +7,6 @@
 \begin{document}
 \fancyhead{}
 \title{THoSP: an Algorithm for Nesting Property Graphs}
-%\numberofauthors{3} 
-%\renewcommand{\auwidth}{0.23\linewidth}
-%\author{
-%\alignauthor
-%Giacomo Bergami\\
-%       \affaddr{University of Bologna}\\
-%       \affaddr{CSE Department}\\
-%       \affaddr{Bologna, Italy}\\
-%       \email{giacomo.bergami2@\\
-%       	unibo.it}
-%% 2nd. author
-% \alignauthor
-%André Petermann\\
-%       \affaddr{University of Leipzig}\\
-%       \affaddr{Leipzig, Germany}\\
-%       \email{petermann@informatik.\\
-%       	uni-leipzig.de}
-%% 3rd. author
-%\alignauthor Danilo Montesi\\
-%       \affaddr{University of Bologna}\\
-%       \affaddr{CSE Department}\\
-%       \affaddr{Bologna, Italy}\\
-%       \email{danilo.montesi@\\
-%       	unibo.it}
-%}
-
-
-%\renewcommand{\shortauthors}{[Authors]}
-
 \author{Giacomo Bergami}
 \affiliation{\institution{University of Bologna}}
 \email{giacomo.bergami2@unibo.it}
@@ -49,8 +18,6 @@
 \author{Danilo Montesi}
 \affiliation{\institution{University of Bologna}}
 \email{danilo.montesi@unibo.it}
-
-
 \begin{CCSXML}
 	<ccs2012>
 	<concept>
@@ -68,74 +35,10 @@
 
 \ccsdesc[300]{Information systems~Query optimization}
 \ccsdesc[300]{Information systems~Graph-based database models}
-
 \keywords{Graph Nesting, Nested graphs, Nested Property Graphs}
-
-%
-%\author{G.K.M. Tobin}
-%\authornote{The secretary disavows any knowledge of this author's actions.}
-%\affiliation{%
-%	\institution{Institute for Clarity in Documentation}
-%	\streetaddress{P.O. Box 1212}
-%	\city{Dublin}
-%	\state{Ohio}
-%	\postcode{43017-6221}
-%}
-%\email{webmaster@marysville-ohio.com}
-%
-%\author{Lars Th{\o}rv{\"a}ld}
-%\authornote{This author is the
-%	one who did all the really hard work.}
-%\affiliation{%
-%	\institution{The Th{\o}rv{\"a}ld Group}
-%	\streetaddress{1 Th{\o}rv{\"a}ld Circle}
-%	\city{Hekla}
-%	\country{Iceland}}
-%\email{larst@affiliation.org}
-%
-%\author{Valerie B\'eranger}
-%\affiliation{%
-%	\institution{Inria Paris-Rocquencourt}
-%	\city{Rocquencourt}
-%	\country{France}
-%}
-%\author{Aparna Patel}
-%\affiliation{%
-%	\institution{Rajiv Gandhi University}
-%	\streetaddress{Rono-Hills}
-%	\city{Doimukh}
-%	\state{Arunachal Pradesh}
-%	\country{India}}
-%\author{Huifen Chan}
-%\affiliation{%
-%	\institution{Tsinghua University}
-%	\streetaddress{30 Shuangqing Rd}
-%	\city{Haidian Qu}
-%	\state{Beijing Shi}
-%	\country{China}
-%}
-%
-%\author{Charles Palmer}
-%\affiliation{%
-%	\institution{Palmer Research Laboratories}
-%	\streetaddress{8600 Datapoint Drive}
-%	\city{San Antonio}
-%	\state{Texas}
-%	\postcode{78229}}
-%\email{cpalmer@prl.com}
-%
-%\author{John Smith}
-%\affiliation{\institution{The Th{\o}rv{\"a}ld Group}}
-%\email{jsmith@affiliation.org}
-%
-%\author{Julius P.~Kumquat}
-%\affiliation{\institution{The Kumquat Consortium}}
-%\email{jpkumquat@consortium.net}
 
 \fancyhead{}
 \maketitle
-
-
 
 \input{01_introduction.tex}
 \input{02_related_bis.tex}
@@ -147,5 +50,4 @@
 \bibliography{mbib} 
 \appendix
 \input{60_languages.tex}
-
 \end{document}
