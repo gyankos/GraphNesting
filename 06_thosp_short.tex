@@ -158,9 +158,6 @@ As a consequence, a ``path join'' is performed between the two nested patterns (
 Our physical data model differentiates the \textit{input data  represnetation} from the \textbf{query result} (Line \ref{serialize}). 
 We suppose that the latter is only used by the user to read the outcome of the nesting process as in other query languages (such as SPARQL and SQL) and does not have to
 produce ``materialised views''. Therefore, the result of the graph query itself can postpone the creation of a complete ``materialised view'', which will later use the same representation of the input data by using both the id information and the application of the User Defined Functions. In particular, the former $dt$ function is used to associate both the nested vertices, $\overline{u}$ and $\overline{w}$, and the nested edge $\overline{e}$ to their grouping references. This allows to easily reconstruct the complete nested graph information by using the inverse function of $dt$, thus allowing the postponed application of the user-defined functions.
-
-
-
 Last, the \textsc{doNest} procedure performs the association between the nested vertices (and edges) $f$ and its members within the input graph $m_i$. When the pattern requires that $m_i$ should be a member of $f$ in the final nested graph,  \textsc{doNest} stores those membership associations as pairs $\Braket{f,m_i}$ in a $Nesting$ file. By doing so, we omit the \texttt{GROUP BY} cost which affects the previously seen query languages. 
 
 %% TODO: Please note that if in $g_E$ there is no path connecting $\alpha$ to $\gamma_E^{src}$ or $\gamma_E^{dst}$, the problem may quickly become cubic with regard to the size of the vertices, because we must create all the possible permutations where $v'$ is present alongside another element matching $\gamma_E^{src}$ or $\gamma_E^{dst}$.
