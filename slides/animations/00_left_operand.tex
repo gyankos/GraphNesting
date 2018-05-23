@@ -1,0 +1,12 @@
+\begin{tikzpicture}
+\clip (0.3,-2.5) rectangle (7.7, 1);
+\node[user] (a1) at (2,.25) {\user{Alice}{$t_1$}};
+\node[user] (a3) at (2,-2.25) {\user{Carl}{$t_1$}};
+\node[user] (a2) at (6.3,.25) {\user{Bob}{$t_2$}};
+\node[user] (a4) at (6.3,-2.25) {\user{Dan}{$t_2$}};
+
+\path[->,orange] (a1.north east) edge node [anchor=south,sloped] {\{Follows\}} (a2.north west);
+\path[->,orange] (a2.south east) edge  node [anchor=south,sloped] {\{Follows\}\qquad} (a4.north east);
+\path[<-,orange] (a3.north west) edge node [anchor=north,sloped] {\{Follows\}\qquad} (a1.south west);
+\path[<-,orange] (a3.east) edge node [anchor=south,sloped] {\{Follows\}\qquad} (a4);
+\end{tikzpicture}

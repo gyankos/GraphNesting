@@ -1,0 +1,62 @@
+\section{Experimental Evaluation}
+\begin{lucido}[Dataset]
+	We want to show that the combination of THoSP with the proposed physical data model outperforms the query plans for other query languages (Cypher, SPARQL, SQL, AQL).
+	
+	We performed our tests on both synthetic and real world data, using  $n=1\div 8$ operands with vertex size $10^n$:
+	\begin{itemize}
+		\item GMark graph generator.
+		\item Random samples of Microsoft Academic Graph.
+	\end{itemize} 
+	
+	Our tests' source code is available at:
+	\begin{center}
+		\url{https://bitbucket.org/unibogb/graphnestingc/src}
+	\end{center}
+\end{lucido}
+
+\begin{lucido}[Competing DataBases]
+Given that the only graph database using Java was the the worst performing one, we implemented our solution only in C++ The graph nesting operator was implemented in each DB language by redurning ID collections.
+	
+\begin{itemize}
+	\item PostgreSQL was used to evaluate SQL queries. We ran the queries directly in \texttt{psql}.
+	\item SPARQL queries were evaluated over Virtuoso. SPARQL queries were send via ODBC (C++).
+	\item Cypher queries were evaluated over Neo4J. SPARQL queries were send via the \texttt{execute} method.
+	\item AQL queries were evaluated over ArangoDB.  We ran the queries directly in \texttt{arangosh}.
+\end{itemize}
+\end{lucido}
+
+\begin{lucido}[GMark Benchmark]
+\resizebox{\textwidth}{!}{\begin{tabular}{@{}cr|rrrr|r@{}}
+		\toprule
+			\multicolumn{2}{c}{\textbf{Operands Size}} & \multicolumn{5}{|c}{\textbf{\textsc{Two HOp Separated Pattern} Time (C/C++)} (ms)}  \\
+$|V|$  & \#Subgraph  &  {SQL+JSON} & SPARQL & AQL  &  Cypher &{\textbf{THoSP}}  \\
+		\midrule
+		$10$ & $3$  & 2.10 & 11 & 15.00 & 681.40  & 0.11\\
+		$10^2$ & $58$  & 9.68 & 63 & 3.89 &  1,943.98 & 0.14\\
+		$10^3$ & $968$  & 17.96 & 63 & 12.34 & {\color{red}$>$3.60$\times 10^6$} & 0.46\\
+		$10^4$ & $8,683$  & 69.27 & 364 & 46.74 &  {\color{red}$>$3.60$\times 10^6$} & 4.07\\
+		$10^5$ & $88,885$  & 294.23 & 4,153 & 508.87 &  {\color{red}$>$3.60$\times 10^6$} & 43.81 \\
+		$10^6$ & $902,020$  & 2,611.48 & 50,341 & 7,212.19 & {\color{red}$>$3.60$\times 10^6$} & 563.02\\
+		$10^7$ & $8,991,417$  & 25,666.14 & 672,273 & 922,590.00 & {\color{red}$>$3.60$\times 10^6$} & 8,202.93\\
+		$10^8$ & $89,146,891$  & 396,523.88 & {\color{red}$>$3.60$\times 10^6$} & {\color{red}$>$3.60$\times 10^6$} & {\color{red}$>$3.60$\times 10^6$} & 91,834.20\\
+		\bottomrule
+\end{tabular}}
+\end{lucido}
+
+\begin{lucido}[Microsoft Academic Graph Benchmark]
+	\resizebox{\textwidth}{!}{\begin{tabular}{@{}cr|rrrr|r@{}}
+			\toprule
+			\multicolumn{2}{c}{\textbf{Operands Size}} & \multicolumn{5}{|c}{\textbf{\textsc{Two HOp Separated Pattern} Time (C/C++)} (ms)}  \\
+			$|V|$  & \#Subgraph  &  {SQL+JSON} & SPARQL & AQL  &  Cypher &{\textbf{THoSP}}  \\
+			\midrule
+			$10$ & 19  & 1.69$\cdot 10^0$   &  3.4$\cdot 10^1$  & 6.57$\cdot 10^{-1}$  & 2.38$\cdot 10^3$    & \textbf{2.82}$\cdot 10^{-1}$\\
+			$10^2$ & 255 & 1.75$\cdot 10^0$  & 3.22$\cdot 10^2$ & 2.51$\cdot 10^0$  & 1.01$\cdot 10^4$    & \textbf{3.46}$\cdot 10^{-1}$\\
+			$10^3$ & 23,119  & 4.71$\cdot 10^1$ &  1.22$\cdot 10^3$ & 8.18$\cdot 10^1$  & $>$1H & \textbf{1.39}$\cdot 10^{1}$\\
+			$10^4$ & 5,411,205  & 1.53$\cdot 10^4$ &  2.77$\cdot 10^5$ & 2.08$\cdot 10^4$  & $>$1H & \textbf{2.58}$\cdot 10^3$\\
+			$10^5$ & 97,079,329  & 1.20$\cdot 10^6$ & $>$1H & {\color{red}OOM$^1$}  & $>$1H & \textbf{1.97}$\cdot 10^5$ \\
+			$10^6$ & 241,448,529  & $>$1H &           $>$1H & {\color{red}OOM$^1$}  & $>$1H    & \textbf{6.22}$\cdot 10^5$\\
+			$10^7$ & 361,759,509  & {\color{red}OOM$^2$} &      $>$1H & {\color{red}OOM$^1$}  & $>$1H      & \textbf{7.74}$\cdot 10^5$\\
+			%$10^8$ & --  & -- & $>$1H & $>$1H & $>$1H & --\\
+			\bottomrule
+	\end{tabular}}
+\end{lucido}

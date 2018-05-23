@@ -1,0 +1,86 @@
+\begin{tikzpicture}
+					\begin{scope}[start chain=going left,node distance=0pt]
+					\def\width{9ex}
+					\tikzstyle{frame}=[
+					font=\tiny,
+					draw,
+					rectangle split,
+					rectangle split part align={center, left},
+					rectangle split empty part height=0ex,
+					rectangle split empty part depth=0ex,
+					rectangle split empty part width=0ex,
+					]
+					
+					%%MAIN
+					\node (main) [frame,
+					rectangle split parts=12, %% teal
+					rectangle split part fill={yellow,teal!30,white,white,yellow,teal!30,white,yellow,teal!30,yellow,teal!30,white} 
+					] at (-1,0) {%
+						\nodepart{one} Alice
+						\nodepart{two} 2
+						\nodepart{three} (3,2,1)
+						\nodepart{four} (2,3,2)
+						\nodepart{five} Bob
+						\nodepart{six} 1
+						\nodepart{seven} (4,4,3)
+						\nodepart{eight} Carl
+						\nodepart{nine} 0
+						\nodepart{ten} Dan
+						\nodepart{eleven} 1
+						\nodepart{twelve} (2,3,4)
+					};
+					
+					%% SORT
+					\node (sort) [draw,font=\tiny,
+					rectangle split,
+					rectangle split parts=12,
+					text centered,
+					align=center,
+					rectangle split part fill={Fuchsia!30,Fuchsia!30,brown!30,Fuchsia!30,Fuchsia!30,brown!30,Fuchsia!30,Fuchsia!30,brown!30,Fuchsia!30,Fuchsia!30,brown!30} 
+					] at (0.5,0) {%
+						\nodepart{one} \kk{1}
+						\nodepart{two} \cc{1}
+						\nodepart{three} 
+						
+						\nodepart{four} \kk{2}
+						\nodepart{five} \cc{3}
+						\nodepart{six} 
+						
+						\nodepart{seven} \kk{3}
+						\nodepart{eight} \cc{2}
+						\nodepart{nine} 
+						
+						\nodepart{ten} \kk{4}
+						\nodepart{eleven} \cc{4}
+						\nodepart{twelve} 
+						
+					};
+					
+					\node (qsort1) [draw,font=\tiny,
+					rectangle split,
+					rectangle split parts=8,
+					text centered,
+					align=center,
+					rectangle split part fill={Fuchsia!30,brown!30,Fuchsia!30,brown!30,Fuchsia!30,brown!30,Fuchsia!30,brown!30} 
+					] at (-2.3,0) {%
+						\nodepart{one}   \cc{\textbf 1}
+						\nodepart{two}  
+						\nodepart{three}  \cc{\textbf 2}
+						\nodepart{four}  
+						\nodepart{five} \cc{\textbf 3}
+						\nodepart{six} 
+						\nodepart{seven} \cc{\textbf 4}
+						\nodepart{eight} 
+					};
+					\draw[-latex] (qsort1.two east) -- (main.one west);
+					\draw[-latex] (qsort1.four east) -- (main.five west);
+					\draw[-latex] (qsort1.six east) -- (main.eight west);
+					\draw[-latex] (qsort1.eight east) -- (main.ten west);
+					
+					
+					\draw[-latex] (sort.three west) -- (main.one east);
+					\draw[-latex] (sort.six west) -- (main.eight east);
+					\draw[-latex] (sort.nine west) -- (main.five east);
+					\draw[-latex] (sort.twelve west) -- (main.ten east);
+					\end{scope}
+					\end{tikzpicture}

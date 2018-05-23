@@ -1,0 +1,37 @@
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{multilucido}[Definition]
+	\begin{sottolucido}
+		\begin{tcolorbox}[title=Graph Join]
+			Given two graphs $G_a=(V,E,A_v,A_e)$ and $G_b=(V',E',A_v',A_e')$, a graph $\theta$-join is defined as follows:
+			\[\alert{G_a\bowtie_\theta^{\textbf{es}}G_b}=(V\bowtie_\theta V',E_{\textbf{es}},A_v\cup A_v',A_e\cup A_e')\]
+			where $\theta$ is a binary predicate over the vertices, and $\bowtie_\theta$ the relational $\theta$-join among the vertices, and $E_{\textbf{es}}$ is a subset of all the possible edges linking the vertices in $V\bowtie_\theta V'$ through the \textbf{es} semantics.
+		\end{tcolorbox}
+		
+		Left, right and full vertex joins respectively provide left, right and full graph joins. Therefore, for any possible $\alert{\otimes}$ vertex combination:
+		\[G_a\alert{\otimes}_\theta^{\textbf{es}}G_b=(V\alert{\otimes}_\theta V',E_{\textbf{es}},A_v\cup A_v',A_e\cup A_e')\]
+	\end{sottolucido}
+
+	\begin{sottolucido}
+		Both conjunctive and disjunctive edge semantics can be expressed through an edge-join operation: 
+		\begin{description}
+			\item[Conjunctive] $E  \bowtie_{\Theta_\wedge} E’$
+			\item[Disjunctive] $E \fullouterjoin_{\Theta_\wedge} E’$
+		\end{description}
+		where $\Theta_\wedge$ predicate is defined as: \[\Theta_\wedge(e,e')\Leftrightarrow e\in E \wedge e'\in E' \wedge \lambda(e,e')\in(V\bowtie_\theta V' )^2\]
+	\end{sottolucido}
+\end{multilucido}
+
+
+
+%\begin{frame}{Graph Join -- Definition (1)}
+%\begin{tcolorbox}[title=Graph Join]
+%	Given two graphs $G_a=(V,E,A_v,A_e)$ and $G_b=(V',E',A_v',A_e')$, a graph $\theta$-join is defined as follows:
+%\[\alert{G_a\bowtie_\theta^{\textbf{es}}G_b}=(V\bowtie_\theta V',E_{\textbf{es}},A_v\cup A_v',A_e\cup A_e')\]
+%where $\theta$ is a binary predicate over the vertices, and $\bowtie_\theta$ the relational $\theta$-join among the vertices, and $E_{\textbf{es}}$ is a subset of all the possible edges linking the vertices in $V\bowtie_\theta V'$ through the \textbf{es} semantics.
+%\end{tcolorbox}
+%	
+%	Left, right and full vertex joins respectively provide left, right and full graph joins. Therefore, for any possible $\alert{\otimes}$ vertex combination:
+%	\[G_a\alert{\otimes}_\theta^{\textbf{es}}G_b=(V\otimes_\theta V',E_{\textbf{es}},A_v\cup A_v',A_e\cup A_e')\]
+%\end{frame}

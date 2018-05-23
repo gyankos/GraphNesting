@@ -1,0 +1,175 @@
+\usetheme[numbering=fraction]{metropolis}           % Use metropolis theme
+
+\usefonttheme{professionalfonts}
+\usepackage[T1]{fontenc}
+\usepackage[type1]{libertine}
+\renewcommand{\ttdefault}{cmtt}
+
+\usepackage{booktabs}
+\usepackage{braket}
+\usepackage{multirow}
+
+
+
+
+%% Do not cound backup slides
+\usepackage{appendixnumberbeamer}
+
+% English Format, please!
+\usepackage[UKenglish]{babel}% http://ctan.org/pkg/babel
+\usepackage[UKenglish]{isodate}% \year=2018
+\day=10
+\month=6
+
+\title{THoSP: an Algorithm for Nesting Property Graphs}
+\date{\today}
+\author[G. Bergami et al.]{Giacomo Bergami \textsuperscript{1} \and Andr\'e Petermann \textsuperscript{2} \and Danilo Montesi \textsuperscript{1}\\
+1\textsuperscript{st} Joint  GRADES-NDA International Workshop, 2018}
+\institute[Bologna \& Leipzig Uni.]{ Universit\`a di Bologna\textsuperscript{1},  Universit\"at Leipzig\textsuperscript{2}}
+
+%% Time Arrow
+\usepackage{smartdiagram}
+
+%%joins
+\def\ojoin{\setbox0=\hbox{$\bowtie$}%
+	\rule[0.2ex]{.27em}{.4pt}\llap{\rule[1ex]{.27em}{.4pt}}}
+\def\leftouterjoin{\mathbin{\ojoin\mkern-2mu\Join}}
+\def\rightouterjoin{\mathbin{\Join\mkern-3.4mu\ojoin}}
+\def\fullouterjoin{\mathbin{\ojoin\mkern-7mu\Join\mkern-7mu\ojoin}}
+
+%%Boxes
+\usepackage{tcolorbox}
+
+%%Animations
+\usepackage{eulervm}
+\usepackage[osf,sc]{mathpazo}
+\usepackage{inconsolata}
+\usetikzlibrary{matrix,fit,calc}
+\definecolor{webgreen}{rgb}{0,.5,0}
+\usepackage{tikz}
+\usetikzlibrary{tikzmark,positioning}
+\newcommand*{\yellowemph}[1]{%
+	\tikz[baseline=(X.base)] \node[rectangle, fill=yellow, rounded corners, inner sep=0.3mm] (X) {#1};%
+}
+\newcommand*{\greenemph}[1]{%
+	\tikz[baseline=(X.base)] \node[rectangle, fill=green, rounded corners, inner sep=0.3mm] (X) {#1};%
+}
+\tikzstyle{none}=[inner sep=0pt]
+\tikzstyle{new}=[circle,fill=white,draw=black]
+\tikzstyle{smallnode}=[circle, inner sep=0mm, outer sep=0mm, minimum size=2mm, draw=black, fill=black]
+\tikzstyle{unselected}=[circle,draw=black,dashed]
+\usetikzlibrary{decorations.pathreplacing}
+\usepackage{preview}
+\usetikzlibrary{automata,arrows,backgrounds,positioning,fit,calc}
+\PreviewEnvironment{tikzpicture}
+
+\tikzstyle{every node}=[font=\small]
+\tikzset{>=latex}
+\tikzstyle{tuple} = [draw,rounded corners,align=center,label={above right:\{#1\}}]
+\tikzstyle{user}[red] = [draw=#1,rounded corners,align=center,label={above:\{User\}}]
+\tikzstyle{proj}[blue] = [draw=#1,rounded corners,align=center,label={above:\{Paper\}}]
+\tikzstyle{user2}[red] = [draw=#1,rounded corners,align=center,label={above:\{User\}}]
+\tikzstyle{user3}[red] = [draw=#1,rounded corners,align=center,fill=blue!30,label={above:\{User\}}]
+\tikzstyle{proj2}[blue] = [draw=#1,rounded corners,align=center,label={above:\{Paper\}}]
+\tikzstyle{proj3}[blue] = [draw=#1,rounded corners,align=center,fill=blue!30,label={above:\{Paper\}}]
+\tikzstyle{result}[blue] = [draw=#1,rounded corners,align=center,label={above:\{User,Paper\}}]
+\tikzstyle{result2}[blue] = [draw=#1,rounded corners,align=center,fill=blue!30,label={above:\{User,Paper\}}]
+
+\newcommand{\nbd}[2]{\draw[red,very thick] ($(#1)-(0.15,-0.28)$) rectangle ($(#2)+(0.3,-0.1)$);}
+\newcommand{\nbl}[2]{\draw[red,very thick] ($(#1)-(0.15,-0.28)$) rectangle ($(#2)+(1.5,-0.15)$);}
+\newcommand{\nbm}[2]{\draw[red,very thick] ($(#1)-(0.25,-0.28)$) rectangle ($(#2)+(0.85,-0.15)$);}
+\newcommand{\nbmc}[1]{\draw[blue,very thick,fill=cyan, fill opacity=0.2] ($(#1)-(0.15,-0.28)$) rectangle ($(#1)+(0.85,-0.15)$);}
+\newcommand{\nblc}[1]{\draw[blue,very thick,fill=cyan, fill opacity=0.2] ($(#1)-(0.15,-0.28)$) rectangle ($(#1)+(1.5,-0.15)$);}
+\newcommand{\propval}[2]{\textsc{#1}=\textit{#2}}
+\newcommand{\user}[2]{\propval{Name}{#1}}
+\newcommand{\paper}[2]{\propval{Title}{#1}\\ \propval{Conference}{#2}}
+\newcommand{\proj}[2]{\propval{Title}{#2}\\ \propval{1Author}{#1}}
+\newcommand{\result}[2]{\propval{Title}{#2}\\ \propval{1Author}{#1}\\ \propval{Name}{#1}}
+
+\usetikzlibrary{chains}
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{arrows}
+\usetikzlibrary{fit}
+
+%% Colors
+\newcommand\kk[1]{\textcolor{RoyalBlue}{\text{\textup{\textbf{\texttt{#1}}}}}}
+\newcommand\cc[1]{\textcolor{Sepia}{\text{\textup{\textbf{\texttt{#1}}}}}}
+\newcommand{\remark}[1]{\textbf{\alert{#1}}}
+
+%% Definition boxes
+\tcbset{
+	colback=red!5!white,
+	boxrule=0.1pt,
+	colframe=red!75!black,
+	fonttitle=\bfseries
+}
+
+%% Objectifing elements
+\usepackage{environ}
+%%% Defining a slide, which is also a section
+\NewEnviron{lucido}[1][]{%
+	\subsection{#1}
+	\begin{frame}{\insertsection\;--\;#1}
+	\BODY
+	\end{frame}
+}
+
+%% Defining a slide consisting of multiple subparts
+\NewEnviron{multilucido}[1][]{%
+	\subsection{#1}
+	\BODY
+	\setcounter{contalucido}{0}
+}
+
+\newcounter{contalucido}
+\NewEnviron{sottolucido}[1][\thecontalucido]{%
+	\refstepcounter{contalucido}
+	\begin{frame}{\insertsection~--~\insertsubsection~(#1)}
+		\BODY
+	\end{frame}
+}
+
+%%Code
+\usepackage{listings}
+\lstdefinelanguage{pseudi}{
+	 basicstyle=\tiny,
+	 showstringspaces=false,
+	 literate={:}{{{\color{RoyalBlue}:}}}1,
+	keywords={for, each, in},
+	ndkeywords={Map},
+	sensitive=false,
+	comment=[l]{//},
+}
+\NewEnviron{sottofragile}[1][\thecontalucido]{%
+	\refstepcounter{contalucido}
+	\begin{frame}[fragile]{\insertsection~--~\insertsubsection~(#1)}
+		\BODY
+	\end{frame}
+}
+
+
+
+
+\definecolor{webgreen}{rgb}{0,.5,0}
+\newcommand{\mstr}[1]{\textup{\color{webgreen}``#1''}}
+
+\newcommand{\nested}{\ensuremath{G_o}}
+\newcommand{\ngraph}{{g}}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\cod}{cod}
+\newcommand{\ONTA}{\mstr{onta}}
+\newcommand{\RELA}{\mstr{rela}}
+\newcommand{\SRC}{\mstr{src}}
+\newcommand{\DST}{\mstr{dst}}
+\newcommand{\VS}{\mathcal{V}}
+\newcommand{\ES}{\mathcal{E}}
+\newcommand{\Keys}{K}
+\newcommand{\Val}{V}
+\newcommand{\valF}{F}
+\newcommand{\nestF}{\nu}
+\newcommand{\prov}{\epsilon}
+
+\titlegraphic{\begin{tikzpicture}\node[inner sep=0pt,opacity=0.1] (russell) at (4,2) {\includegraphics[width=1.3\textwidth]{seal.png}};\end{tikzpicture}}
+\addtobeamertemplate{title page}{}{}

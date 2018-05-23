@@ -1,0 +1,36 @@
+\section{Logical Model}
+\begin{multilucido}[Design]
+	\begin{sottolucido}
+		The nested (property) graph data model is an extension of the logical model for graph joins. Therefore, we want to preserve the same assumptions:
+		\begin{itemize}
+			\setbeamertemplate{itemize items}[square]
+			\item The resulting nested graph is not a materialized view (as in SQL's \texttt{SELECT}).
+			\item The nested graph is serialized by only using the ID information. Attribute, values and labels can be completely reconstructed from these informations and the pattern rewriting information.
+		\end{itemize}
+	\end{sottolucido}
+
+\begin{sottolucido}
+	The following modelling choices allow the reconstruction of the required pieces of information:
+	\begin{itemize}
+		\setbeamertemplate{itemize items}[square]
+		\item Vertices and edges are distinctly identified by ids ($\mathbb{N}^2$).
+		\item A nested graph database is a property graph, where each vertex and edge may contain (\remark{nest}) another property graph ($\nu, \epsilon$).
+		\item Each vertex or edge within the graph can be considered as a possible graph operand.
+	\end{itemize}
+\end{sottolucido}
+\end{multilucido}
+
+
+
+
+
+\begin{lucido}[Definition]
+\hspace*{-3pt}\makebox[\linewidth][c]{\begin{tcolorbox}[width=1.2\textwidth,title=Graph Nesting]
+		A nested graph database is a nested graph, where each vertex and edge may represent a graph. Given a nested graph $G=(\mathcal{V},\mathcal{E})$, a vertex pattern $g_V$, a edge pattern $g_E$ vertex pattern containing grouping references: 
+		\[\begin{split}
+		\alert{\eta_\iota^{\textbf{keep}}(G)}=\Big\langle&\Set{v\in \mathcal{V}|g_V(v)=\emptyset,\textbf{keep}}\cup \iota(g_V(G)),\\	
+		&\Set{e\in \mathcal{E}|g_E(e)=\emptyset,\textbf{keep}}\cup \iota(g_E(G))\Big\rangle
+		\end{split}\]
+		where $\iota$ is an indexing function associating to each matched graph into one new single identifier not appearing in $G$, and keep is set to true whether the non-traversed vertices and edges must be preserved into the final graph. The newly generated nested graph is inserted into the graph database which also contains $G$. Values associated to both nested vertices and edges are determined by user defined functions.
+\end{tcolorbox}}
+\end{lucido}

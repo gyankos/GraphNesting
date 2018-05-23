@@ -1,0 +1,67 @@
+\matrix [entity=Author,fill=orange!20,label={above right:0}]  (a1) {
+	\entitynamenode
+	\properties{
+		name : Abigail,        
+		surname : Conner
+	}
+};
+\matrix [entity=Author,fill=orange!20,label={above right:1}] at (0,-6) (a2) {
+	\entitynamenode
+	\properties{
+		name : Baldwin,        
+		surname : Oliver
+	}
+};
+\matrix [entity=Author,fill=orange!20,label={above right:2}] at (0,-3) (a3) {
+	\entitynamenode
+	\properties{
+		name : Cassie,        
+		surname : Norman
+	}
+};
+
+\matrix [entity=Paper,fill=green!10,label={above right:3}] at (9,0) (s1) {
+	\entitynamenode
+	\properties{
+		title : On Joining Graphs
+	}
+};
+\matrix [entity=Paper,fill=green!10,label={above right:4}] at (9,-3) (s3) {
+	\entitynamenode
+	\properties{
+		title : Object Databases
+	}
+};
+\matrix [entity=Paper,fill=green!10,label={above right:5}] at (9,-6) (s2) {
+	\entitynamenode
+	\properties{
+		title : On Nesting Graphs
+	}
+};
+
+\draw[->,very thick] (a1) -- (s1) node [elabel,label={below:6}] {AuthorOf};
+\draw[->,very thick] (a3) -- (s1) node [elabel,label={below:7}] {AuthorOf};
+\draw[->,very thick] (a3) -- (s3) node [elabel,label={below:8}] {AuthorOf};
+\draw[->,very thick] (a2) -- (s3) node [elabel,label={below:9}] {AuthorOf};
+\draw[->,very thick] (a2) -- (s2) node [elabel,label={below:10}] {AuthorOf};
+\node at (30,-17) {};
+
+\begin{pgfonlayer}{background}
+\node<2-5>[inner sep=10pt,rounded corners,fill=green!50,fit=(s1)]{};
+
+\node<3,5>[inner sep=10pt,rounded corners,fill=green!50,fit=(a1)]{};
+\draw<3,5>[->,selected edge] (a1) -- (s1) {};
+
+\draw<4-5>[->,selected edge] (a3) -- (s1) {};
+\node<4-5>[inner sep=10pt,rounded corners,fill=green!50,fit=(a3)]{};
+
+\node<6-8>[inner sep=10pt,rounded corners,fill=green!50,fit=(s3)]{};
+\node<6,8>[inner sep=10pt,rounded corners,fill=green!50,fit=(a3)]{};
+\node<7-8>[inner sep=10pt,rounded corners,fill=green!50,fit=(a2)]{};
+\draw<6,8>[->,selected edge] (a3) -- (s3) {};
+\draw<7-8>[->,selected edge] (a2) -- (s3) {};
+
+\node<9>[inner sep=10pt,rounded corners,fill=green!50,fit=(s2)]{};
+\node<9>[inner sep=10pt,rounded corners,fill=green!50,fit=(a2)]{};
+\draw<9>[->,selected edge] (a2) -- (s2) {};
+\end{pgfonlayer}

@@ -1,0 +1,13 @@
+\begin{tikzpicture}
+\clip (0.3,-3) rectangle (10.1, 1.7);
+\node[proj] (a1) at (2,0) {\proj{Alice}{Graphs}};
+\node[proj] (a1b) at (5,0) {\proj{Alice}{Join}};
+\node[proj] (a3) at (5,-2) {\proj{Carl}{Projection}};
+\node[proj] (a2) at (8.3,0) {\proj{Bob}{OWL}};
+\node[proj] (a4) at (8.3,-2) {\proj{Dan}{$\mu$-calc}};
+
+\path[->,purple] (a1.north east) edge [bend left=40] node [anchor=south,sloped] {\{Cites\}} (a2.north west);
+\path[->,purple] (a2.south west) edge  node [anchor=south,sloped] {\{Cites\}\qquad} (a3.north east);
+\path[<-,purple] (a3.north west) edge node [anchor=north,sloped] {\{Cites\}\qquad} (a1b.south west);
+\path[->,purple] (a3.south) edge [bend right=30] node [anchor=south,sloped] {\{Cites\}} (a4.south);
+\end{tikzpicture}

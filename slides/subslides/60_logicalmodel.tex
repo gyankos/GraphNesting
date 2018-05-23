@@ -1,0 +1,16 @@
+\begin{lucido}[Nested Graph Database]
+\hspace*{-3pt}\makebox[\linewidth][c]{\begin{tcolorbox}[width=1.2\textwidth,title=Nested Graph DataBase]
+			Given a set $\Sigma^*$ of strings,
+		a \textbf{nested (property) graph database} $G$ is a tuple $G=\Braket{\VS, \ES, \lambda,\ell,\omega,\nestF,\prov}$, where:
+		\begin{itemize}
+			\item $\VS,\ES\in \mathbb{N}^2$ s.t. $\VS\cap \ES=\emptyset$
+			\item source and target $\lambda\colon \ES\to \VS^2$.
+			\item labelling $\ell:\VS\cup \ES\to \wp(\Sigma^*)$
+			\item object mapping $\omega:\VS\cup \ES\to\Omega$
+			\item vertices' containment: $\nestF\colon (\VS\cup \ES)\to\wp(\VS)$
+			\item edges' containment: $\prov\colon(\VS\cup \ES)\to \wp(\ES)$
+		\end{itemize} 
+		Each vertex or edge $o\in V\cup E$ induces a \textbf{nested (property) graph} as the following pair:
+		\[G_o=\Braket{\nu(o),\Set{e\in\epsilon(o)|\lambda(e)\in (\cup_{n\geq 0}\;{\nu\epsilon}^{(n)}(\{o\}))^2}}\]
+\end{tcolorbox}}
+\end{lucido}

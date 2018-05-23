@@ -1,0 +1,95 @@
+
+\matrix<2-> [entity=Paper,fill=green!10,label={above right:3}] at (10,-16) (s1p) {
+	\entitynamenode
+	\properties{
+		title : On Joining Graphs
+	}
+};
+\matrix<6-> [entity=Paper,fill=green!10,label={above right:4}] at (19,-16) (s3p) {
+	\entitynamenode
+	\properties{
+		title : Object Databases
+	}
+};
+
+\node<8->[inner sep=25pt,rounded corners,draw=blue!80,fit=(s3p),label=above right :{$\epsilon({\color{blue}\texttt{0}\to\texttt{1}}),\epsilon({\color{blue}\texttt{1}\to\texttt{0}})$}] (12cp){
+};
+
+\matrix<9-> [entity=Paper,fill=green!10,label={above right:5}] at (26,-16) (s2p) {
+	\entitynamenode
+	\properties{
+		title : On Nesting Graphs
+	}
+};
+\matrix<3-> [entity=Author,fill=orange!20,label={above right:0}] at (11,-10) (a1p) {
+	\entitynamenode
+	\properties{
+		name : Abigail,        
+		surname : Conner
+	}
+};
+
+\node<3->[inner sep=10pt,rounded corners,draw=orange!80,fit=(s1p),
+label={above left:$\epsilon(\texttt{\color{orange}0})$}] (s1cp){
+};
+\draw<3->[color=orange!80] (a1p.south) -- (s1cp.north west);
+\draw<3->[color=orange!80] (a1p.south) -- (s1cp.north east);
+\path<3->[top color=orange!50, bottom color=orange!10,opacity=0.2] (a1p.south) -- (s1cp.north west) -- (s1cp.north east) -- (a1p.south);
+
+\node<5->[inner sep=25pt,rounded corners,draw=blue!80,fit=(s1p),
+label={above:$\epsilon({\color{blue}\texttt{0}\to\texttt{2}}),\epsilon({\color{blue}\texttt{2}\to\texttt{0}})\qquad \qquad\qquad\qquad\qquad $ }
+%,label=below :{$\epsilon(\texttt{\color{blue}20})$}
+] (02cp){
+};
+
+
+\node<6->[rounded corners,draw=orange!80,fit=(s1p) (s3p),
+label={above right:$\epsilon(\texttt{\color{orange}2})$}] (c22p) {
+};
+
+
+
+\matrix<7-> [entity=Author,fill=orange!20,label={above right:1}] at (26,-10) (a2p) {
+	\entitynamenode
+	\properties{
+		name : Baldwin,        
+		surname : Oliver
+	}
+};
+\node<7-8>[inner sep=10pt,rounded corners,draw=orange!80,fit=(s3p),
+label={above right:$\epsilon(\texttt{\color{orange}1})$}] (s3pft){
+};
+\draw<7-8>[color=orange!80] (a2p.south east) -- (s3p.north west);
+\draw<7-8>[color=orange!80] (a2p.south east) -- (s3p.north east);
+\path<7-8>[top color=orange!50, bottom color=orange!10,opacity=0.2] (a2p.south east) -- (s3p.north west) -- (s3p.north east) -- (a2p.south east);
+\matrix<4-> [entity=Author,fill=orange!20,label={above right:2}] at (20,-10) (a3p) {
+	\entitynamenode
+	\properties{
+		name : Cassie,        
+		surname : Norman
+	}
+};
+\draw<4-5>[color=orange!80] (a3p.south) -- (s1cp.north west);
+\draw<4-5>[color=orange!80] (a3p.south) -- (s1cp.north east);
+\path<4-5>[top color=orange!50, bottom color=orange!10,opacity=0.2] (a3p.south) -- (s1cp.north west) -- (s1cp.north east) -- (a3p.south);
+\draw<6->[color=orange!80] (a3p.south west) -- (c22p.north);
+\draw<6->[color=orange!80] (a3p.south west) -- (c22p.north east);
+\path<6->[top color=orange!50, bottom color=orange!10,opacity=0.2] (a3p.south west) -- (c22p.north) -- (c22p.north east) -- (a3p.south west);
+
+
+\draw<5->[latex-latex] (a1p) edge [bend left] node  [elabel,sloped] (c02p) {\color{blue}coauthorship} (a3p) ;
+\draw<5->[color=blue!80] (c02p.south) -- (02cp.north);
+\draw<5->[color=blue!80] (c02p.south) -- (02cp.north east);
+
+\draw<8->[latex-latex] (a3p.south) edge [bend right] node [elabel,sloped] (c21p) {\color{blue}coauthorship} (a2p.south) ;
+\draw<8->[color=blue!80] (c21p.south) -- (12cp.north);
+\draw<8->[color=blue!80] (c21p.south) -- (12cp.north east);
+
+
+
+\node<9->[inner sep=20pt,rounded corners,draw=orange!80,fit=(s2p) (s3p),
+label={above right:$\qquad\qquad\qquad \epsilon(\texttt{\color{orange}1})$}] (c24p) {
+};
+\draw<9->[color=orange!80] (a2p.south east) -- ($ (c24p.north east) - (1,0) $);
+\draw<9->[color=orange!80] (a2p.south east) -- (c24p.north east);
+\path<9->[top color=orange!50, bottom color=orange!10,opacity=0.2] (a2p.south east) -- ($ (c24p.north east) - (1,0) $) -- (c24p.north east) -- (a2p.south east);

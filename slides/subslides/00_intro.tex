@@ -1,0 +1,60 @@
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Research Problem}
+\begin{frame}{Research Problem}
+The integration between graph and ``semi-structured nested'' data requires a new data model and a common query language.
+\begin{enumerate}
+\item<1-> Graph and Semistructured data are \alert{orthogonal} data representations.
+\item<2-> The outcome of the data integration process should be represented into one \alert{general data model}.
+\item<3-> Current query languages do not support most of the tasks required by \alert{data integration}.
+\end{enumerate}
+
+\note<1->{Oggi giorno sono disponibili sempre pi\`u dati a grafo e semistrutturati.\\
+	\medskip
+	
+	Mentre i dati annidati semistrutturati vengono utilizzati nei DW per effettuare aggregazioni ed astrazioni sui dati originali, i dati a grafo rappresentano meglio relazioni tra entit\`a.}
+\end{frame}
+
+\begin{lucido}[Data Integration: Background]
+	\smartdiagramset{sequence item font size=\footnotesize}
+	\smartdiagram[sequence diagram]{
+		Translation,
+		Schema Alignment,
+		\alert{Resolution},
+		\alert{Sources}}
+	\begin{enumerate}
+		\item Translating the sources to the most general representation.
+		\item Aligning local schemas to hub schemas.
+		\item \alert{Solving the alignments over the data}.
+		\item \alert{Integrate the solved sources}.
+	\end{enumerate}
+\note{Prima di risolvere algoritmicamente il più problema più generale di effettuare operazioni più simili alle graph grammars con pattern matching e rescritture (ovvero, ``rewriting''), ci focalizziamo su un sottoproblema specifico, che è quello della creazione di grafi annidati a partire dai grafi dati inizialmente.}
+\end{lucido}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Research Questions}
+\begin{frame}{Research Questions}
+\begin{enumerate}[<+->]
+\item[\refstepcounter{enumi}\textbf{\alert{\arabic{enumi}.}}] Is it possible to define a binary graph operator allowing graph combinations? \textbf{Graph Joins}. Is it possible to perform it efficiently? \textbf{GCEA (and GCLA) Algorithm}.
+
+\item[\refstepcounter{enumi}\textbf{\alert{\arabic{enumi}.}}] Is it possible to represent graphs allowing arbitrary nestings? \textbf{Nested Graphs}.
+
+\item[\refstepcounter{enumi}\textbf{\alert{\arabic{enumi}.}}] Is it possible to arbitrarily nest one single graph via one single operator, generalizing summarization and allowing graph matching and rewriting?
+\textbf{Graph Nesting \& THoSP}
+\item {\footnotesize Is it possible to define a generalize semistructured model allowing the representation of most of the very well known data models?
+\textsc{Generalized Semistructured (data) Model}}.
+
+
+\item {\footnotesize Is it possible to define one query language allowing  queries in all the (semi)structured data representations and to provide data integration tasks over the Generalized Semistructured Model?
+\textsc{Generalized Semistructured Query Language}}
+\end{enumerate}
+
+\end{frame}
+
+

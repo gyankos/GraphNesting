@@ -1,0 +1,323 @@
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{lucido}[Graph Conjunctive Equals Algorithm]
+The GCEA Algorithm consists of three phases:
+\begin{enumerate}[<+->]
+	\item Generating the hashing function $h$ from the vertex $\theta$ predicate.
+	\item \alert{Partitioning}: associating to each vertex id an hash value.
+	\item \alert{Serialization}: storing the partitioned operands in secondary memory.
+	\item \alert{(Partition) Sorted Join}: actual graph join from \texttt{mmap}-ped serialized operands.
+\end{enumerate}
+\end{lucido}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{multilucido}[Serialization]
+	\begin{sottolucido}
+		\begin{center}
+			\begin{columns}[T]
+				\begin{column}{.7\textwidth}
+					\centering
+					\resizebox{.8\textwidth}{!}{\input{animations/00_left_operand.tex}}
+					\input{repetita/00_serialize_description.tex}
+				\end{column}
+				\begin{column}{.3\textwidth}
+					\input{animations/03_left_serialized.tex}
+				\end{column}
+			\end{columns}
+		\end{center}
+	\end{sottolucido}
+
+	\begin{sottolucido}
+		\begin{center}
+			\begin{columns}[T]
+				\begin{column}{.7\textwidth}
+					\centering
+					\resizebox{.8\textwidth}{!}{\input{animations/00_right_operand.tex}}
+					\input{repetita/00_serialize_description.tex}
+				\end{column}
+				\begin{column}{.3\textwidth}
+					\input{animations/04_right_serialized.tex}
+				\end{column}
+			\end{columns}
+		\end{center}
+	\end{sottolucido}
+\end{multilucido}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{(Partition) Sorted Join} 
+\begin{frame}{GCEA Algorithm: (Partition) Sorted Join}
+	\begin{columns}[T]
+		\begin{column}{.4\textwidth}
+			
+			\begin{itemize}[<only@+>]
+				\item \alert{Intersection of the primary index through a linear scan}
+				\item Select the nodes with the first common hash \cc{1}.
+				\item Select the nodes with the first common hash \cc{1}. In particular, node \kk{1} from the left operand matches with node
+				\kk{1} from the right operand. Moreover, outgoing nodes \kk{3} left and \kk{4} right also match.
+				\item Select the nodes with the first common hash \cc{1}. In particular, node \kk{1} from the left operand matches with node
+				\kk{2} from the right operand. Moreover, outgoing nodes \kk{2} left and \kk{3} right also match.
+				\item Select the nodes with the first common hash \cc{2}. In particular, node \kk{3} from the left operand matches with node
+				\kk{4} from the right operand. No edges and outgoing vertices match.
+				\item On the next steps, \kk{2} left matches with \kk{3} right, but \kk{2} has no outgoing edges. Similarly, \kk{4} left matches with \kk{5} right, but \kk{5} has no outgoing edges.
+			\end{itemize}
+			\onslide<1->
+		\end{column}
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		\begin{column}{.3\textwidth}
+			\begin{tikzpicture}
+			\begin{scope}[start chain=going left,node distance=0pt]
+			\def\width{9ex}
+			\tikzstyle{frame}=[
+			font=\tiny,
+			draw,
+			rectangle split,
+			rectangle split part align={center, left},
+			rectangle split empty part height=0ex,
+			rectangle split empty part depth=0ex,
+			rectangle split empty part width=0ex,
+			]
+			
+			%%MAIN
+			\node (main) [frame,
+			rectangle split parts=12, %% teal
+			rectangle split part fill={yellow,teal!30,white,white,yellow,teal!30,white,yellow,teal!30,yellow,teal!30,white} 
+			] at (-1,0) {%
+				\nodepart{one} Alice
+				\nodepart{two} 2
+				\nodepart{three} (3,2,1)
+				\nodepart{four} (2,3,2)
+				\nodepart{five} Bob
+				\nodepart{six} 1
+				\nodepart{seven} (4,4,3)
+				\nodepart{eight} Carl
+				\nodepart{nine} 0
+				\nodepart{ten} Dan
+				\nodepart{eleven} 1
+				\nodepart{twelve} (2,3,4)
+			};
+			
+			%% SORT
+			\node (sort) [draw,font=\tiny,
+			rectangle split,
+			rectangle split parts=12,
+			text centered,
+			align=center,
+			rectangle split part fill={Fuchsia!30,Fuchsia!30,brown!30,Fuchsia!30,Fuchsia!30,brown!30,Fuchsia!30,Fuchsia!30,brown!30,Fuchsia!30,Fuchsia!30,brown!30} 
+			] at (0.5,0) {%
+				\nodepart{one} \kk{1}
+				\nodepart{two} \cc{1}
+				\nodepart{three} 
+				
+				\nodepart{four} \kk{2}
+				\nodepart{five} \cc{3}
+				\nodepart{six} 
+				
+				\nodepart{seven} \kk{3}
+				\nodepart{eight} \cc{2}
+				\nodepart{nine} 
+				
+				\nodepart{ten} \kk{4}
+				\nodepart{eleven} \cc{4}
+				\nodepart{twelve} 
+				
+			};
+			
+			\node (qsort1) [draw,font=\tiny,
+			rectangle split,
+			rectangle split parts=8,
+			text centered,
+			align=center,
+			rectangle split part fill={Fuchsia!30,brown!30,Fuchsia!30,brown!30,Fuchsia!30,brown!30,Fuchsia!30,brown!30} 
+			] at (-2.3,0) {%
+				\nodepart{one}   \cc{\textbf 1}
+				\nodepart{two}  
+				\nodepart{three}  \cc{\textbf 2}
+				\nodepart{four}  
+				\nodepart{five} \cc{\textbf 3}
+				\nodepart{six} 
+				\nodepart{seven} \cc{\textbf 4}
+				\nodepart{eight} 
+			};
+			\draw[-latex] (qsort1.two east) -- (main.one west);
+			\draw[-latex] (qsort1.four east) -- (main.five west);
+			\draw[-latex] (qsort1.six east) -- (main.eight west);
+			\draw[-latex] (qsort1.eight east) -- (main.ten west);
+			
+			
+			\draw[-latex] (sort.three west) -- (main.one east);
+			\draw[-latex] (sort.six west) -- (main.eight east);
+			\draw[-latex] (sort.nine west) -- (main.five east);
+			\draw[-latex] (sort.twelve west) -- (main.ten east);
+			\onslide<2-4>
+			\nbd{qsort1.one}{qsort1.two}
+			\nbm{main.one}{main.four}
+			\onslide<3>
+			\nbmc{main.three}
+			\onslide<4>
+			\nbmc{main.four}
+			\onslide<5>
+			\nbd{qsort1.three}{qsort1.four}
+			\nbm{main.five}{main.seven}
+			\onslide<1->
+			\end{scope}
+			\end{tikzpicture}
+			
+		\end{column}
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		\begin{column}{.3\textwidth}
+			\begin{tikzpicture}
+			\begin{scope}[start chain=going left,node distance=0pt]
+			\def\width{9ex}
+			\tikzstyle{frame}=[
+			font=\tiny,
+			draw,
+			rectangle split,
+			rectangle split part align={center, left},
+			rectangle split empty part height=0ex,
+			rectangle split empty part depth=0ex,
+			rectangle split empty part width=0ex,
+			]
+			
+			%%MAIN
+			\node (main) [frame,
+			rectangle split parts=14, %% teal
+			rectangle split part fill={yellow,teal!30,white,yellow,teal!30,white,yellow,teal!30,white,yellow,teal!30,white,yellow,teal!30} 
+			] at (-1,0) {%
+				\nodepart{one} Graphs, Alice
+				\nodepart{two} 1
+				\nodepart{three} (4,2,1)
+				\nodepart{four} Join, Alice
+				\nodepart{five} 1
+				\nodepart{six} (3,3,2)
+				\nodepart{seven} OWL, Bob
+				\nodepart{eight} 1
+				\nodepart{nine} (3,3,3)
+				\nodepart{ten} Project, Carl
+				\nodepart{eleven} 1
+				\nodepart{twelve} (5,4,4)
+				\nodepart{thirteen} $\mu$-calc, Dan
+				\nodepart{fourteen} 0
+			};
+			
+			%% SORT
+			\node (sort) [draw,font=\tiny,
+			rectangle split,
+			rectangle split parts=15,
+			text centered,
+			align=center,
+			rectangle split part fill={Fuchsia!30,Fuchsia!30,brown!30,Fuchsia!30,Fuchsia!30,brown!30,Fuchsia!30,Fuchsia!30,brown!30,Fuchsia!30,Fuchsia!30,brown!30,Fuchsia!30,Fuchsia!30,brown!30} 
+			] at (0.5,0) {%
+				\nodepart{one} \kk{1}
+				\nodepart{two} \cc{1}
+				\nodepart{three} 
+				
+				\nodepart{four} \kk{2}
+				\nodepart{five} \cc{1}
+				\nodepart{six} 
+				
+				\nodepart{seven} \kk{3}
+				\nodepart{eight} \cc{3}
+				\nodepart{nine} 
+				
+				\nodepart{ten} \kk{4}
+				\nodepart{eleven} \cc{2}
+				\nodepart{twelve} 
+				
+				\nodepart{thirteen} \kk{5}
+				\nodepart{fourteen} \cc{4}
+				\nodepart{fifteen} 
+				
+			};
+			
+			\node (qsort1) [draw,font=\tiny,
+			rectangle split,
+			rectangle split parts=8,
+			text centered,
+			align=center,
+			rectangle split part fill={Fuchsia!30,brown!30,Fuchsia!30,brown!30,Fuchsia!30,brown!30,Fuchsia!30,brown!30} 
+			] at (-2.3,0) {%
+				\nodepart{one}   \cc{\textbf 1}
+				\nodepart{two}  
+				\nodepart{three}  \cc{\textbf 2}
+				\nodepart{four}  
+				\nodepart{five} \cc{\textbf 3}
+				\nodepart{six} 
+				\nodepart{seven} \cc{\textbf 4}
+				\nodepart{eight} 
+			};
+			\draw[-latex] (qsort1.two east) -- (main.one west);
+			\draw[-latex] (qsort1.four east) -- (main.seven west);
+			\draw[-latex] (qsort1.six east) -- (main.ten west);
+			\draw[-latex] (qsort1.eight east) -- (main.thirteen west);
+			
+			
+			\draw[-latex] (sort.three west) -- (main.one east);
+			\draw[-latex] (sort.six west) -- (main.four east);
+			\draw[-latex] (sort.nine west) -- (main.ten east);
+			\draw[-latex] (sort.twelve west) -- (main.seven east);
+			\draw[-latex] (sort.fifteen west) -- (main.thirteen east);
+			
+			%% First Hash Code
+			\onslide<2-4>
+			\nbd{qsort1.one}{qsort1.two}
+			\nbl{main.one}{main.six}
+			\onslide<3>
+			\nblc{main.three}
+			\onslide<4>
+			\nblc{main.six}
+			\onslide<5>
+			\nbd{qsort1.three}{qsort1.four}
+			\nbl{main.seven}{main.nine}
+			\onslide<1->
+			\end{scope}
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+	
+	\begin{tikzpicture}
+	\begin{scope}[start chain,node distance=0cm,yshift=70,xshift=-23,minimum height=1.5em]
+	\onslide<3->
+	\node[label=above:{\textit{V}},draw,fill=yellow!30,on chain] (v1) {1$\oplus$1};
+	\node[label=above:{\textit{E}},draw,fill=teal!30,on chain] (hx) {1$\oplus$1};
+	\onslide<4->
+	\node[label=above:{\textit{V}},draw,fill=yellow!30,on chain] (v1) {1$\oplus$2};
+	\node[label=above:{\textit{E}},draw,fill=teal!30,on chain] (hx) {2$\oplus$2};
+	\onslide<5->
+	\node[label=above:{\textit{V}},draw,fill=yellow!30,on chain] (v1) {3$\oplus$4};
+	\onslide<6->
+	\node[label=above:{\textit{V}},draw,fill=yellow!30,on chain] (v1) {2$\oplus$3};
+	\onslide<7->
+	\node[label=above:{\textit{V}},draw,fill=yellow!30,on chain] (v1) {4$\oplus$5};
+	\end{scope};
+	
+	\onslide<1->
+	\end{tikzpicture}
+	
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

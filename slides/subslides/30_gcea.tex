@@ -1,0 +1,98 @@
+
+
+\begin{multilucido}[GCEA]
+	\begin{sottolucido}[Experimental Evaluation]
+		\begin{itemize}
+			\item Through the following experiments we want to prove that :
+			\begin{enumerate}
+				\item The Physical Model with memory mapping provides better results for GCEA than other low-level graph databases and graph libraries.
+				\item GCEA with such Physical Model outperforms the query plans for other query languages (Cypher, SPARQL, SQL). 
+			\end{enumerate} 
+			\item Tests over one \textit{LiveJournal Graph}, $|V|=4,847,571$ and $|E|=68,993,773$. Enriched with \textit{LDBC Social Network Benchmark protocol}:\url{http://jackbergus.alwaysdata.net/BolognaGraph2016.tar.gz}. 
+			\[\theta(u,v)\overset{def}{=}u.Year1 = v.Year2\wedge u.Org1 = v.Org2\]
+			\item Tests' source code at \url{https://bitbucket.org/unibogb/databasemappings/}.
+		\end{itemize}
+	\end{sottolucido}
+
+
+	\begin{sottolucido}[Experimental Evaluation: Physical Design, 1]
+		In our soultion graph operands were stored in secondary memory and accessed through
+		memory mapping. The graph join result was written in secondary memory.
+		\begin{itemize}
+			\item BGL 1.60.0 with \textsc{vec} configuration, graph operands in main memory, default serialization.
+			\item SNAP with properties only on vertices, graph operands in main memory, default binary serialization.
+			\item Transactions and logging were disabled in Sparksee, graph operands in secondary memory.
+		\end{itemize}
+		Our Physical Design outperforms other solutions on GCEA algorithm. All such solutions are written in C/C++.
+	\end{sottolucido}
+
+
+	\begin{sottolucido}[Experimental Evaluation: Physical Design, 2a]
+		Time results supposing that the operands are either loaded in primary memory or
+		memory mapped. 
+		\begin{tabular}{r|r|rrr}
+			\toprule
+			\textbf{Operands Size} & \multicolumn{4}{c}{\textbf{GCEA running time, result creation excluded}}\\
+			L=R ($|V|$)  &Proposed  & Boost  & SNAP  & Sparksee  \\
+			\midrule
+			10 & 0.19\,ms & \textbf{0.09}$\times$ & 0.23$\times$ &  9.42$\times$ \\
+			100  & 0.18\,ms & \textbf{0.85}$\times$ & 1.72$\times$ & 24.96$\times$ \\
+			1\,000  & \textbf{0.31}\,ms & 5.68$\times$ &14.93$\times$ & 88.42$\times$ \\
+			10\,000  & \textbf{1.90}\,ms &11.13$\times$ & 26.83$\times$ & 156.42$\times$ \\
+			100\,000  & \textbf{32.31}\,ms & 8.73$\times$ & 19.33$\times$ & 81.05$\times$ \\
+			1\,000\,000  &  \textbf{332.60}\,ms & 15.42$\times$ & 33.15$\times$ & 171.54$\times$ \\
+			\bottomrule
+		\end{tabular}
+	\end{sottolucido}
+
+	\begin{sottolucido}[Experimental Evaluation: Physical Design, 2b]
+			Time results supposing that the operands are either loaded in primary memory or
+		memory mapped. 
+		\begin{tabular}{r|r|rrr}
+			\toprule
+			\textbf{Operands Size} & \multicolumn{4}{c}{\textbf{GCEA result creation time}}\\
+			L=R ($|V|$)  &Proposed  & Boost  & SNAP  & Sparksee  \\
+			\midrule
+			10 & \textbf{0.0010}\,ms & 17.00$\times$ & 36.40$\times$ & 738.33$\times$\\
+			100  & \textbf{0.0023}\,ms &  5.39$\times$ & 17.04$\times$ & 290.14$\times$\\
+			1\,000  &  \textbf{0.0036}\,ms &  7.72$\times$ & 14.67$\times$ & 215.65$\times$\\
+			10\,000  &  \textbf{0.3706}\,ms &  4.60$\times$ &  7.61$\times$ &  15.67$\times$\\
+			100\,000  & \textbf{39.3428}\,ms &  4.20$\times$ &  5.80$\times$ &  11.70$\times$\\
+			1\,000\,000  &  \textbf{3\,207.8738}\,ms &  5.76$\times$ & 12.29$\times$ &  15.50$\times$\\
+			\bottomrule
+		\end{tabular}
+	\end{sottolucido}
+
+	\begin{sottolucido}[Experimental Evaluation: Physical Design, 2c]
+		\begin{tabular}{r|r|rrr}
+			\toprule
+			\textbf{Operands Size} & \multicolumn{4}{c}{\textbf{Operands Indexing+Storing}}\\
+			L=R ($|V|$)  &Proposed  & Boost  & SNAP  & Sparksee  \\
+			\midrule
+			10 &    0.23\,ms           & \textbf{0.68}$\times$ & 0.98$\times$ &  7.73$\times$\\
+			100 &    \textbf{0.50}\,ms  & 1.60$\times$          & 5.22$\times$          & 11.76$\times$\\
+			1\,000 &    \textbf{3.38}\,ms  & 1.68$\times$          & 6.94$\times$          & 13.47$\times$\\
+			10\,000 &   \textbf{34.26}\,ms  & 1.52$\times$          & 7.25$\times$          & 13.84$\times$\\
+			100\,000 &  \textbf{355.96}\,ms  & 1.47$\times$          & 6.27$\times$          & 14.73$\times$\\
+			1\,000\,000 & \textbf{3\,518.47}\,ms  & 1.89$\times$          & 6.10$\times$          & 17.79$\times$\\
+			\bottomrule
+		\end{tabular}
+	\end{sottolucido}
+\end{multilucido}
+
+\begin{multilucido}[GCLE]
+	\begin{sottolucido}[$time_1\leq time_2$, ms running time]
+			\begin{tabular}{crrrr}
+			\toprule
+			\multicolumn{1}{c}{Size}&\multicolumn{1}{c}{Neo4J}&\multicolumn{1}{c}{PostgreSQL}&\multicolumn{1}{c}{Virtuoso}&\multicolumn{1}{c}{\textbf{GLEA C++}}\\
+			\midrule
+			$10^1$&$ 9,359.86\times$&$  82.61\times$&$   37.58\times$&$    0.15$\\
+			$10^2$&$ 2,374.98\times$&$  21.57\times$&$10,308.09\times$&$    1.17$\\
+			$10^3$&$28,368.97\times$&$ 191.32\times$&$>3.6\cdot 10^6$ ms&$   10.72$\\
+			$10^4$&$>3.6\cdot 10^6$ ms&$1616.22\times$&$>3.6\cdot 10^6$ ms&$   98.50$\\
+			$10^5$&$>3.6\cdot 10^6$ ms&$>3.6\cdot 10^6$ ms&$>3.6\cdot 10^6$ ms&$ 1,016.44$\\
+			$10^6$&$>3.6\cdot 10^6$ ms&$>3.6\cdot 10^6$ ms&$>3.6\cdot 10^6$ ms&$12,583.89$\\
+			\bottomrule
+		\end{tabular}
+	\end{sottolucido}
+\end{multilucido}

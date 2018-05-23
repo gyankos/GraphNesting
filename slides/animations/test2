@@ -1,0 +1,85 @@
+\documentclass[tikz]{standalone}
+\usepackage{pgfplots}
+\usepackage{amsmath} 
+\usetikzlibrary{calc, shapes.geometric, intersections}
+\pgfplotsset{compat=1.9}
+
+%\newcommand{\gettikzxy}[3]{%
+%  \tikz@scan@one@point\pgfutil@firstofone#1\relax
+%  \edef#2{\the\pgf@x}%
+%  \edef#3{\the\pgf@y}%
+%}
+
+\begin{document}
+\newcommand{\sside}{7}
+\newcommand{\hundred}{3} % --> 100%
+\pgfmathsetmacro \hunplus {(\hundred*115.47)/100} % --> 115,47%
+\pgfmathsetmacro \hunpp {(\hundred*127.32)/100} % --> 127,32% 
+\pgfmathsetmacro \Vmax {\hundred * 2/3}
+%
+\foreach \angle [count=\xi, evaluate=\angle as \mark using (15-(\xi/45)] in {360,...,1}{%
+\begin{tikzpicture}
+
+% Background and coordinates
+\fill[white] (-12,-5) rectangle (18,5);
+\coordinate (O) at (0,0);
+\coordinate (ib) at (120:\hundred);
+
+% Main circles and lines
+\draw (0,0) circle (\hundred cm);
+\draw[dashed, red] (0,0) circle (\hunplus cm); 
+\draw (0,0) circle (\hunpp cm);
+\foreach \sman in {45,90,...,360}{
+    \node[font=\large] at (\sman:\hunpp*1.1 cm) {$\sman^\circ$};
+    \draw[dotted] (0,0) -- (\sman:\hunpp);
+}
+\node[draw=black!50,thin,dashed, minimum size=\hunpp*2 cm, regular polygon, regular polygon sides=6] at (0,0) {};
+
+% Nodes left side
+\draw[dotted] (-\sside,\hundred) -- (0,\hundred) node[anchor=east, pos=0] {$I_{max}$};
+\draw[dotted,red] (-\sside,\hunplus) -- (0,\hunplus) node[anchor=east,pos=0, text=red] {$\frac{2}{\sqrt{3}}I_{max} - 115,47\%$};
+\draw[dotted] (-\sside,\hunpp) -- (0,\hunpp) node[anchor=east,pos=0] {$\frac{4}{\pi}I_{max} - 127,32\%$};
+\draw[dotted] (-\sside,0) -- (\hunpp,0) node[anchor=east,pos=0] {$0\%$};
+\draw[<->] ({-\sside+.5},-\hunpp cm) -- ({-\sside+.5},\hunpp*1.1 cm) node[anchor=south] {$I$};
+
+% Vectors
+\draw[red, dashed]   (0,0)  -- ++(0:\hundred cm)  node[anchor=west] {\large $i_a$};
+\draw[green, dashed] (0,0)  -- ++(240:\hundred cm) node[anchor=north] {\large $i_c$};
+\draw[red, dashed]   (0,0)  -- ++(0:-\hundred cm) node[anchor=east] {$-i_a$};
+%\draw[blue, dashed]  (0,0) -- ++(120:-\hundred cm)  node[anchor=north] {$-i_b$}; % Yes, you can do this with one single command! See below!
+\draw[name path=bib,blue, dashed] (300:\hundred) node[anchor=north] {$-i_b$} -- (120:\hundred) node[anchor=south] {\large $i_b$}; % Here!
+\draw[green, dashed] (0,0)  -- ++(240:-\hundred cm) node[anchor=south] {$-i_c$};
+
+% ---  Graph right side ---
+\draw[gray] (0,\hunpp) -- ({\sside+10},\hunpp);
+\draw[gray] (0,\hundred) -- ({\sside+10},\hundred);
+\draw[gray] (0,-\hundred) -- ({\sside+10},-\hundred);
+\draw[gray] (0,-\hunpp) -- ({\sside+10},-\hunpp);
+\draw[->] (\sside,-\hunpp cm) -- (\sside,\hunpp) node[anchor=south] (i) {$i$};
+\draw[->] (\sside,0) -- ({\sside+10},0) node[anchor=west] {$\theta$};
+
+% Degrees
+\foreach \n [count=\xi starting from 8] in {45,90,...,360}{
+    \draw (\xi,.1) -- (\xi,-.1) node[below,anchor=north]{$\n^\circ$};
+}
+
+\draw[xshift=7cm,name path=red,red,thick,smooth,domain=0:8] plot(\x,{\hundred * sin(\x*45)}); % Phase A
+\draw[xshift=7cm,name path=blue,blue,thick,smooth,domain=0:8] plot(\x,{\hundred * sin((\x*45)+120)}); %Phase B
+\draw[xshift=7cm,name path=green,green,thick,smooth,domain=0:8] plot(\x,{\hundred * sin((\x*45)+240)}); % Phase C
+
+% Marker
+\draw[name path=mark] (\mark,-\hunpp cm) -- (\mark,\hunpp cm) node[anchor=north,pos=0,align=center] {Current \\ position: \\ $\angle^\circ$}; % 1.125
+% Intersections
+\node[coordinate, name intersections = {of = mark and blue}] (bmx) at (intersection-1) {};
+\node[coordinate, name intersections = {of = green and mark}] (gmx) at (intersection-1) {};
+%
+%nodes indicating the intersection + dashed lines
+\node[anchor=east, text=blue, xshift=-5mm] at (i|-bmx) (ibx) {$i_b$};
+\node[anchor=east, text=green, xshift=-1cm] at (i|-gmx) (igx) {$i_b$};
+\draw[blue, dashed] (bmx) -- (ibx);
+\draw[green, dashed] (gmx) -- (igx);
+%
+%Black arrow
+\draw[->, thick] (0,0) -- (\angle:\hunpp);
+\end{tikzpicture}}
+\end{document}

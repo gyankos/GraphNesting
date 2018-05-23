@@ -1,0 +1,25 @@
+\subsection{THoSP Pseudocode}
+\begin{frame}[fragile]{THoSP Pseudocode}
+	\begin{lstlisting}[mathescape=true,language=pseudi]
+nest(Cont, patt, u, S):
+for each s in S s.t. patt.doSerialize(s):
+     Cont.write(<u,s>)
+
+Input: G, gV, gE 
+Cont $\leftarrow$ $\emptyset$ 
+NestedGraph $\leftarrow$ $\emptyset$ 
+
+a $\leftarrow$ V $\cap$ E \ ($\gamma_V$ $\cup$ $\gamma_E^{src}$ $\cup$ $\gamma_E^{dst}$);
+for each v:vertex in G s.t. a(v):
+  for each V(u $\rightarrow^{e}$ v):
+    $\textbf{u}$ := dtl(u)$_c$ ; nest(Cont, V, $\textbf{u}$, {u,e,v})
+    NGraph(V) $\leftarrow$ NGraph(V) $\cup${$\textbf{u}$}
+    for each V(w $\rightarrow^{e'}$ v) s.t. E(u $\rightarrow^{e}$ v${}^{e'}\leftarrow$w)
+      $\textbf{w}$ := dtl(w)$_c$ ;
+      $\textbf{e'}$ := dtl(u,w)$_c$; 
+      nest(Cont, E, $\textbf{e'}$, {u,e,v,e',w})
+      NGraph(E) $\leftarrow$ NGraph(E) $\cup${$\textbf{u} \rightarrow^{\textbf{e'}} \textbf{w}$}
+	\end{lstlisting}
+	
+\note{Parlare solo di questi due aspetti: 1) il pattern contiene l'informazione di quale componente devo annidare e quale sarà la componente vertice da restituire 2) l'arco mi fornisce l'informazione di quali sorgenti e destinazioni posso collegare.}
+\end{frame}

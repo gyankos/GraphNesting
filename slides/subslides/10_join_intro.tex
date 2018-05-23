@@ -1,0 +1,27 @@
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{lucido}[Research Problem]
+	\begin{enumerate}
+		\setbeamertemplate{enumerate items}[square]
+		\item  Despite the term ``join'' appearing in the graph database literature, such operator cannot be used to combine two distinct graphs, as for table joins in the relational model. They currently require to combine two operations, which combination results into an inefficient query plan:
+		\begin{itemize}
+			\item \alert{path joins} (currently simply called ``joins''), for graph traversals.
+			\item \alert{construct} to create a graph from the matched paths.
+		\end{itemize}
+		\item Graph Joins are not Relations Joins, but ``Graph Products''.
+	\end{enumerate}
+\end{lucido}
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{lucido}[Research Goals]
+	\begin{enumerate}[<+->]
+		\setbeamertemplate{enumerate items}[circle]
+		\item The physical model must allow a quick access to the data structures, reduce the number of join operations and allow a quick serialization of both operand and index results.
+		\item The join definition over the logical data model must be flexible enough to support further extensions (modularity, compositionality and properties preserving).
+	\end{enumerate}
+\end{lucido}

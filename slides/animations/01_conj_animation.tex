@@ -1,0 +1,85 @@
+\begin{tikzpicture}
+	%% Operand Left
+	\begin{scope}[scale=0.6,yshift=5.5cm,xshift=0cm,every node/.style={transform shape}]
+	\node[user2] (a1) at (2,.25) {\user{Alice}{$t_1$}};
+	\node[user2] (a3) at (2,-2.25) {\user{Carl}{$t_1$}};
+	\node[user2] (a2) at (6.3,.25) {\user{Bob}{$t_2$}};
+	\node[user2] (a4) at (6.3,-2.25) {\user{Dan}{$t_2$}};
+	
+	\path[->,orange] (a1.north east) edge node [anchor=south,sloped] {\{Follows\}} (a2.north west);
+	\path[->,orange] (a2.south east) edge  node [anchor=south,sloped] {\{Follows\}\qquad} (a4.north east);
+	\path[<-,orange] (a3.north west) edge node [anchor=north,sloped] {\{Follows\}\qquad} (a1.south west);
+	\path[<-,orange] (a3.east) edge node [anchor=south,sloped] {\{Follows\}\qquad} (a4);
+	
+	\onslide<2>
+	\node[user3] (a1) at (2,.25) {\user{Alice}{$t_1$}};
+	\onslide<3>
+	\node[user3] (a2) at (6.3,.25) {\user{Bob}{$t_2$}};
+	\onslide<4>
+	\node[user3] (a3) at (2,-2.25) {\user{Carl}{$t_1$}};
+	\onslide<5>
+	\node[user3] (a4) at (6.3,-2.25) {\user{Dan}{$t_2$}};
+	\onslide<6>
+	\path[->,orange,line width=1mm] (a1.north east) edge node [anchor=south,sloped] {\{Follows\}} (a2.north west);
+	\path[<-,orange,line width=1mm] (a3.north west) edge node [anchor=north,sloped] {\{Follows\}\qquad} (a1.south west);
+	\onslide<1->
+	\end{scope}
+	
+	%% Operand Right
+	\begin{scope}[scale=0.6,yshift=-4cm,xshift=0cm,every node/.style={transform shape}]
+	\node[proj2] (a1) at (2,0) {\proj{Alice}{Graphs}};
+	\node[proj2] (a1b) at (5,0) {\proj{Alice}{Join}};
+	\node[proj2] (a3) at (5,-2) {\proj{Carl}{Projection}};
+	\node[proj2] (a2) at (8.3,0) {\proj{Bob}{OWL}};
+	\node[proj2] (a4) at (8.3,-2) {\proj{Dan}{$\mu$-calc}};
+	
+	\path[->,purple] (a1.north east) edge [bend left=40] node [anchor=south,sloped] {\{Cites\}} (a2.north west);
+	\path[->,purple] (a2.south west) edge  node [anchor=south,sloped] {\{Cites\}\qquad} (a3.north east);
+	\path[<-,purple] (a3.north west) edge node [anchor=north,sloped] {\{Cites\}\qquad} (a1b.south west);
+	\path[->,purple] (a3.south) edge [bend right=30] node [anchor=south,sloped] {\{Cites\}} (a4.south);
+	
+	\onslide<2>
+	\node[proj3] (a1) at (2,0) {\proj{Alice}{Graphs}};
+	\node[proj3] (a1b) at (5,0) {\proj{Alice}{Join}};
+	\onslide<3>
+	\node[proj3] (a2) at (8.3,0) {\proj{Bob}{OWL}};
+	\onslide<4>
+	\node[proj3] (a3) at (5,-2) {\proj{Carl}{Projection}};
+	\onslide<5>	
+	\node[proj3] (a4) at (8.3,-2) {\proj{Dan}{$\mu$-calc}};
+	\onslide<6>
+	\path[->,purple,line width=1mm] (a1.north east) edge [bend left=40] node [anchor=south,sloped] {\{Cites\}} (a2.north west);
+	\path[<-,purple,line width=1mm] (a3.north west) edge node [anchor=north,sloped] {\{Cites\}\qquad} (a1b.south west);
+	\onslide<1->
+	\end{scope}
+	
+	%% Result
+	\begin{scope}[scale=0.6,yshift=2.8cm,xshift=12cm,every node/.style={transform shape}]		
+	
+	\onslide<2>
+	\node[result2] (a1) at (1,0) {\result{Alice}{Graphs}};
+	\node[result2] (a2) at (5.5,0) {\result{Alice}{Join}};
+	\onslide<3>
+	\node[result2] (a3) at (1,-7.4) {\result{Bob}{OWL}};
+	\onslide<4>
+	\node[result2] (a4) at (1,-3.7) {\result{Carl}{Projection}};
+	\onslide<5>
+	\node[result2] (a5) at (5.5,-7.4) {\result{Dan}{$\mu$-calc}};
+	\onslide<3->
+	\node[result] (a1) at (1,1) {\result{Alice}{Graphs}};
+	\node[result] (a2) at (5.5,1) {\result{Alice}{Join}};
+	\onslide<4->
+	\node[result] (a3) at (1,-7.4) {\result{Bob}{OWL}};
+	\onslide<5->
+	\node[result] (a4) at (1,-3.7) {\result{Carl}{Projection}};
+	\onslide<6->
+	\node[result] (a5) at (5.5,-7.4) {\result{Dan}{$\mu$-calc}};
+	\path[->,purple!60!orange,very thick,dotted] (a1.north west) edge [bend right=33] node [anchor=south,sloped] {\{Follows,Cites\}} (a3.north west);
+	\path[->,purple!60!orange,very thick,dotted] (a2) edge  node [anchor=north,sloped] {\{Follows,Cites\}} (a4.north east);
+	\end{scope}
+	
+	
+	\node<2-5> at (3,0) {\textbf{1. Vertex Join}};
+	\node<6-> at (3,0) {\textbf{2. Combining Edges}};
+	
+	\end{tikzpicture}
